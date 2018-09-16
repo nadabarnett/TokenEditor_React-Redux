@@ -34,7 +34,6 @@ class Billing extends Component {
 
     return (
       <div className="wrapper">
-
         <nav id="sidebar" className={this.state.showHideSidenav}>
             <div className="sidebar-header">
                 <h5><img width="25%" height="25%" src="https://i.imgur.com/sMK1rIY.png" /><a href="/dashboard">Token Editor</a></h5>
@@ -289,4 +288,5 @@ class Billing extends Component {
     );
   }
 }
+
 export default Billing;

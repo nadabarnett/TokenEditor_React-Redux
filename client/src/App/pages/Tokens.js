@@ -179,55 +179,60 @@ class Tokens extends Component {
 
             <div className="container-fluid px-md-5">
 
-              <div className="row justify-content-center">
+                <div className="row justify-content-center">
                 <h2 className="text-uppercase">Tokens</h2>
               </div>
+                <div className="row my-4">
+                    <Link to={'/token'} className="nav-link">
+                        <button className="editor-btn main big"><i className="fab fa-lg fa-ethereum"></i> New token</button>
+                    </Link>
+                </div>
 
-              <div className="col table-responsive editor-block my-4">
-                <table className="table" bordercolor="white">
-                  <thead style={{fontSize:"15px", textAlign:"center"}}>
-                    <tr style={{border:"none"}}>
-                      <th style={{border:"none"}}>Name</th>
-                      <th style={{border:"none"}}>Symbol</th>
-                      <th style={{border:"none"}}>Version</th>
-                      <th style={{border:"none"}}>Address</th>
-                    </tr>
-                  </thead>
-                  <tbody style={{fontSize:"13px", textAlign:"center"}}>
-                    <tr>
-                      <td>ExampleToken</td>
-                      <td>EXT</td>
-                      <td>1.0</td>
-                      <td>10xad4777029ae71f2b2kall</td>
-                      
-                      <button className="editor-btn main small" 
-                        onClick={this.openModal}
-                      >
-                        <i className="fas fa-edit"></i> Manage
-                      </button>
+                <div className="col table-responsive editor-block my-4">
+                    <table className="table" bordercolor="white">
+                    <thead style={{fontSize:"15px", textAlign:"center"}}>
+                        <tr style={{border:"none"}}>
+                        <th style={{border:"none"}}>Name</th>
+                        <th style={{border:"none"}}>Symbol</th>
+                        <th style={{border:"none"}}>Version</th>
+                        <th style={{border:"none"}}>Address</th>
+                        </tr>
+                    </thead>
+                    <tbody style={{fontSize:"13px", textAlign:"center"}}>
+                        <tr>
+                        <td>ExampleToken</td>
+                        <td>EXT</td>
+                        <td>1.0</td>
+                        <td>10xad4777029ae71f2b2kall</td>
+                        
+                        <button className="editor-btn main small" 
+                            onClick={this.openModal}
+                        >
+                            <i className="fas fa-edit"></i> Manage
+                        </button>
 
-                      <button className="editor-btn main small mx-4">
-                        <i className="fas fa-eye"></i> View
-                      </button>
+                        <button className="editor-btn main small mx-4">
+                            <i className="fas fa-eye"></i> View
+                        </button>
 
-                    </tr>
-                    <tr className="my-4">
-                      <td>SuzyToken</td>
-                      <td>SUZY</td>
-                      <td>1.2</td>
-                      <td>0xad4777029ae71f2b2kall</td>
-                      <button className="editor-btn main small" 
-                        onClick={this.openModal}
-                      >
-                        <i className="fas fa-edit"></i> Manage
-                      </button>
-                      <button className="editor-btn main small mx-4">
-                        <i className="fas fa-eye"></i> View
-                      </button>
-                    </tr>                    
-                  </tbody>
-                </table>
-              </div>
+                        </tr>
+                        <tr className="my-4">
+                        <td>SuzyToken</td>
+                        <td>SUZY</td>
+                        <td>1.2</td>
+                        <td>0xad4777029ae71f2b2kall</td>
+                        <button className="editor-btn main small" 
+                            onClick={this.openModal}
+                        >
+                            <i className="fas fa-edit"></i> Manage
+                        </button>
+                        <button className="editor-btn main small mx-4">
+                            <i className="fas fa-eye"></i> View
+                        </button>
+                        </tr>                    
+                    </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <Modal

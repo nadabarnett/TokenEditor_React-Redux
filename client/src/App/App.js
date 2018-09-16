@@ -12,6 +12,7 @@ import KycAml                     from './pages/KycAml';
 import Tokens                     from './pages/Tokens';
 import ManageCampaign             from './pages/ManageCampaign';
 import Compaign                   from './pages/Compaign';
+import Token                   from './pages/Token';
 import TokenSetupStep1            from './pages/TokenSetupStep1';
 import TokenSetupStep2            from './pages/TokenSetupStep2';
 import TokenSetupStep3            from './pages/TokenSetupStep3';
@@ -33,6 +34,7 @@ class App extends Component {
           <Route path='/Tokens' component={Tokens}/>
           <Route path='/ManageCampaign' component={ManageCampaign}/>
           <Route path='/compaign' component={Compaign}/>
+          <Route path='/token' component={Token}/>
           <Route path='/step1' component={TokenSetupStep1}/>
           <Route path='/step2' component={TokenSetupStep2}/>
           <Route path='/step3' component={TokenSetupStep3}/>

@@ -57,10 +57,9 @@ const defaultOption = options1[0];
 Modal.setAppElement('#modal')
 
 class Compaign extends Component {
-
-    propTypes : {
-        onSelect: React.PropTypes.func
-    }
+  propTypes : {
+    onSelect: React.PropTypes.func
+  }
 
   constructor(props) {
     super(props)
@@ -114,72 +113,77 @@ class Compaign extends Component {
   openModal() {
     this.setState({modalIsOpen: true});
   }
- 
+
   afterOpenModal() {
     // references are now sync'd and can be accessed.
     // this.subtitle.style.color = '#f00';
   }
- 
+
   closeModal() {
     this.setState({modalIsOpen: false});
   }
+
   open2Modal() {
     this.setState({modal2IsOpen: true});
   }
- 
+
   after2OpenModal() {
     // references are now sync'd and can be accessed.
     // this.subtitle.style.color = '#f00';
   }
- 
+
   close2Modal() {
     this.setState({modal2IsOpen: false});
   }
+
   open3Modal() {
     this.setState({modal3IsOpen: true});
   }
- 
+
   after3OpenModal() {
     // references are now sync'd and can be accessed.
     // this.subtitle.style.color = '#f00';
   }
- 
+
   close3Modal() {
     this.setState({modal3IsOpen: false});
   }
-    open4Modal() {
+
+  open4Modal() {
     this.setState({modal4IsOpen: true});
   }
- 
+
   after4OpenModal() {
     // references are now sync'd and can be accessed.
     // this.subtitle.style.color = '#f00';
   }
- 
+
   close4Modal() {
     this.setState({modal4IsOpen: false});
   }
-    open5Modal() {
+
+  open5Modal() {
     this.setState({modal5IsOpen: true});
   }
- 
+
   after5OpenModal() {
     // references are now sync'd and can be accessed.
     // this.subtitle.style.color = '#f00';
   }
- 
+
   close5Modal() {
     this.setState({modal5IsOpen: false});
   }
-    open6Modal() {
+
+  open6Modal() {
     this.setState({modal6IsOpen: true});
   }
- 
+
   after6OpenModal() {
     // references are now sync'd and can be accessed.
     // this.subtitle.style.color = '#f00';
   }
- 
+
   close6Modal() {
     this.setState({modal6IsOpen: false});
   }
@@ -188,29 +192,33 @@ class Compaign extends Component {
     this.setState({ selectedOption });
     console.log('Option selected:', selectedOption);
   }
+
   countryhandleChange = (selectedcountryOption) => {
     this.setState({ selectedcountryOption });
     console.log('Option selected:', selectedcountryOption);
   }
+
   toggleSwitch = () => {
     this.setState(prevState => {
       return {
         switched: !prevState.switched
       };
     });
-  };
+  }
+
   selectCountry (val) {
     this.setState({ country: val });
   }
 
   selectRegion (val) {
     this.setState({ region: val });
-  }  
+  }
 
   onSelect(val) {
     console.log("values selected are:", val);
     //you can handle options selected here.
   }
+
   onSelectCountry(val) {
     console.log("values selected are:", val);
     //you can handle options selected here.
@@ -281,7 +289,6 @@ class Compaign extends Component {
         </nav>
 
         <div id="content">
-
             <nav className="navbar navbar-expand-lg">
                 <div className="container-fluid">
 
@@ -304,92 +311,187 @@ class Compaign extends Component {
                     </div>
                 </div>
             </nav>
-
-            <div className="container-fluid col-md-12">
-
-              <div className="row justify-content-center">
-                <h2 className="text-uppercase">Campaigns</h2>
-              </div>
-              &nbsp;
-              <div className="row my-4">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button className="editor-btn main big" onClick={this.openModal}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; New</button>
-              </div>
-              <div className="row my-4 text-center">
-                <div className="col col-md-12 justify-content-center">
-                  <div className="row justify-content-center" >
-                  <div className="row settingeditor-block">
-                    <div className="col col-md-9  my-3">
-                      <div className="row col">
-                        <p className="m-0">&nbsp;&nbsp;&nbsp;Example campaign</p>
-                        <div className="col-md-1"></div>
-                        <div className="row compaignbtngroup-block">
-                          <div className="compaignbtnleft"><i className="fas fa-eye"></i></div>
-                          <div className="compaignbtnright">View</div>
-                        </div>
-                        <div className="col-md-1"></div><Link to={'/ManageCampaign'}>
-                          <div className="row compaignbtngroup-block">
-                            <div className="compaignbtnleft"><i className="fas fa-pencil-alt"></i></div>
-                            <div className="compaignbtnright">Manage</div>
-                          </div>
-                        </Link>
-                        <div className="col-md-1"></div>
-                        <div className="row compaignbtngroup-block">
-                          <div className="compaignbtnleft"><i className="fa fa-code"></i></div>
-                          <div className="compaignbtnright">Embed</div>
-                        </div>
-                        
-                      </div>
-                      <div className="row col">
-                        <div className="col">
-                          <p className="text-muted">by Oleh</p>
-                        </div>
-                      </div>
-                      <div className="row col">
-                        <div className="col my-2">
-                          <p className="m-0 mb-1">Raised persent: 10%</p>
-                          <div className="progress">
-                            <span></span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row col">
-                        <div className="col">
-                          <p className="font-weight-bold m-0">60 ETH</p>
-                          <p className="text-muted">Funding goal</p>
-                        </div>
-                        <div className="col">
-                          <p className="font-weight-bold m-0">6 ETH</p>
-                          <p className="text-muted">Fund Raised</p>
-                        </div>
-                        <div className="col">
-                          <p className="font-weight-bold m-0">54</p>
-                          <p className="text-muted">Days to go</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="col-md-3">
-                      <div className="compaign-img"></div>
-                    </div>
-                  </div>
-                  </div>
+            <div className="container-fluid px-md-5">
+                <div className="row justify-content-center">
+                    <h2 className="text-uppercase">Top campaigns</h2>
                 </div>
+                <div className="row my-4">
+                    <div className="col-md-4">
+                    <div className="row editor-block">
+                        <div className="col">
+                        <p className="m-0">Example campaign</p>
+                        <p className="text-muted">by Oleh</p>
+                        </div>
+                        <div className="col-auto">
+                        <p className="font-weight-bold m-0">60 ETH</p>
+                        <p className="text-muted">Funding goal</p>
+                        </div>
+                        <div className="w-100"></div>
+                        <div className="col">
+                        <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
+                        </div>
+                        <div className="col-auto">
+                        <p className="font-weight-bold m-0">6 ETH</p>
+                        <p className="text-muted">Fund Raised</p>
+                        </div>
+                        <div className="w-100"></div>
+                        <div className="col">
+                        <p className="m-0 mb-1">Raised persent: 10%</p>
+                        <div className="progress">
+                            <span></span>
+                        </div>
+                        </div>
+                        <div className="col-auto">
+                        <p className="font-weight-bold m-0">54</p>
+                        <p className="text-muted">Days to go</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="col-md-4">
+                    <div className="row editor-block">
+                        <div className="col">
+                        <p className="m-0">Example campaign</p>
+                        <p className="text-muted">by Oleh</p>
+                        </div>
+                        <div className="col-auto">
+                        <p className="font-weight-bold m-0">60 ETH</p>
+                        <p className="text-muted">Funding goal</p>
+                        </div>
+                        <div className="w-100"></div>
+                        <div className="col">
+                        <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
+                        </div>
+                        <div className="col-auto">
+                        <p className="font-weight-bold m-0">6 ETH</p>
+                        <p className="text-muted">Fund Raised</p>
+                        </div>
+                        <div className="w-100"></div>
+                        <div className="col">
+                        <p className="m-0 mb-1">Raised persent: 10%</p>
+                        <div className="progress">
+                            <span></span>
+                        </div>
+                        </div>
+                        <div className="col-auto">
+                        <p className="font-weight-bold m-0">54</p>
+                        <p className="text-muted">Days to go</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="col-md-4">
+                    <div className="row editor-block">
+                        <div className="col">
+                        <p className="m-0">Example campaign</p>
+                        <p className="text-muted">by Oleh</p>
+                        </div>
+                        <div className="col-auto">
+                        <p className="font-weight-bold m-0">60 ETH</p>
+                        <p className="text-muted">Funding goal</p>
+                        </div>
+                        <div className="w-100"></div>
+                        <div className="col">
+                        <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
+                        </div>
+                        <div className="col-auto">
+                        <p className="font-weight-bold m-0">6 ETH</p>
+                        <p className="text-muted">Fund Raised</p>
+                        </div>
+                        <div className="w-100"></div>
+                        <div className="col">
+                        <p className="m-0 mb-1">Raised persent: 10%</p>
+                        <div className="progress">
+                            <span></span>
+                        </div>
+                        </div>
+                        <div className="col-auto">
+                        <p className="font-weight-bold m-0">54</p>
+                        <p className="text-muted">Days to go</p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div className="row justify-content-center my-4">
               </div>
-              <div className="row justify-content-center my-4">
-              </div>
-              <div className="row justify-content-center my-4">
-              </div>
-              <div className="row justify-content-center my-4">
-              </div>
-              <div className="row justify-content-center my-4">
-              </div>  
-              <div className="row justify-content-center my-4">
-              </div>  
-              <div className="row justify-content-center my-4">
-              </div> 
-
-
+            </div>
+            <div className="container-fluid px-md-5">
+                <div className="row justify-content-center">
+                    <h2 className="text-uppercase">All campaigns</h2>
+                </div>
+                <div className="row my-4">
+                    <div className="col-md-4">
+                        <button className="editor-btn main big" onClick={this.openModal}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; New</button>
+                    </div>
+                </div>
+                <div className="row my-4 text-center">
+                    <div className="col-md-12 p-0 justify-content-center">
+                        <div className="row justify-content-center" >
+                            <div className="row settingeditor-block">
+                                <div className="col-md-9 my-3">
+                                    <div className="row col">
+                                        <p className="m-0">&nbsp;&nbsp;&nbsp;Example campaign</p>
+                                        <div className="col-md-1"></div>
+                                        <div className="row compaignbtngroup-block">
+                                        <div className="compaignbtnleft"><i className="fas fa-eye"></i></div>
+                                        <div className="compaignbtnright">View</div>
+                                        </div>
+                                        <div className="col-md-1"></div><Link to={'/ManageCampaign'}>
+                                        <div className="row compaignbtngroup-block">
+                                            <div className="compaignbtnleft"><i className="fas fa-pencil-alt"></i></div>
+                                            <div className="compaignbtnright">Manage</div>
+                                        </div>
+                                        </Link>
+                                        <div className="col-md-1"></div>
+                                        <div className="row compaignbtngroup-block">
+                                        <div className="compaignbtnleft"><i className="fa fa-code"></i></div>
+                                        <div className="compaignbtnright">Embed</div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div className="row col">
+                                        <div className="col">
+                                        <p className="text-muted">by Oleh</p>
+                                        </div>
+                                    </div>
+                                    <div className="row col">
+                                        <div className="col my-2">
+                                        <p className="m-0 mb-1">Raised persent: 10%</p>
+                                        <div className="progress">
+                                            <span></span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div className="row col">
+                                    <div className="col">
+                                    <p className="font-weight-bold m-0">60 ETH</p>
+                                    <p className="text-muted">Funding goal</p>
+                                    </div>
+                                    <div className="col">
+                                    <p className="font-weight-bold m-0">6 ETH</p>
+                                    <p className="text-muted">Fund Raised</p>
+                                    </div>
+                                    <div className="col">
+                                    <p className="font-weight-bold m-0">54</p>
+                                    <p className="text-muted">Days to go</p>
+                                    </div>
+                                </div>
+                                </div>
+                                <div className="col-md-3 compaign-img"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row justify-content-center my-4">
+                </div>
+                <div className="row justify-content-center my-4">
+                </div>
+                <div className="row justify-content-center my-4">
+                </div>
+                <div className="row justify-content-center my-4">
+                </div>  
+                <div className="row justify-content-center my-4">
+                </div>  
+                <div className="row justify-content-center my-4">
+                </div>
             </div>
         </div>
 
@@ -725,7 +827,7 @@ class Compaign extends Component {
                         <p>Funding Goal <img src="assets/images/question_mark.png" /></p>
                         <input type="text" className="editor-input w-100" placeholder="Text" />
                       </div>
-                      <div className="w-100"></div>              
+                      <div className="w-100"></div>
                       <div className="col-md-5 form-group">
                         <p>Minimum Account <img src="assets/images/question_mark.png" /></p>
                         <input type="text" className="editor-input w-100" placeholder="Text" />
@@ -743,9 +845,8 @@ class Compaign extends Component {
                           <input type="checkbox" className="check-block col-md-1"/>
                           <div className="col-md-11" align="left">Show Contributor table on Campaign single page</div>
                         </div>
-                        
                       </div>
-                      <div className="w-100"></div>              
+                      <div className="w-100"></div>
                       <div className="row form-group my-3 col-md-7">
                         <a onClick={this.close4Modal} className="col mousepoint-change">
                           <img height="50px" width="100%" src="assets/images/back.png"  onClick={this.open3Modal}/>
@@ -758,10 +859,10 @@ class Compaign extends Component {
                     </form>
                   </div>
                 </div>
-              </div>             
+              </div>
             </div>
           </div>
-        </Modal>    
+        </Modal>
 
 
          <Modal
@@ -818,13 +919,13 @@ class Compaign extends Component {
                       <div className="col-md-6 form-group">
                         <p>Filter by <img src="assets/images/question_mark.png" /></p>
                         <div className="row justify-content-center">
-                          Banned<span className="span-space"/> 
+                          Banned<span className="span-space"/>
                             <Switch onClick={this.toggleSwitch} on={this.state.switched}/>
                           <span className="span-space"/>
                           Allowed Countries
                         </div>
                       </div>
-                      <div className="w-100"></div>              
+                      <div className="w-100"></div>
                       <div className="col-md-5 form-group">
                         <p>Allowed Countries <img src="assets/images/question_mark.png" /></p>
                         <CountrySelect multi={true} flagImagePath="./assets/images/flags/" onSelect={this.onSelect}/>
@@ -836,9 +937,8 @@ class Compaign extends Component {
                           <input type="checkbox" className="check-block"/>
                           &nbsp;&nbsp;Yes
                         </div>
-                        
                       </div>
-                      <div className="w-100"></div>              
+                      <div className="w-100"></div>
                       <div className="row form-group my-3 col-md-7">
                         <a onClick={this.close5Modal} className="col mousepoint-change">
                           <img height="50px" width="100%" src="assets/images/back.png"  onClick={this.open4Modal}/>
@@ -851,7 +951,7 @@ class Compaign extends Component {
                     </form>
                   </div>
                 </div>
-              </div>             
+              </div>
             </div>
           </div>
         </Modal>
@@ -921,9 +1021,9 @@ class Compaign extends Component {
                           <input type="checkbox" className="check-block"/>
                           &nbsp;&nbsp;I agree with the terms and conditions
                         </div>
-                      </div>                      
-                      <div className="w-100"></div>              
-                      <div className="w-100"></div>              
+                      </div>
+                      <div className="w-100"></div>
+                      <div className="w-100"></div>
                       <div className="row form-group my-3 col-md-8 justify-content-center">
                         <a onClick={this.close6Modal} className="mousepoint-change">
                           <div className="savekind-btn" onClick={this.openModal}>1</div>
@@ -948,10 +1048,10 @@ class Compaign extends Component {
                     </form>
                   </div>
                 </div>
-              </div>             
+              </div>
             </div>
           </div>
-        </Modal>                          
+        </Modal>
         <footer className="footer">
           <div className="container-fluid">
             <div className="row justify-content-center">
@@ -981,4 +1081,5 @@ class Compaign extends Component {
     );
   }
 }
+
 export default Compaign;

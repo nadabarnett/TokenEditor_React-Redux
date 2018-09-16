@@ -432,7 +432,7 @@ a[data-toggle="collapse"] {
     transition: all 0.3s;
 }
 .settingeditor-block {
-    width: 95%;
+    width: 96%;
     border: 1px dashed #454679;
     border-radius: 20px;
     background-color: white;
@@ -466,6 +466,13 @@ a[data-toggle="collapse"] {
 
 .span-space {
     width: 5px;
+}
+
+.input-card {
+    background: white;
+    color: black;
+    box-shadow: 0 0 20px 0 rgba(0,0,0,0.10);
+    border-radius: 20px;
 }
 
 .settingeditor-block > sps {
@@ -809,19 +816,12 @@ hr {
 }
 
 .compaign-img {
-    width: 110%;
-    height: 250px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    color: white;
-    font-size: 18px;
-    text-align: center;
-    padding: 10px 20px;
-    margin: 0px 0;
-    transition: all 0.3s;
     background-image: url('images/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 250px;
+    border-radius: 0 20px 20px 0;
+    transition: all 0.3s;
 }
 
 .titleleft {
@@ -1104,4 +1104,8 @@ hr {
 .link {
     text-decoration: underline;
     color: #45467B;
+}
+
+.min-w-100 {
+    min-width: 100% !important;
 }

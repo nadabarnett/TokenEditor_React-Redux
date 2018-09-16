@@ -109,132 +109,25 @@ class Dashboard extends Component {
                 </div>
             </nav>
 
-            <div className="container-fluid px-md-5">
-
-              <div className="row justify-content-center">
-                <h2 className="text-uppercase">Top campaigns</h2>
-              </div>
-
-              <div className="row my-4">
+            <div className="row justify-content-center mb-5">
                 <div className="col-md-4">
-                  <div className="row editor-block">
+                    <div className="row text-center align-items-center editor-block square" id="first">
                     <div className="col">
-                      <p className="m-0">Example campaign</p>
-                      <p className="text-muted">by Oleh</p>
+                        <p>Want to generate token?</p>
+                        <Link to={'/token'} className="nav-link">
+                            <button className="editor-btn main big"><i className="fab fa-lg fa-ethereum"></i> Genetate token</button>
+                        </Link>
                     </div>
-                    <div className="col-auto">
-                      <p className="font-weight-bold m-0">60 ETH</p>
-                      <p className="text-muted">Funding goal</p>
                     </div>
-                    <div className="w-100"></div>
-                    <div className="col">
-                      <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
-                    </div>
-                    <div className="col-auto">
-                      <p className="font-weight-bold m-0">6 ETH</p>
-                      <p className="text-muted">Fund Raised</p>
-                    </div>
-                    <div className="w-100"></div>
-                    <div className="col">
-                      <p className="m-0 mb-1">Raised persent: 10%</p>
-                      <div className="progress">
-                        <span></span>
-                      </div>
-                    </div>
-                    <div className="col-auto">
-                      <p className="font-weight-bold m-0">54</p>
-                      <p className="text-muted">Days to go</p>
-                    </div>
-                  </div>
                 </div>
                 <div className="col-md-4">
-                  <div className="row editor-block">
-                    <div className="col">
-                      <p className="m-0">Example campaign</p>
-                      <p className="text-muted">by Oleh</p>
-                    </div>
-                    <div className="col-auto">
-                      <p className="font-weight-bold m-0">60 ETH</p>
-                      <p className="text-muted">Funding goal</p>
-                    </div>
-                    <div className="w-100"></div>
-                    <div className="col">
-                      <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
-                    </div>
-                    <div className="col-auto">
-                      <p className="font-weight-bold m-0">6 ETH</p>
-                      <p className="text-muted">Fund Raised</p>
-                    </div>
-                    <div className="w-100"></div>
-                    <div className="col">
-                      <p className="m-0 mb-1">Raised persent: 10%</p>
-                      <div className="progress">
-                        <span></span>
-                      </div>
-                    </div>
-                    <div className="col-auto">
-                      <p className="font-weight-bold m-0">54</p>
-                      <p className="text-muted">Days to go</p>
-                    </div>
-                  </div>
+                <div className="row text-center align-items-center editor-block square" id="second">
+                <div className="col">
+                    <p>Want to create a campaign?</p>
+                    <button className="editor-btn main big"><i className="fas fa-lg fa-sign"></i> Create campaign</button>
                 </div>
-                <div className="col-md-4">
-                  <div className="row editor-block">
-                    <div className="col">
-                      <p className="m-0">Example campaign</p>
-                      <p className="text-muted">by Oleh</p>
-                    </div>
-                    <div className="col-auto">
-                      <p className="font-weight-bold m-0">60 ETH</p>
-                      <p className="text-muted">Funding goal</p>
-                    </div>
-                    <div className="w-100"></div>
-                    <div className="col">
-                      <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
-                    </div>
-                    <div className="col-auto">
-                      <p className="font-weight-bold m-0">6 ETH</p>
-                      <p className="text-muted">Fund Raised</p>
-                    </div>
-                    <div className="w-100"></div>
-                    <div className="col">
-                      <p className="m-0 mb-1">Raised persent: 10%</p>
-                      <div className="progress">
-                        <span></span>
-                      </div>
-                    </div>
-                    <div className="col-auto">
-                      <p className="font-weight-bold m-0">54</p>
-                      <p className="text-muted">Days to go</p>
-                    </div>
-                  </div>
                 </div>
-              </div>
-
-              <div className="row justify-content-center my-4">
-                <button className="editor-btn main big"><i className="fas fa-lg fa-search"></i> View other campaigns</button>
-              </div>
-
-              <div className="row justify-content-center">
-                <div className="col-md-4">
-                  <div className="row text-center align-items-center editor-block square" id="first">
-                    <div className="col">
-                      <p>Want to generate token?</p>
-                      <button className="editor-btn main big"><i className="fab fa-lg fa-ethereum"></i> Genetate token</button>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="row text-center align-items-center editor-block square" id="second">
-                    <div className="col">
-                      <p className="m-0">Already have a token?</p>
-                      <p className="m-0">Create a campaign</p>
-                      <button className="editor-btn main big"><i className="fas fa-lg fa-sign"></i> Create campaign</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+            </div>
             </div>
         </div>
         <footer className="footer">
