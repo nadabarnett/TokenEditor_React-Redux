@@ -6,7 +6,7 @@ class Transactions extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {"showHideSidenav": ""}
+    this.state = {"showHideSidenav": ""};
   }
 
   componentDidMount(){
