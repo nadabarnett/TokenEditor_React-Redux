@@ -24,23 +24,22 @@ class Login extends Component {
             web3 = new Web3(window.web3.currentProvider);
         }
 
-        web3.eth.getCoinbase().then((result) => {
-            if (!result) {
-                window.alert('Please activate MetaMask first.');
-                return;
-            } else {
-                this.setState({ loading: true });
-                this.handleSignMessage(result);
-            }
-        })
+        if (!web3.eth.coinbase) {
+            window.alert('Please activate MetaMask first.');
+            return;
+        }
+
+        const publicAddress = web3.eth.coinbase.toLowerCase();
+        this.setState({ loading: true });
+        this.handleSignMessage(publicAddress);
     };
 
     handleSignMessage = (publicAddress) => {
         const { onLoggedIn } = this.props;
 
         return new Promise((resolve, reject) =>
-            web3.eth.personal.sign(
-                web3.utils.fromUtf8(`Your public address is ${publicAddress}. Please sign below to authenticate with TokenEditor platform.`),
+            web3.personal.sign(
+                web3.fromUtf8(`Your public address is ${publicAddress}. Please sign below to authenticate with TokenEditor platform.`),
                 publicAddress,
                 (err, signature) => {
                     if (err) {
