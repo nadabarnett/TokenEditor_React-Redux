@@ -1096,3 +1096,12 @@ hr {
     font-size: 16px;
     color: #BEBEBE;
 }
+
+.break-word {
+    word-wrap: break-word;
+}
+
+.link {
+    text-decoration: underline;
+    color: #45467B;
+}

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link }             from 'react-router-dom';
 
 
 class Dashboard extends Component {
 
   constructor(props) {
-    super(props)
-    this.state = {"showHideSidenav": ""}
+    super(props);
+    this.state = {"showHideSidenav": ""};
   }
 
   componentDidMount(){
-    document.body.id=""
+    document.body.id="";
   }
 
   toggleSidenav() {
@@ -19,7 +19,7 @@ class Dashboard extends Component {
   }
 
   render() {
-
+    console.log(this.props);
     return (
       <div className="wrapper">
         <nav id="sidebar" className={this.state.showHideSidenav}>
@@ -61,6 +61,11 @@ class Dashboard extends Component {
                 <p className="m-0">Oleh</p>
                 <span className="profile-email">typicaladmsky@gmail.com</span>
               </div>
+                { this.props.location.state ? (
+                        <div className="col">
+                            <a href={"https://etherscan.io/address/" + this.props.location.state.address} target="_blank" className="m-0 break-word link">{this.props.location.state.address}</a>
+                        </div>
+                ) : null }
             </div>
             <div className="row justify-content-center main-color my-5">
               <div className="col-auto">
@@ -261,4 +266,5 @@ class Dashboard extends Component {
     );
   }
 }
+
 export default Dashboard;
