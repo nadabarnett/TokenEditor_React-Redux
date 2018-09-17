@@ -49,15 +49,15 @@ class Billing extends Component {
                 <li>
                     <a href="/compaign"><i className="fas fa-lg fa-sign"></i> Campaigns</a>
                 </li>
-                <li>
+                {/* <li>
                     <a href="/KycAml"><i className="fas fa-lg fa-id-card"></i> KYC/AML</a>
-                </li>
+                </li> */}
                 <li>
                     <a href="/Transactions"><i className="fas fa-lg fa-chart-bar"></i> Transactions</a>
                 </li>
-                <li>
+                {/* <li>
                     <a href="/billing"><i className="far fa-lg fa-money-bill-alt"></i> Billing</a>
-                </li>
+                </li> */}
                 <li>
                     <a href="/Affiliate"><i className="fas fa-lg fa-users"></i> Affiliate</a>
                 </li>
@@ -91,7 +91,6 @@ class Billing extends Component {
             <p className="text-muted text-center my-5">@ 2018 Token Editor</p>
         </nav>
         <div id="content">
-          
             <nav className="navbar navbar-expand-lg">
                 <div className="container-fluid">
 
@@ -114,13 +113,10 @@ class Billing extends Component {
                     </div>
                 </div>
             </nav>
-
             <div className="container-fluid col-md-12">
-              
               <div className="row justify-content-center">
                 <h2 className="text-uppercase">Settings</h2>
               </div>
-
               <div className="row my-4 text-center">
                 <div className="col col-md-12">
                   <form className="row justify-content-center" onSubmit={this.handleSubmit}>
@@ -203,45 +199,10 @@ class Billing extends Component {
                           <div className="w-100"></div>
                         </div>
                       </div>
-                             
-                    
-                    </div>
-
-                    <div className="settingeditor-block">
-
-                      <div className="">
-                        <div className="panel-header">Campaigns</div>
-                      </div>
-                        <div className="col-md-12 my-4">
-                          <div className="col-md-12 form-group">
-                            <p>Token sales affiliate program</p>
-                          </div>
-                          <div className="row col-md-12 form-group">
-                            <div className="col-md-6"></div>
-                            <div className="row">
-                              on <span className="span-space"/>
-                              
-                                <Switch onClick={this.toggleSwitch} on={this.state.switched}/>
-                                                           
-                              <span className="span-space"/>
-                              off
-                            
-
-                            </div>
-                            <div className="col-md-6">
-                              
-                            
-                            </div>
-                          </div> 
-                        </div>
                     </div>
                   </form>
                 </div>
-
-
               </div>
-
-
               <div className="row justify-content-center my-4">
                 <button className="editor-btn main big"><i className="fas fa-sg fa-check"></i> Save</button>
               </div>

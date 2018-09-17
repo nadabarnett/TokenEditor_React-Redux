@@ -42,9 +42,9 @@ class KycAml extends Component {
                 <li>
                     <a href="/Transactions"><i className="fas fa-lg fa-chart-bar"></i> Transactions</a>
                 </li>
-                <li>
+                {/* <li>
                     <a href="/billing"><i className="far fa-lg fa-money-bill-alt"></i> Billing</a>
-                </li>
+                </li> */}
                 <li>
                     <a href="/Affiliate"><i className="fas fa-lg fa-users"></i> Affiliate</a>
                 </li>
@@ -116,7 +116,7 @@ class KycAml extends Component {
                         <div className="row text-center align-items-center square">
                           <div className="col">
                             <p>Choose your campagin</p>
-                            
+
                             <div className="dropdown toggle col-md-6">
                               <input id="t1" type="checkbox"></input>
                               <label>Example campagin</label>
@@ -151,7 +151,7 @@ class KycAml extends Component {
                       <td>0xad4777029ae71f2b2kall</td>
                       <td>No</td>
                       <button className="editor-btn main small">
-                        <i className="fas fa-edit"></i> Manage
+                        <i className="fas fa-check"></i> Approve
                       </button>
                     </tr>
                     <tr>
@@ -161,7 +161,7 @@ class KycAml extends Component {
                       <td>0xad4777029ae71f2b2kall</td>
                       <td>No</td>
                       <button className="editor-btn main small">
-                        <i className="fas fa-edit"></i> Manage
+                        <i className="fas fa-check"></i> Approve
                       </button>
                     </tr>
                     <tr>
@@ -171,17 +171,7 @@ class KycAml extends Component {
                       <td>0xad4777029ae71f2b2kall</td>
                       <td>No</td> 
                       <button className="editor-btn main small">
-                        <i className="fas fa-edit"></i> Manage
-                      </button>                     
-                    </tr>
-                    <tr>
-                      <td>Stive</td>
-                      <td>stive22@gmail.com</td>
-                      <td>United States</td>
-                      <td>0xad4777029ae71f2b2kall</td>
-                      <td>No</td>
-                      <button className="editor-btn main small">
-                        <i className="fas fa-edit"></i> Manage
+                        <i className="fas fa-check"></i> Approve
                       </button>
                     </tr>
                     <tr>
@@ -191,7 +181,17 @@ class KycAml extends Component {
                       <td>0xad4777029ae71f2b2kall</td>
                       <td>No</td>
                       <button className="editor-btn main small">
-                        <i className="fas fa-edit"></i> Manage
+                        <i className="fas fa-check"></i> Approve
+                      </button>
+                    </tr>
+                    <tr>
+                      <td>Stive</td>
+                      <td>stive22@gmail.com</td>
+                      <td>United States</td>
+                      <td>0xad4777029ae71f2b2kall</td>
+                      <td>No</td>
+                      <button className="editor-btn main small">
+                        <i className="fas fa-check"></i> Approve
                       </button>
                     </tr>
 

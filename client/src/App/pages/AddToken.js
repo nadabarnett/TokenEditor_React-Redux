@@ -3,7 +3,7 @@ import Switch from 'react-toggle-switch';
 
 import { Link } from 'react-router-dom';
 
-class Token extends Component {
+class AddToken extends Component {
 
     constructor(props) {
         super(props)
@@ -120,7 +120,7 @@ class Token extends Component {
                         <div className="row my-4 text-center">
                         <div className="col col-md-12">
                             <div className="row justify-content-center">
-                                <h2 className="text-uppercase">Token Contract</h2>
+                                <h2 className="text-uppercase">Create token contract</h2>
                             </div>
                             <form className="row justify-content-left my-4" onSubmit={this.handleSubmit}>
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
@@ -176,7 +176,7 @@ class Token extends Component {
                                 <div className="w-100"></div>
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
                                     <div className="col-md-12 form-group">
-                                        <p><b>Define address for distribution</b></p><hr/>
+                                        <p><b>Add address for distribution</b></p><hr/>
                                     </div>
                                     <div className="w-100"></div>
 
@@ -213,7 +213,7 @@ class Token extends Component {
 
                                     <button type="button" className="editor-btn main">
                                         <i className="fas fa-plus"></i>
-                                        <span>Add new receiver</span>
+                                        <span>&nbsp;&nbsp; Add new address</span>
                                     </button>
                                 </div>
                                 <div className="w-100"></div>
@@ -234,34 +234,9 @@ class Token extends Component {
                     </div>
                     </div>
                 </div>
-                <footer className="footer">
-                    <div className="container-fluid">
-                        <div className="row justify-content-center">
-                            <div className="col-md-4" id="stats">
-                                <div className="row text-center main-color">
-                                    <div className="col">
-                                        <i className="fas fa-2x fa-user-friends"></i>
-                                        <p className="m-0">Unique users</p>
-                                        <p className="m-0">13433</p>
-                                    </div>
-                                    <div className="col">
-                                        <i className="fas fa-2x fa-shopping-cart"></i>
-                                        <p className="m-0">ICO buyers</p>
-                                        <p className="m-0">189</p>
-                                    </div>
-                                    <div className="col">
-                                        <i className="fas fa-2x fa-dollar-sign"></i>
-                                        <p className="m-0">Total investment</p>
-                                        <p className="m-0">$56542</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
             </div>
         );
     }
 }
 
-export default Token;
+export default AddToken;

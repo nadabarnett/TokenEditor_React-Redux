@@ -246,15 +246,15 @@ class Compaign extends Component {
                 <li className="selected-li">
                     <a href="compaignsetup"><i className="fas fa-lg fa-sign"></i> Campaigns</a>
                 </li>
-                <li>
+                {/* <li>
                     <a href="/KycAml"><i className="fas fa-lg fa-id-card"></i> KYC/AML</a>
-                </li>
+                </li> */}
                 <li>
                     <a href="/Transactions"><i className="fas fa-lg fa-chart-bar"></i> Transactions</a>
                 </li>
-                <li>
+                {/* <li>
                     <a href="/billing"><i className="far fa-lg fa-money-bill-alt"></i> Billing</a>
-                </li>
+                </li> */}
                 <li>
                     <a href="/Affiliate"><i className="fas fa-lg fa-users"></i> Affiliate</a>
                 </li>
@@ -311,7 +311,7 @@ class Compaign extends Component {
                     </div>
                 </div>
             </nav>
-            <div className="container-fluid px-md-5">
+            {/* <div className="container-fluid px-md-5">
                 <div className="row justify-content-center">
                     <h2 className="text-uppercase">Top campaigns</h2>
                 </div>
@@ -327,9 +327,11 @@ class Compaign extends Component {
                         <p className="text-muted">Funding goal</p>
                         </div>
                         <div className="w-100"></div>
-                        <div className="col">
-                        <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
-                        </div>
+                        <Link to={'/ViewCampaign'}>
+                            <div className="col">
+                                <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
+                            </div>
+                        </Link>
                         <div className="col-auto">
                         <p className="font-weight-bold m-0">6 ETH</p>
                         <p className="text-muted">Fund Raised</p>
@@ -358,9 +360,11 @@ class Compaign extends Component {
                         <p className="text-muted">Funding goal</p>
                         </div>
                         <div className="w-100"></div>
-                        <div className="col">
-                        <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
-                        </div>
+                        <Link to={'/ViewCampaign'}>
+                            <div className="col">
+                                <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
+                            </div>
+                        </Link>
                         <div className="col-auto">
                         <p className="font-weight-bold m-0">6 ETH</p>
                         <p className="text-muted">Fund Raised</p>
@@ -389,9 +393,11 @@ class Compaign extends Component {
                         <p className="text-muted">Funding goal</p>
                         </div>
                         <div className="w-100"></div>
-                        <div className="col">
-                        <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
-                        </div>
+                        <Link to={'/ViewCampaign'}>
+                            <div className="col">
+                                <button className="editor-btn main small"><i className="fas fa-eye"></i> View</button>
+                            </div>
+                        </Link>
                         <div className="col-auto">
                         <p className="font-weight-bold m-0">6 ETH</p>
                         <p className="text-muted">Fund Raised</p>
@@ -412,14 +418,14 @@ class Compaign extends Component {
                 </div>
                 <div className="row justify-content-center my-4">
               </div>
-            </div>
+            </div> */}
             <div className="container-fluid px-md-5">
                 <div className="row justify-content-center">
-                    <h2 className="text-uppercase">All campaigns</h2>
+                    <h2 className="text-uppercase">My Campaigns</h2>
                 </div>
                 <div className="row my-4">
                     <div className="col-md-4">
-                        <button className="editor-btn main big" onClick={this.openModal}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; New</button>
+                        <button className="editor-btn main big" onClick={this.openModal}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; Create Campaign</button>
                     </div>
                 </div>
                 <div className="row my-4 text-center">
@@ -430,22 +436,22 @@ class Compaign extends Component {
                                     <div className="row col">
                                         <p className="m-0">&nbsp;&nbsp;&nbsp;Example campaign</p>
                                         <div className="col-md-1"></div>
-                                        <div className="row compaignbtngroup-block">
-                                        <div className="compaignbtnleft"><i className="fas fa-eye"></i></div>
-                                        <div className="compaignbtnright">View</div>
-                                        </div>
-                                        <div className="col-md-1"></div><Link to={'/ManageCampaign'}>
+                                        <Link to={'/ViewCampaign'}>
+                                            <div className="row compaignbtngroup-block">
+                                                <div className="compaignbtnleft"><i className="fas fa-eye"></i></div>
+                                                <div className="compaignbtnright">View</div>
+                                            </div>
+                                        </Link>
+                                        <div className="col-md-1"></div>
                                         <div className="row compaignbtngroup-block">
                                             <div className="compaignbtnleft"><i className="fas fa-pencil-alt"></i></div>
                                             <div className="compaignbtnright">Manage</div>
                                         </div>
-                                        </Link>
                                         <div className="col-md-1"></div>
                                         <div className="row compaignbtngroup-block">
                                         <div className="compaignbtnleft"><i className="fa fa-code"></i></div>
                                         <div className="compaignbtnright">Embed</div>
                                         </div>
-                                        
                                     </div>
                                     <div className="row col">
                                         <div className="col">
@@ -480,17 +486,93 @@ class Compaign extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="row justify-content-center my-4">
+            </div>
+            <div className="container-fluid px-md-5">
+                <div className="settingeditor-block">
+                    <div className="col-md-12 my-4">
+                        <div className="col-md-12 form-group">
+                            <p>Token sales affiliate program</p>
+                        </div>
+                        <div className="row col-md-12 form-group">
+                            <div className="col-md-6"></div>
+                            <div className="row">
+                                on <span className="span-space"/>
+                                <Switch onClick={this.toggleSwitch} on={this.state.switched}/>
+                                <span className="span-space"/>
+                                off
+                            </div>
+                            <div className="col-md-6">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="row justify-content-center my-4">
-                </div>
-                <div className="row justify-content-center my-4">
-                </div>
-                <div className="row justify-content-center my-4">
-                </div>  
-                <div className="row justify-content-center my-4">
-                </div>  
-                <div className="row justify-content-center my-4">
+            </div>
+            <div className="container-fluid px-md-5">
+                <div className="table-responsive editor-block">
+                    <table className="table" bordercolor="white">
+                        <thead style={{fontSize:"15px", textAlign:"center"}}>
+                            <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Country</th>
+                            <th>Wallet address</th>
+                            <th>Verified</th>
+                            </tr>
+                        </thead>
+                        <tbody style={{fontSize:"13px", textAlign:"center"}}>
+                        <tr className="active">
+                        <td>Stive</td>
+                        <td>stive22@gmail.com</td>
+                        <td>United States</td>
+                        <td>0xad4777029ae71f2b2kall</td>
+                        <td>No</td>
+                        <button className="editor-btn main small">
+                            <i className="fas fa-check"></i> Approve
+                        </button>
+                        </tr>
+                        <tr>
+                        <td>Stive</td>
+                        <td>stive22@gmail.com</td>
+                        <td>United States</td>
+                        <td>0xad4777029ae71f2b2kall</td>
+                        <td>No</td>
+                        <button className="editor-btn main small">
+                            <i className="fas fa-check"></i> Approve
+                        </button>
+                        </tr>
+                        <tr>
+                        <td>Stive</td>
+                        <td>stive22@gmail.com</td>
+                        <td>United States</td>
+                        <td>0xad4777029ae71f2b2kall</td>
+                        <td>No</td> 
+                        <button className="editor-btn main small">
+                            <i className="fas fa-check"></i> Approve
+                        </button>
+                        </tr>
+                        <tr>
+                        <td>Stive</td>
+                        <td>stive22@gmail.com</td>
+                        <td>United States</td>
+                        <td>0xad4777029ae71f2b2kall</td>
+                        <td>No</td>
+                        <button className="editor-btn main small">
+                            <i className="fas fa-check"></i> Approve
+                        </button>
+                        </tr>
+                        <tr>
+                        <td>Stive</td>
+                        <td>stive22@gmail.com</td>
+                        <td>United States</td>
+                        <td>0xad4777029ae71f2b2kall</td>
+                        <td>No</td>
+                        <button className="editor-btn main small">
+                            <i className="fas fa-check"></i> Approve
+                        </button>
+                        </tr>
+
+                    </tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -112,19 +112,21 @@ class Dashboard extends Component {
             <div className="row justify-content-center mb-5">
                 <div className="col-md-4">
                     <div className="row text-center align-items-center editor-block square" id="first">
-                    <div className="col">
-                        <p>Want to generate token?</p>
-                        <Link to={'/token'} className="nav-link">
-                            <button className="editor-btn main big"><i className="fab fa-lg fa-ethereum"></i> Genetate token</button>
-                        </Link>
-                    </div>
+                        <div className="col">
+                            <p>Want to generate token?</p>
+                            <Link to={'/addToken'} className="nav-link">
+                                <button className="editor-btn main big"><i className="fab fa-lg fa-ethereum"></i> Genetate token</button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 <div className="col-md-4">
                 <div className="row text-center align-items-center editor-block square" id="second">
                 <div className="col">
                     <p>Want to create a campaign?</p>
-                    <button className="editor-btn main big"><i className="fas fa-lg fa-sign"></i> Create campaign</button>
+                    <Link to={'/step1'} className="nav-link">
+                        <button className="editor-btn main big"><i className="fas fa-lg fa-sign"></i> Create campaign</button>
+                    </Link>
                 </div>
                 </div>
             </div>

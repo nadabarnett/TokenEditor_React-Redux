@@ -43,9 +43,9 @@ class Transactions extends Component {
                 <li className="selected-li">
                     <a href="#"><i className="fas fa-lg fa-chart-bar"></i> Transactions</a>
                 </li>
-                <li>
+                {/* <li>
                     <a href="/billing"><i className="far fa-lg fa-money-bill-alt"></i> Billing</a>
-                </li>
+                </li> */}
                 <li>
                     <a href="/Affiliate"><i className="fas fa-lg fa-users"></i> Affiliate</a>
                 </li>
