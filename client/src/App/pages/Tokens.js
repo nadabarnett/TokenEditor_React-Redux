@@ -49,8 +49,6 @@ class Tokens extends Component {
     this.showOne          = this.showOne.bind(this);
     this.showTwo          = this.showTwo.bind(this);
     this.showThree        = this.showThree.bind(this);
-    this.showFour         = this.showFour.bind(this);
-
   }
 
   componentDidMount(){
@@ -66,12 +64,12 @@ class Tokens extends Component {
   openModal() {
     this.setState({modalIsOpen: true});
   }
- 
+
   afterOpenModal() {
     // references are now sync'd and can be accessed.
     // this.subtitle.style.color = '#f00';
   }
- 
+
   closeModal() {
     this.setState({modalIsOpen: false});
   }
@@ -88,9 +86,6 @@ class Tokens extends Component {
     this.setState({viewSelection : 3});
   }
 
-  showFour() {
-    this.setState({viewSelection : 4});
-  }
   render() {
 
     return (
@@ -110,15 +105,15 @@ class Tokens extends Component {
                 <li>
                     <a href="/compaign"><i className="fas fa-lg fa-sign"></i> Campaigns</a>
                 </li>
-                <li>
+                {/* <li>
                     <a href="/KycAml"><i className="fas fa-lg fa-id-card"></i> KYC/AML</a>
-                </li>
+                </li> */}
                 <li>
                     <a href="/Transactions"><i className="fas fa-lg fa-chart-bar"></i> Transactions</a>
                 </li>
-                <li>
+                {/* <li>
                     <a href="/billing"><i className="far fa-lg fa-money-bill-alt"></i> Billing</a>
-                </li>
+                </li> */}
                 <li>
                     <a href="/Affiliate"><i className="fas fa-lg fa-users"></i> Affiliate</a>
                 </li>
@@ -179,57 +174,50 @@ class Tokens extends Component {
 
             <div className="container-fluid px-md-5">
 
-              <div className="row justify-content-center">
-                <h2 className="text-uppercase">Tokens</h2>
+                <div className="row justify-content-center">
+                <h2 className="text-uppercase">My Tokens</h2>
               </div>
+                <div className="row my-4">
+                    <Link to={'/addToken'} className="nav-link">
+                        <button className="editor-btn main big" onClick={this.openModal}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; Create Token</button>
+                    </Link>
+                </div>
 
-              <div className="col table-responsive editor-block my-4">
-                <table className="table" bordercolor="white">
-                  <thead style={{fontSize:"15px", textAlign:"center"}}>
-                    <tr style={{border:"none"}}>
-                      <th style={{border:"none"}}>Name</th>
-                      <th style={{border:"none"}}>Symbol</th>
-                      <th style={{border:"none"}}>Version</th>
-                      <th style={{border:"none"}}>Address</th>
-                    </tr>
-                  </thead>
-                  <tbody style={{fontSize:"13px", textAlign:"center"}}>
-                    <tr>
-                      <td>ExampleToken</td>
-                      <td>EXT</td>
-                      <td>1.0</td>
-                      <td>10xad4777029ae71f2b2kall</td>
-                      
-                      <button className="editor-btn main small" 
-                        onClick={this.openModal}
-                      >
-                        <i className="fas fa-edit"></i> Manage
-                      </button>
-
-                      <button className="editor-btn main small mx-4">
-                        <i className="fas fa-eye"></i> View
-                      </button>
-
-                    </tr>
-                    <tr className="my-4">
-                      <td>SuzyToken</td>
-                      <td>SUZY</td>
-                      <td>1.2</td>
-                      <td>0xad4777029ae71f2b2kall</td>
-                      <button className="editor-btn main small" 
-                        onClick={this.openModal}
-                      >
-                        <i className="fas fa-edit"></i> Manage
-                      </button>
-                      <button className="editor-btn main small mx-4">
-                        <i className="fas fa-eye"></i> View
-                      </button>
-                    </tr>                    
-                  </tbody>
-                </table>
-              </div>
+                <div className="col table-responsive editor-block my-4">
+                    <table className="table" bordercolor="white">
+                    <thead style={{fontSize:"15px", textAlign:"center"}}>
+                        <tr style={{border:"none"}}>
+                        <th style={{border:"none"}}>Name</th>
+                        <th style={{border:"none"}}>Symbol</th>
+                        <th style={{border:"none"}}>Version</th>
+                        <th style={{border:"none"}}>Address</th>
+                        </tr>
+                    </thead>
+                    <tbody style={{fontSize:"13px", textAlign:"center"}}>
+                        <tr>
+                            <td>ExampleToken</td>
+                            <td>EXT</td>
+                            <td>1.0</td>
+                            <td>10xad4777029ae71f2b2kall</td>
+                            <button className="editor-btn main small" onClick={this.openModal}>
+                            <i className="fas fa-edit"></i> Manage
+                        </button>
+                        </tr>
+                        <tr className="my-4">
+                            <td>SuzyToken</td>
+                            <td>SUZY</td>
+                            <td>1.2</td>
+                            <td>0xad4777029ae71f2b2kall</td>
+                            <button className="editor-btn main small" onClick={this.openModal}>
+                                <i className="fas fa-edit"></i> Manage
+                            </button>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -265,10 +253,9 @@ class Tokens extends Component {
                 </div>
               </div>
             </div>
-
             <div className="panel-body">
               <div className="row my-4">
-                <div className="col-md-3">
+                <div className="col-md-4">
                   {
                     this.state.viewSelection == 1 ?
                       <button className="row text-center align-items-center editor-button selected-li" onClick={this.showOne}> 
@@ -286,59 +273,40 @@ class Tokens extends Component {
                       </button>
                   }
                 </div>
-                
-                <div className="col-md-3">
+
+                <div className="col-md-4">
                   {
                     this.state.viewSelection == 2 ?
                       <button className="row text-center align-items-center editor-button selected-li" onClick={this.showTwo}> 
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_white.png'} /></p>
-                          <p className="Amount">ICO</p>
+                          <p className="Amount">Basic features</p>
                         </div>
                       </button>
                       :
                       <button className="row text-center align-items-center editor-button" onClick={this.showTwo}> 
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_blue.png'} /></p>
-                          <p className="Amount">ICO</p>
+                          <p className="Amount">Basic features</p>
                         </div>
                       </button>
                   }
                 </div>
 
-                <div className="col-md-3">
+                <div className="col-md-4">
                   {
                     this.state.viewSelection == 3 ?
                       <button className="row text-center align-items-center editor-button selected-li" onClick={this.showThree}> 
                         <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_tokens_white.png'} /></p>
-                          <p className="Amount">Tokens</p>
+                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_white.png'} /></p>
+                          <p className="Amount">Extra features</p>
                         </div>
                       </button>
                       :
                       <button className="row text-center align-items-center editor-button" onClick={this.showThree}> 
                         <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_tokens_blue.png'} /></p>
-                          <p className="Amount">Tokens</p>
-                        </div>
-                      </button>
-                  }
-                </div>
-
-                <div className="col-md-3">
-                  {
-                    this.state.viewSelection == 4 ?
-                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showFour}> 
-                        <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_whitelist_white.png'} /></p>
-                          <p className="Amount">Whitelist</p>
-                        </div>
-                      </button>
-                      :
-                      <button className="row text-center align-items-center editor-button" onClick={this.showFour}> 
-                        <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_whitelist_blue.png'} /></p>
-                          <p className="Amount">Whitelist</p>
+                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_blue.png'} /></p>
+                          <p className="Amount">Extra features</p>
                         </div>
                       </button>
                   }
@@ -346,104 +314,96 @@ class Tokens extends Component {
               </div>
               <hr/>
 
-              { 
-                this.state.viewSelection == 1 ?  
+              {
+                this.state.viewSelection == 1 ?
                 <div className="row container-fluid my-4">
                   <div className="col-md-6">
-
-                    <div className="col-md-12 form-group">
+                    <div className="col-md-12 form-group my-5">
                       <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Start Date</p>
+                        <p className="Title my-3" style={{textAlign:"center"}}>Token name/symbol</p>
+                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Example token / EXT</p>
+                      </div>
+                    </div>
+
+                    <div className="col-md-12 form-group my-5">
+                      <div className="col">
+                        <p className="Title my-3" style={{textAlign:"center"}}>Total supply</p>
+                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>123457890</p>
+                      </div>
+                    </div>
+
+                    <div className="col-md-12 form-group my-5">
+                      <div className="col">
+                        <p className="Title my-3" style={{textAlign:"center"}}>Decimals</p>
+                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>18</p>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div className="col-md-6">
+
+                    <div className="col-md-12 form-group my-5">
+                      <div className="col">
+                        <p className="Title my-3" style={{textAlign:"center"}}>Creation date</p>
                         <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>08/19/18 2:30:56 PM</p>
                       </div>
                     </div>
 
                     <div className="col-md-12 form-group my-5">
                       <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>End Date</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>08/20/18 12:59:44 PM</p>
+                        <p className="Title my-3" style={{textAlign:"center"}}>Holders</p>
+                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>532</p>
                       </div>
                     </div>
 
                     <div className="col-md-12 form-group my-5">
                       <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Ether received</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>6</p>
-                      </div>
-                    </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Min contribution presale</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>0.2 ETH</p>
+                        <p className="Title my-3" style={{textAlign:"center"}}>Total transactions</p>
+                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>23564</p>
                       </div>
                     </div>
 
                   </div>
-                  <div className="col-md-6">
-
-                    <div className="col-md-12 form-group">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Tokens Sold</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>3,333</p>
-                      </div>
-                    </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Token price</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>0.0003 ETH</p>
-                      </div>
-                    </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Which sale</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Public Sale</p>
-                      </div>
-                    </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Min contribution public sale</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>0.1 ETH</p>
-                      </div>
-                    </div>
-
+                  <div className="col-md-12" style={{textAlign:"center"}}>
+                    <a href="https://etherscan.io/address/0x58b6a8a3302369daec383334672404ee733ab239" target="_blank">See on Etherscan</a>
                   </div>
                 </div>
                 : null
               }
 
-              { 
-                this.state.viewSelection == 2 ?  
+              {
+                this.state.viewSelection == 2 ?
                 <div className="row container-fluid my-4 mx-3">
                   <div className="row container-fluid">
-
-                    <div className="col-md-12 form-group">
-                      <div className="row">
-                        <div className="col-md-6" style={{textAlign:"center"}}>
-                          <button className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_startico.png'} /> Start ICO</button> 
-                        </div>
-                        <div className="col-md-6" style={{textAlign:"center"}}>
-                          <button className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_advance.png'} /> Advanced main sale</button> 
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-12 form-group">
-                      <div className="row">
-                        <div className="col-md-6" style={{textAlign:"center"}}>
-                          <button className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystop.png'} /> Emergency stop</button> 
-                        </div>
-                        <div className="col-md-6" style={{textAlign:"center"}}>
-                          <button className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystart.png'} /> Emergency start</button> 
-                        </div>
-                      </div>
-                    </div>
                     <div className="col-md-12 form-group">
                       <div className="row">
                         <div className="col-md-12" style={{textAlign:"center"}}>
-                          <button className="editor-btn main big" style={{width:"50%"}}><img src={window.location.origin + '/assets/images/icon_finalize.png'} /> Finalize</button> 
+                            <p className="Title my-3" style={{textAlign:"center"}}><b>Transfer Example Token</b></p>
+                            <div className="d-flex">
+                                <div className="col">
+                                    <p className="Title my-3" style={{textAlign:"center"}}>ETH address</p>
+                                    <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                                </div>
+                                <div className="col">
+                                    <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
+                                    <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                                </div>
+                                <div className="col">
+                                    <button className="editor-btn main big my-5"><img src={window.location.origin + '/assets/images/icon_sendtoken.png'} /> Send tokens</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-12" style={{textAlign:"center"}}>
+                            <p className="Title my-3" style={{textAlign:"center"}}><b>Burn tokens</b></p>
+                            <div className="d-flex">
+                                <div className="col">
+                                    <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
+                                    <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                                </div>
+                                <div className="col">
+                                    <button className="editor-btn main big my-5">Burn</button>
+                                </div>
+                            </div>
                         </div>
                       </div>
                     </div>
@@ -452,55 +412,71 @@ class Tokens extends Component {
                 : null
               }
 
-              { 
-                this.state.viewSelection == 3 ?  
+              {
+                this.state.viewSelection == 3 ?
                 <div className="row container-fluid my-4 mx-3">
-                  <div className="row container-fluid">
-                    <div className="col-md-12 form-group">
-                      <div className="col-md-12" style={{textAlign:"center"}}>
-                        <div className="col">
-                          <p className="Title my-3" style={{textAlign:"center"}}>ETH address</p>
-                          <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
-
-                          <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
-                          <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
-
-                        </div>
-                        
-                        <button className="editor-btn main big my-5"><img src={window.location.origin + '/assets/images/icon_sendtoken.png'} /> Send tokens</button>
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                : null
-              }
-
-              { 
-                this.state.viewSelection == 4 ?  
-                <div className="row container-fluid my-4 mx-3">
-                  <div className="row container-fluid">
-                    <div className="col-md-12 form-group">
-                      <div className="col-md-12" style={{textAlign:"center"}}>
-                        <div className="col">
-                          <p className="Title my-3" style={{textAlign:"center"}}>ETH address</p>
-                          <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
-                        </div>
-                        
-                        <div className="col-md-12 form-group my-4">
-                          <div className="row">
-                            <div className="col-md-6" style={{textAlign:"center"}}>
-                              <button className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_checklist.png'} /> Whitelist user</button> 
+                    <div className="row container-fluid">
+                        <div className="col-md-12" style={{textAlign:"center"}}>
+                            <p className="Title my-3" style={{textAlign:"center"}}><b>Mint  Example Token</b></p>
+                            <div className="d-flex">
+                                <div className="col">
+                                    <p className="Title my-3" style={{textAlign:"center"}}>Receiver address</p>
+                                    <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                                </div>
+                                <div className="col">
+                                    <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
+                                    <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                                </div>
+                                <div className="col">
+                                    <button className="editor-btn main big my-5"><img src={window.location.origin + '/assets/images/icon_sendtoken.png'} /> Mint tokens</button>
+                                </div>
                             </div>
-                            <div className="col-md-6" style={{textAlign:"center"}}>
-                              <button className="editor-btn main big" style={{width:"100%"}}><h style={{fontWeight:"bold", fontSize:"21px"}}>?</h> Is user whitelisted</button> 
-                            </div>
-                          </div>
                         </div>
-
-                      </div>
+                        <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
+                            <p className="Title my-3" style={{textAlign:"center"}}><b>Transfer ownership (only owner)</b></p>
+                            <div className="d-flex justify-content-center">
+                                <div className="col">
+                                    <input type="text" className="editor-input" placeholder="Address" style={{width:"70%"}}/>
+                                </div>
+                                <div className="col">
+                                    <button className="editor-btn main big mx-5">Change</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
+                            <p className="Title my-3" style={{textAlign:"center"}}><b>Block account (only owner)</b></p>
+                            <div className="d-flex justify-content-center">
+                                <div className="col">
+                                    <input type="text" className="editor-input" placeholder="Address" style={{width:"70%"}}/>
+                                </div>
+                                <div className="col">
+                                    <button className="editor-btn main big mx-5">Block</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
+                            <p className="Title my-3" style={{textAlign:"center"}}><b>Unblock account (only owner)</b></p>
+                            <div className="d-flex justify-content-center">
+                                <div className="col">
+                                    <input type="text" className="editor-input" placeholder="Address" style={{width:"70%"}}/>
+                                </div>
+                                <div className="col">
+                                    <button className="editor-btn main big mx-5">Unblock</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
+                            <p className="Title my-3" style={{textAlign:"center"}}><b>Stop/resume transactions (only owner)</b></p>
+                            <div className="d-flex justify-content-center">
+                                <div className="col-md-6" style={{textAlign:"center"}}>
+                                    <button className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystop.png'} /> Emergency stop</button> 
+                                </div>
+                                <div className="col-md-6" style={{textAlign:"center"}}>
+                                    <button className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystart.png'} /> Emergency start</button> 
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
                 : null
               }
