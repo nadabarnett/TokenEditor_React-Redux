@@ -29,22 +29,16 @@ class Dashboard extends Component {
 
             <ul className="list-unstyled">
                 <li>
-                    <a href="/step1"><i className="fab fa-lg fa-ethereum"></i> Generate</a>
-                </li>
-                <li>
-                    <a href="/Tokens"><i className="fas fa-lg fa-coins"></i> Tokens</a>
+                    <a href="/Crowdsales"><i className="fas fa-lg fa-trophy"></i> Crowdsales</a>
                 </li>
                 <li>
                     <a href="/compaign"><i className="fas fa-lg fa-sign"></i> Campaigns</a>
                 </li>
                 <li>
-                    <a href="/KycAml"><i className="fas fa-lg fa-id-card"></i> KYC/AML</a>
+                    <a href="/KycAml"><i className="fas fa-lg fa-sign"></i> KYC/AML</a>
                 </li>
                 <li>
                     <a href="/Transactions"><i className="fas fa-lg fa-chart-bar"></i> Transactions</a>
-                </li>
-                <li>
-                    <a href="/billing"><i className="far fa-lg fa-money-bill-alt"></i> Billing</a>
                 </li>
                 <li>
                     <a href="/Affiliate"><i className="fas fa-lg fa-users"></i> Affiliate</a>
@@ -113,23 +107,23 @@ class Dashboard extends Component {
                 <div className="col-md-4">
                     <div className="row text-center align-items-center editor-block square" id="first">
                         <div className="col">
-                            <p>Want to generate token?</p>
-                            <Link to={'/addToken'} className="nav-link">
-                                <button className="editor-btn main big"><i className="fab fa-lg fa-ethereum"></i> Genetate token</button>
+                            <p>Want to generate crowdsale contract?</p>
+                            <Link to={'/step1'} className="nav-link">
+                                <button className="editor-btn main big"><i className="fab fa-lg fa-ethereum"></i> Genetate crowdsale</button>
                             </Link>
                         </div>
                     </div>
                 </div>
                 <div className="col-md-4">
-                <div className="row text-center align-items-center editor-block square" id="second">
-                <div className="col">
-                    <p>Want to create a campaign?</p>
-                    <Link to={'/step1'} className="nav-link">
-                        <button className="editor-btn main big"><i className="fas fa-lg fa-sign"></i> Create campaign</button>
-                    </Link>
+                    <div className="row text-center align-items-center editor-block square" id="second">
+                        <div className="col">
+                            <p>Want to create a campaign?</p>
+                            <Link to={'/compaign'} className="nav-link">
+                                <button className="editor-btn main big"><i className="fas fa-lg fa-sign"></i> Create campaign</button>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
-                </div>
-            </div>
             </div>
         </div>
         <footer className="footer">

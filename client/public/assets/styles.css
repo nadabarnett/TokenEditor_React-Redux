@@ -129,6 +129,19 @@ h2 {
 	margin: 5px 0;
 }
 
+#third:before {
+	content: "3";
+	color: #45467B;
+    font-size: 280px;
+    font-weight: 900;
+    height: 330px;
+    letter-spacing: -16px;
+    line-height: 330px;
+    opacity: 0.1; 
+    position: absolute;
+    left: calc(50% - 75px);
+}
+
 #second:before {
 	content: "2";
 	color: #45467B;
