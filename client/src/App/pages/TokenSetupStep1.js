@@ -67,7 +67,7 @@ class Register extends Component {
                     </div>
 
                     <div className="w-100"></div>
-                    <div className="col-md-5 form-group">
+                    <div className="col-md-5 mt-3 form-group">
                         <p>Token standard <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Initial supply tooltip on top"></i></p>
                         <div className="row justify-content-center">
                             ERC20
@@ -79,7 +79,7 @@ class Register extends Component {
                     </div>
 
                     <div className="w-100"></div>
-                    <div className="col-md-5 form-group">
+                    <div className="col-md-5 mt-3 form-group">
                         <p>Token type <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Initial supply tooltip on top"></i></p>
                         <div className="d-flex justify-content-between form-group">
                             <label for="pausable">Pausable token <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
@@ -88,6 +88,10 @@ class Register extends Component {
                         <div className="d-flex justify-content-between form-group">
                             <label for="freezable">Freezable token <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
                             <input type="checkbox" id="freezable" className="check-block"/>
+                        </div>
+                        <div className="d-flex justify-content-between form-group">
+                            <label for="mintable">Future minting <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
+                            <input type="checkbox" id="mintable" className="check-block"/>
                         </div>
                     </div>
 

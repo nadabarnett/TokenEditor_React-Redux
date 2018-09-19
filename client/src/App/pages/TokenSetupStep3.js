@@ -22,7 +22,7 @@ class Register extends Component {
                     <div className="step-section text-uppercase">
                         Step 3/4
                     </div>
-                    <h2 className="title-section text-uppercase">Bonuses</h2>
+                    <h2 className="title-section text-uppercase">Stages</h2>
                 </div>
             </div>
             <div className="w-100 my-2"></div>
@@ -31,28 +31,26 @@ class Register extends Component {
                   <div className="col">
                       <div className="row justify-content-center">
                         <div className="col-md-12 form-group">
-                          <p>First Period <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="First Period tooltip on top"></i></p>
+                          <p>Stage name <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="ex: Private sale"></i></p>
                           <input type="number" className="editor-input w-100" placeholder="10" />
                         </div>
                         <div className="w-100"></div>
+
                         <div className="col-md-12 form-group">
-                          <p>Second Period <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Second Period tooltip on top"></i></p>
-                          <input type="number" className="editor-input w-100" placeholder="10" />
+                          <p>Start date <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="ex: 1000 (1 ETH = 1000 Tokens)"></i></p>
+                          <input type="date" className="editor-input w-100" placeholder="01.10.2018" />
                         </div>
                         <div className="w-100"></div>
+
                         <div className="col-md-12 form-group">
-                          <p>Third Period <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Third Period tooltip on top"></i></p>
-                          <input type="number" className="editor-input w-100" placeholder="15" />
+                          <p>Tokens for this stage <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Third Period tooltip on top"></i></p>
+                          <input type="number" className="editor-input w-100" placeholder="ex: 10000" />
                         </div>
                         <div className="w-100"></div>
+
                         <div className="col-md-12 form-group">
-                          <p>Forth Period <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Forth Period tooltip on top"></i></p>
-                          <input type="number" className="editor-input w-100" placeholder="15" />
-                        </div>
-                        <div className="w-100"></div>
-                        <div className="col-md-12 form-group">
-                          <p>Fifth Period <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Fifth Period tooltip on top"></i></p>
-                          <input type="number" className="editor-input w-100" placeholder="5" />
+                          <p>Maximum contribution amount (ETH) <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Forth Period tooltip on top"></i></p>
+                          <input type="number" className="editor-input w-100" placeholder="1000 " />
                         </div>
                         <div className="w-100"></div>
                       </div>
@@ -60,36 +58,29 @@ class Register extends Component {
                   <div className="col">
                       <div className="row justify-content-center">
                         <div className="col-md-12 form-group">
-                          <p>First Bonus <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="First Bonus tooltip on top"></i></p>
-                            <input type="number" className="editor-input w-100" placeholder="30" />
-                          </div>
-                        <div className="w-100"></div>
-                        <div className="col-md-12 form-group">
-                          <p>Second Bonus <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Second Bonus tooltip on top"></i></p>
-                          <input type="number" className="editor-input w-100" placeholder="10000" />
+                          <p>Token price <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="ex: 1000 (1 ETH = 1000 Tokens)"></i></p>
+                          <input type="number" className="editor-input w-100" placeholder="10" />
                         </div>
                         <div className="w-100"></div>
+
                         <div className="col-md-12 form-group">
-                          <p>Third Bonus <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Third Bonus tooltip on top"></i></p>
-                          <input type="number" className="editor-input w-100" placeholder="0.5" />
+                          <p>Finish date <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Second Bonus tooltip on top"></i></p>
+                          <input type="date" className="editor-input w-100" placeholder="01.10.2018" />
                         </div>
                         <div className="w-100"></div>
+
                         <div className="col-md-12 form-group">
-                          <p>Forth Bonus <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Forth Bonus tooltip on top"></i></p>
-                          <input type="number" className="editor-input w-100" placeholder="01.10.2018" />
+                          <p>Minimum contribution amount (ETH) <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Third Bonus tooltip on top"></i></p>
+                          <input type="number" className="editor-input w-100" placeholder="10" />
                         </div>
                         <div className="w-100"></div>
-                        <div className="col-md-12 form-group">
-                          <p>Fifth Bonus <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Fifth Bonus tooltip on top"></i></p>
-                          <input type="number" className="editor-input w-100" placeholder="01.11.2018" />
-                        </div>
+
                         <div className="w-100"></div>
+                        <div className="col-md-6 form-group">
+                            <p>Create new stages <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Presale Bonus tooltip on top"></i></p>
+                            <button className="editor-btn big"><i className="fa fa-plus"></i> Add</button>
+                        </div>
                       </div>
-                  </div>
-                  <div className="w-100"></div>
-                  <div className="col-md-6 form-group">
-                    <p>Presale Bonus <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Presale Bonus tooltip on top"></i></p>
-                    <input type="number" className="editor-input w-100" placeholder="50" />
                   </div>
                   <div className="w-100"></div>
                   <div className="col form-group">

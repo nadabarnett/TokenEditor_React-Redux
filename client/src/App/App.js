@@ -10,8 +10,9 @@ import Transactions               from './pages/Transactions';
 import Affiliate                  from './pages/Affiliate';
 import KycAml                     from './pages/KycAml';
 import AddToken                   from './pages/AddToken';
-import ViewCampaign             from './pages/ViewCampaign';
+import ViewCampaign               from './pages/ViewCampaign';
 import Compaign                   from './pages/Compaign';
+import Crowdsales                 from './pages/Crowdsales';
 import Tokens                     from './pages/Tokens';
 import TokenSetupStep1            from './pages/TokenSetupStep1';
 import TokenSetupStep2            from './pages/TokenSetupStep2';
@@ -32,6 +33,7 @@ class App extends Component {
           <Route path='/setting' component={Setting}/>
           <Route path='/billing' component={Billing}/>
           <Route path='/Tokens' component={Tokens}/>
+          <Route path='/Crowdsales' component={Crowdsales}/>
           <Route path='/ViewCampaign' component={ViewCampaign}/>
           <Route path='/compaign' component={Compaign}/>
           <Route path='/addToken' component={AddToken}/>

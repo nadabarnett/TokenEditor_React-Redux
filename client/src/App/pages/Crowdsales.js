@@ -30,7 +30,7 @@ const buttonStyle = {
 
 Modal.setAppElement('#modal')
 
-class Tokens extends Component {
+class Crowdsales extends Component {
 
   constructor(props) {
     super(props);
@@ -96,7 +96,7 @@ class Tokens extends Component {
             </div>
 
             <ul className="list-unstyled">
-                <li>
+                <li className="selected-li">
                     <a href="/Crowdsales"><i className="fas fa-lg fa-trophy"></i> Crowdsales</a>
                 </li>
                 <li>
@@ -169,11 +169,11 @@ class Tokens extends Component {
             <div className="container-fluid px-md-5">
 
                 <div className="row justify-content-center">
-                <h2 className="text-uppercase">My Tokens</h2>
+                <h2 className="text-uppercase">My Crowdsales</h2>
               </div>
                 <div className="row my-4">
-                    <Link to={'/addToken'} className="nav-link">
-                        <button className="editor-btn main big" onClick={this.openModal}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; Create Token</button>
+                    <Link to={'/step1'} className="nav-link">
+                        <button className="editor-btn main big" onClick={this.openModal}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; Create Crowdsale</button>
                     </Link>
                 </div>
 
@@ -182,26 +182,35 @@ class Tokens extends Component {
                     <thead style={{fontSize:"15px", textAlign:"center"}}>
                         <tr style={{border:"none"}}>
                         <th style={{border:"none"}}>Name</th>
-                        <th style={{border:"none"}}>Symbol</th>
-                        <th style={{border:"none"}}>Version</th>
+                        <th style={{border:"none"}}>Stage</th>
+                        <th style={{border:"none"}}>Sold tokens</th>
+                        <th style={{border:"none"}}>Raised ETH</th>
+                        <th style={{border:"none"}}>Token buyers</th>
+                        <th style={{border:"none"}}>Days left</th>
                         <th style={{border:"none"}}>Address</th>
                         </tr>
                     </thead>
                     <tbody style={{fontSize:"13px", textAlign:"center"}}>
                         <tr>
-                            <td>ExampleToken</td>
-                            <td>EXT</td>
-                            <td>1.0</td>
-                            <td>10xad4777029ae71f2b2kall</td>
+                            <td>Main crowdsale</td>
+                            <td>Pre sale</td>
+                            <td>23456060</td>
+                            <td>56,76</td>
+                            <td>3</td>
+                            <td>12</td>
+                            <td>0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80</td>
                             <button className="editor-btn main small" onClick={this.openModal}>
-                            <i className="fas fa-edit"></i> Manage
-                        </button>
+                                <i className="fas fa-edit"></i> Manage
+                            </button>
                         </tr>
                         <tr className="my-4">
-                            <td>SuzyToken</td>
-                            <td>SUZY</td>
-                            <td>1.2</td>
-                            <td>0xad4777029ae71f2b2kall</td>
+                            <td>Second crowdsale</td>
+                            <td>Main sale</td>
+                            <td>5673456060</td>
+                            <td>456,6</td>
+                            <td>53</td>
+                            <td>15</td>
+                            <td>0x45b9359f4201db2a66674h3v0fc5f3f733ebade2t</td>
                             <button className="editor-btn main small" onClick={this.openModal}>
                                 <i className="fas fa-edit"></i> Manage
                             </button>
@@ -232,13 +241,13 @@ class Tokens extends Component {
                       </div>
                       <div className="col-md-1">
                         <div className="col-md-12">
-                          <button style = {buttonStyle} 
+                          <button style = {buttonStyle}
                             onClick={this.closeModal}
-                            type="button" 
+                            type="button"
                             aria-label="close"
                           >
                             <p style={{marginLeft:"-20px"}}>CLOSE</p>
-                          </button>                      
+                          </button>
                         </div>
                       </div>
 
@@ -311,56 +320,131 @@ class Tokens extends Component {
               {
                 this.state.viewSelection == 1 ?
                 <div className="row container-fluid my-4">
-                  <div className="col-md-6">
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Token name/symbol</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Example token / EXT</p>
-                      </div>
+                    <div className="col-md-3">
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Token name/symbol</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Example token / EXT</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Total supply</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>150,000,000 EXT</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Decimals</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>18</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Initial supply</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>190000000</p>
+                        </div>
+                        </div>
+
                     </div>
+                    <div className="col-md-3">
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>ICO type</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Refundable</p>
+                        </div>
+                        </div>
 
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Total supply</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>123457890</p>
-                      </div>
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Soft cap</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>150,000 ETH</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Upcoming stages</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Main sale</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Unsold tokens burn</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>No</p>
+                        </div>
+                        </div>
+
                     </div>
+                    <div className="col-md-3">
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Current stage</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Pre-sale</p>
+                        </div>
+                        </div>
 
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Decimals</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>18</p>
-                      </div>
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Min contribution amount</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>10 ETH</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Start date</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>01/10/2018</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Finish date</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>01/12/2018</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Token rate</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>1 EXT = 0.03 ETH</p>
+                        </div>
+                        </div>
                     </div>
-
-                  </div>
-                  <div className="col-md-6">
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Creation date</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>08/19/18 2:30:56 PM</p>
-                      </div>
+                    <div className="col-md-3">
+                        <div className="col-md-12 form-group my-5">
+                            <div className="col">
+                                <p className="Title my-3" style={{textAlign:"center"}}>Token Buyers</p>
+                                <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>3</p>
+                            </div>
+                        </div>
+                        <div className="col-md-12 form-group my-5">
+                            <div className="col">
+                                <p className="Title my-3" style={{textAlign:"center"}}>ETH funded</p>
+                                <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>56,76</p>
+                            </div>
+                        </div>
+                        <div className="col-md-12 form-group my-5">
+                            <div className="col">
+                                <p className="Title my-3" style={{textAlign:"center"}}>Sold Tokens</p>
+                                <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>23456060</p>
+                            </div>
+                        </div>
+                        <div className="col-md-12 form-group my-5">
+                            <div className="col">
+                                <p className="Title my-3" style={{textAlign:"center"}}>Available Tokens</p>
+                                <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>23456060</p>
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Holders</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>532</p>
-                      </div>
-                    </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Total transactions</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>23564</p>
-                      </div>
-                    </div>
-
-                  </div>
-                  <div className="col-md-12" style={{textAlign:"center"}}>
+                   <div className="col-md-12" style={{textAlign:"center"}}>
                     <a href="https://etherscan.io/address/0x58b6a8a3302369daec383334672404ee733ab239" target="_blank">See on Etherscan</a>
-                  </div>
+                </div>
                 </div>
                 : null
               }
@@ -508,4 +592,4 @@ class Tokens extends Component {
   }
 }
 
-export default Tokens;
+export default Crowdsales;
