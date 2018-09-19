@@ -455,9 +455,37 @@ class Crowdsales extends Component {
                   <div className="row container-fluid">
                     <div className="col-md-12 form-group">
                       <div className="row">
-                        <div className="col-md-12" style={{textAlign:"center"}}>
+                        <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
+                            <p className="Title my-3" style={{textAlign:"center"}}><b>Start new stage</b></p>
+                            <div className="d-flex align-items-center">
+                                <div className="col-md-4">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Tokens amount</p>
+                                        <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                                    </div>
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Start date</p>
+                                        <input type="date" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                                    </div>
+                                </div>
+                                <div className="col-md-4">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center" }}>Token price</p>
+                                        <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                                    </div>
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center" }}>Finish date</p>
+                                        <input type="date" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                                    </div>
+                                </div>
+                                <div className="col-md-4">
+                                    <button className="editor-btn main big m-0"><img src={window.location.origin + '/assets/images/icon_sendtoken.png'} /> Send tokens</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
                             <p className="Title my-3" style={{textAlign:"center"}}><b>Transfer Example Token</b></p>
-                            <div className="d-flex">
+                            <div className="d-flex align-items-end">
                                 <div className="col">
                                     <p className="Title my-3" style={{textAlign:"center"}}>ETH address</p>
                                     <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
@@ -467,19 +495,30 @@ class Crowdsales extends Component {
                                     <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
                                 </div>
                                 <div className="col">
-                                    <button className="editor-btn main big my-5"><img src={window.location.origin + '/assets/images/icon_sendtoken.png'} /> Send tokens</button>
+                                    <button className="editor-btn main big m-0"><img src={window.location.origin + '/assets/images/icon_sendtoken.png'} /> Start</button>
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-12" style={{textAlign:"center"}}>
-                            <p className="Title my-3" style={{textAlign:"center"}}><b>Burn tokens</b></p>
-                            <div className="d-flex">
-                                <div className="col">
-                                    <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
-                                    <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                        <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
+                            <p className="Title my-3" style={{textAlign:"center"}}><b>Stop/resume transactions (only owner)</b></p>
+                            <div className="d-flex justify-content-center">
+                                <div className="col-md-6" style={{textAlign:"center"}}>
+                                    <button className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystop.png'} /> Emergency stop</button>
                                 </div>
-                                <div className="col">
-                                    <button className="editor-btn main big my-5">Burn</button>
+                                <div className="col-md-6" style={{textAlign:"center"}}>
+                                    <button className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystart.png'} /> Emergency start</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
+                            <div className="d-flex justify-content-center">
+                                <div className="col-md-6" style={{textAlign:"center"}}>
+                                    <p className="Title my-3" style={{textAlign:"center"}}><b>Finalize crowdsale</b></p>
+                                    <button className="editor-btn main big" style={{width:"100%"}}>Finalize</button>
+                                </div>
+                                <div className="col-md-6" style={{textAlign:"center"}}>
+                                    <p className="Title my-3" style={{textAlign:"center"}}><b>Burn unsold tokens</b></p>
+                                    <button className="editor-btn main big" style={{width:"100%"}}>Burn</button>
                                 </div>
                             </div>
                         </div>
@@ -494,9 +533,9 @@ class Crowdsales extends Component {
                 this.state.viewSelection == 3 ?
                 <div className="row container-fluid my-4 mx-3">
                     <div className="row container-fluid">
-                        <div className="col-md-12" style={{textAlign:"center"}}>
+                        <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
                             <p className="Title my-3" style={{textAlign:"center"}}><b>Mint  Example Token</b></p>
-                            <div className="d-flex">
+                            <div className="d-flex align-items-end">
                                 <div className="col">
                                     <p className="Title my-3" style={{textAlign:"center"}}>Receiver address</p>
                                     <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
@@ -506,7 +545,7 @@ class Crowdsales extends Component {
                                     <input type="text" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
                                 </div>
                                 <div className="col">
-                                    <button className="editor-btn main big my-5"><img src={window.location.origin + '/assets/images/icon_sendtoken.png'} /> Mint tokens</button>
+                                    <button className="editor-btn main big m-0"><img src={window.location.origin + '/assets/images/icon_sendtoken.png'} /> Mint tokens</button>
                                 </div>
                             </div>
                         </div>
@@ -540,17 +579,6 @@ class Crowdsales extends Component {
                                 </div>
                                 <div className="col">
                                     <button className="editor-btn main big mx-5">Unblock</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
-                            <p className="Title my-3" style={{textAlign:"center"}}><b>Stop/resume transactions (only owner)</b></p>
-                            <div className="d-flex justify-content-center">
-                                <div className="col-md-6" style={{textAlign:"center"}}>
-                                    <button className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystop.png'} /> Emergency stop</button> 
-                                </div>
-                                <div className="col-md-6" style={{textAlign:"center"}}>
-                                    <button className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystart.png'} /> Emergency start</button> 
                                 </div>
                             </div>
                         </div>
