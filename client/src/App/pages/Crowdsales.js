@@ -96,6 +96,9 @@ class Crowdsales extends Component {
             </div>
 
             <ul className="list-unstyled">
+                <li>
+                    <a href="/tokens"><i className="fas fa-lg fa-coins"></i> Tokens</a>
+                </li>
                 <li className="selected-li">
                     <a href="/Crowdsales"><i className="fas fa-lg fa-trophy"></i> Crowdsales</a>
                 </li>

@@ -96,6 +96,9 @@ class Tokens extends Component {
             </div>
 
             <ul className="list-unstyled">
+                <li className="selected-li">
+                    <a href="/tokens"><i className="fas fa-lg fa-coins"></i> Tokens</a>
+                </li>
                 <li>
                     <a href="/Crowdsales"><i className="fas fa-lg fa-trophy"></i> Crowdsales</a>
                 </li>

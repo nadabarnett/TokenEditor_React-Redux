@@ -36,10 +36,13 @@ class AddToken extends Component {
             <div className="wrapper">
                 <nav id="sidebar" className={this.state.showHideSidenav}>
                     <div className="sidebar-header">
-                        <h5><img width="25%" height="25%" src="https://i.imgur.com/sMK1rIY.png" />Token Editor</h5>
+                        <h5><img width="25%" height="25%" src="https://i.imgur.com/sMK1rIY.png" /><a href="/dashboard">Token Editor</a></h5>
                     </div>
 
                     <ul className="list-unstyled">
+                        <li className="selected-li">
+                            <a href="/tokens"><i className="fas fa-lg fa-coins"></i> Tokens</a>
+                        </li>
                         <li>
                             <a href="/Crowdsales"><i className="fas fa-lg fa-trophy"></i> Crowdsales</a>
                         </li>

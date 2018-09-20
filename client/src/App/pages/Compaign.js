@@ -238,6 +238,9 @@ class Compaign extends Component {
 
             <ul className="list-unstyled">
                 <li>
+                    <a href="/tokens"><i className="fas fa-lg fa-coins"></i> Tokens</a>
+                </li>
+                <li>
                     <a href="/Crowdsales"><i className="fas fa-lg fa-trophy"></i> Crowdsales</a>
                 </li>
                 <li className="selected-li">
@@ -831,7 +834,9 @@ class Compaign extends Component {
                       <div className="w-100"></div>
                       <div className="col-md-5 form-group">
                         <p>Allowed Countries <img src="assets/images/question_mark.png" /></p>
-                        <CountrySelect multi={true} flagImagePath="./assets/images/flags/" onSelect={this.onSelect}/>
+                        <CountryDropdown
+                            value={country}
+                            onChange={(val) => this.selectCountry(val)} classes="col-md-12 Dropdown-control" />
                       </div>
                       <div className="w-100"></div>
                       <div className="col-md-5 form-group">

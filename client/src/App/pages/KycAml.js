@@ -1,11 +1,42 @@
 import React, { Component } from 'react';
 import { Link }             from 'react-router-dom';
+import Modal                from 'react-modal';
+const customStyles = {
+  content : {
+    width                 : '70%',
+    height                : '102%',
+    top                   : '52%',
+    left                  : '50%',
+    right                 : 'auto',
+    transform             : 'translate(-50%, -50%)',
+    transparent           : '1',
+    backgroundColor       : 'rgba(0, 0, 0, .00)',
+    webkitboxshadow       : '0 1px 1px rgba(0,0,0,.05)',
+    boxshadow             : '0 1px 1px rgba(0,0,0,.05)',
+    border                : '0px dashed white',
+    borderRadius          : '20px'
+  }
+};
+const buttonStyle = {
+    border        : 'none',
+    // padding       : '0',
+    fontSize      : '13px',
+    background    : 'inherit',
+    color         : 'white',
+    cursor        : 'pointer',
+};
+
 
 class KycAml extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {"showHideSidenav": ""}
+    this.state = {
+        showHideSidenav   : "",
+        modalIsOpen       : false
+    }
+    this.openModal     = this.openModal.bind(this);
+    this.closeModal   = this.closeModal.bind(this);
   }
 
   componentDidMount(){
@@ -15,6 +46,14 @@ class KycAml extends Component {
   toggleSidenav() {
     var css = (this.state.showHideSidenav === "active") ? "" : "active";
     this.setState({"showHideSidenav":css});
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
   }
 
   render() {
@@ -27,6 +66,9 @@ class KycAml extends Component {
             </div>
 
             <ul className="list-unstyled">
+                <li>
+                    <a href="/tokens"><i className="fas fa-lg fa-coins"></i> Tokens</a>
+                </li>
                 <li>
                     <a href="/Crowdsales"><i className="fas fa-lg fa-trophy"></i> Crowdsales</a>
                 </li>
@@ -123,7 +165,7 @@ class KycAml extends Component {
                         </div>
                       </div>
                   </div>
-                </div> 
+                </div>
               </div>
               <div className="table-responsive editor-block">
                 <table className="table" bordercolor="white">
@@ -138,7 +180,7 @@ class KycAml extends Component {
                   </thead>
 
                   <tbody style={{fontSize:"13px", textAlign:"center"}}>
-                    <tr className="active">
+                    <tr onClick={this.openModal}>
                       <td>Stive</td>
                       <td>stive22@gmail.com</td>
                       <td>United States</td>
@@ -151,7 +193,7 @@ class KycAml extends Component {
                         <i className="fas fa-times"></i> Decline
                       </button>
                     </tr>
-                    <tr>
+                    <tr onClick={this.openModal}>
                       <td>Stive</td>
                       <td>stive22@gmail.com</td>
                       <td>United States</td>
@@ -164,7 +206,7 @@ class KycAml extends Component {
                         <i className="fas fa-times"></i> Decline
                       </button>
                     </tr>
-                    <tr>
+                    <tr onClick={this.openModal}>
                       <td>Stive</td>
                       <td>stive22@gmail.com</td>
                       <td>United States</td>
@@ -177,7 +219,7 @@ class KycAml extends Component {
                         <i className="fas fa-times"></i> Decline
                       </button>
                     </tr>
-                    <tr>
+                    <tr onClick={this.openModal}>
                       <td>Stive</td>
                       <td>stive22@gmail.com</td>
                       <td>United States</td>
@@ -190,7 +232,7 @@ class KycAml extends Component {
                         <i className="fas fa-times"></i> Decline
                       </button>
                     </tr>
-                    <tr>
+                    <tr onClick={this.openModal}>
                       <td>Stive</td>
                       <td>stive22@gmail.com</td>
                       <td>United States</td>
@@ -209,6 +251,101 @@ class KycAml extends Component {
               </div>
             </div>
         </div>
+
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="Token buyer information"
+        >
+          <div className="panel panel-danger">
+            <div className="container-fluid">
+              <div className="row justify-content-center">
+                <div id="stats" style={{backgroundColor: "rgb(69, 70, 123)", color:"white", height:"50px", width:"100%"}}>
+                  <div className="col-md-12">
+                    <div className="row">
+                      <div className="col-md-11">
+                        <div className="col-md-8">
+                          <p className="Title" style={{textAlign:"right"}}>Steve Wasovski info</p>
+                        </div>
+                      </div>
+                      <div className="col-md-1">
+                        <div className="col-md-12">
+                          <button style = {buttonStyle}
+                            onClick={this.closeModal}
+                            type="button"
+                            aria-label="close">
+                            <p style={{textAlign:"center"}}>CLOSE</p>
+                          </button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="panel-body">
+            <div className="row container-fluid my-4">
+                  <div className="col-md-6">
+                    <div className="col-md-12 form-group my-5">
+                      <div className="col">
+                        <p className="Title my-3" style={{textAlign:"center"}}>Name</p>
+                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Steve</p>
+                      </div>
+                    </div>
+
+                    <div className="col-md-12 form-group my-5">
+                      <div className="col">
+                        <p className="Title my-3" style={{textAlign:"center"}}>Country</p>
+                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Poland</p>
+                      </div>
+                    </div>
+
+                    <div className="col-md-12 form-group my-5">
+                      <div className="col">
+                        <p className="Title my-3" style={{textAlign:"center"}}>Email</p>
+                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Steve.Wasovski@gmail.com</p>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div className="col-md-6">
+                    <div className="col-md-12 form-group my-5">
+                      <div className="col">
+                        <p className="Title my-3" style={{textAlign:"center"}}>Surname</p>
+                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Wasovski</p>
+                      </div>
+                    </div>
+
+                    <div className="col-md-12 form-group my-5">
+                      <div className="col">
+                        <p className="Title my-3" style={{textAlign:"center"}}>Wallet address</p>
+                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80</p>
+                      </div>
+                    </div>
+
+                    <div className="col-md-12 form-group my-5">
+                      <div className="col">
+                        <p className="Title my-3" style={{textAlign:"center"}}>Attached document</p>
+                        <p className="Amount" style={{textAlign:"center", color:"blue"}}>Password</p>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div className="col-md-12" style={{textAlign:"center"}}>
+                        <button onClick={this.closeModal} className="editor-btn main small">
+                            <i className="fas fa-check"></i> Approve
+                        </button>
+                        <button onClick={this.closeModal} className="editor-btn main small">
+                            <i className="fas fa-times"></i> Decline
+                        </button>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </Modal>
 
         <footer className="footer">
           <div className="container-fluid">
