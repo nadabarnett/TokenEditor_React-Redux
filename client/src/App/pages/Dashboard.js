@@ -29,6 +29,9 @@ class Dashboard extends Component {
 
             <ul className="list-unstyled">
                 <li>
+                    <a href="/tokens"><i className="fas fa-lg fa-coins"></i> Tokens</a>
+                </li>
+                <li>
                     <a href="/Crowdsales"><i className="fas fa-lg fa-trophy"></i> Crowdsales</a>
                 </li>
                 <li>
@@ -104,8 +107,19 @@ class Dashboard extends Component {
             </nav>
 
             <div className="row justify-content-center mb-5">
-                <div className="col-md-4">
+                <div className="col-md-4 mb-3">
                     <div className="row text-center align-items-center editor-block square" id="first">
+                        <div className="col">
+                            <p>Want to generate token?</p>
+                            <Link to={'/addToken'} className="nav-link">
+                                <button className="editor-btn main big"><i className="fa fa-lg fa-coins"></i> Create token</button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+                <div className="w-100"></div>
+                <div className="col-md-4">
+                    <div className="row text-center align-items-center editor-block square" id="second">
                         <div className="col">
                             <p>Want to generate crowdsale contract?</p>
                             <Link to={'/step1'} className="nav-link">
@@ -115,7 +129,7 @@ class Dashboard extends Component {
                     </div>
                 </div>
                 <div className="col-md-4">
-                    <div className="row text-center align-items-center editor-block square" id="second">
+                    <div className="row text-center align-items-center editor-block square" id="third">
                         <div className="col">
                             <p>Want to create a campaign?</p>
                             <Link to={'/compaign'} className="nav-link">

@@ -32,10 +32,10 @@ class Register extends Component {
 
       <div className="container my-4">
         <div className="row text-center my-10">
-          <div className="col">
+          <div className="col mb-5">
               <div className="editor-token-setup">
                   <div className="step-section text-uppercase">
-                      Step 2/4
+                      Step 2/5
                   </div>
                   <h2 className="title-section text-uppercase">ICO Setup</h2>
               </div>

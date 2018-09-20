@@ -41,6 +41,9 @@ class Settings extends Component {
 
             <ul className="list-unstyled">
                 <li>
+                    <a href="/tokens"><i className="fas fa-lg fa-coins"></i> Tokens</a>
+                </li>
+                <li>
                     <a href="/Crowdsales"><i className="fas fa-lg fa-trophy"></i> Crowdsales</a>
                 </li>
                 <li>

@@ -18,6 +18,7 @@ import TokenSetupStep1            from './pages/TokenSetupStep1';
 import TokenSetupStep2            from './pages/TokenSetupStep2';
 import TokenSetupStep3            from './pages/TokenSetupStep3';
 import TokenSetupStep4            from './pages/TokenSetupStep4';
+import TokenSetupStep5            from './pages/TokenSetupStep5';
 
 class App extends Component {
   render() {
@@ -41,6 +42,7 @@ class App extends Component {
           <Route path='/step2' component={TokenSetupStep2}/>
           <Route path='/step3' component={TokenSetupStep3}/>
           <Route path='/step4' component={TokenSetupStep4}/>
+          <Route path='/step5' component={TokenSetupStep5}/>
         </Switch>
       </div>
     )

@@ -17,10 +17,10 @@ class Register extends Component {
 
         <div className="container my-4">
           <div className="row text-center my-10">
-            <div className="col">
+            <div className="col mb-5">
                 <div className="editor-token-setup">
                     <div className="step-section text-uppercase">
-                        Step 3/4
+                        Step 3/5
                     </div>
                     <h2 className="title-section text-uppercase">Stages</h2>
                 </div>
@@ -84,7 +84,7 @@ class Register extends Component {
                   </div>
                   <div className="w-100"></div>
                   <div className="col form-group">
-                      <Link to={'/step2'}>
+                    <Link to={'/step2'}>
                         <button className="editor-btn big">Back</button>
                       </Link>
                     <Link to={'/step4'}>
