@@ -9,7 +9,24 @@ class AddToken extends Component {
         super(props)
         this.state = {
           showHideSidenav: "",
-          switched: false
+          switched: false,
+          token: {
+                name: '',
+                symbol: '',
+                decimals: '18',
+                totalSupply:  0,
+                erc223: false,
+                owner: '',
+                pausable: "off",
+                freezable: "off",
+                mintable: "off",
+                receivers: [{
+                    address: '',
+                    amount: '',
+                    frozen: false,
+                    untilDate: 0
+                }]
+          }
         }
     }
 
@@ -23,15 +40,89 @@ class AddToken extends Component {
     }
 
     toggleSwitch = () => {
-        this.setState(prevState => {
+        this.setState( prevState => {
             return {
-            switched: !prevState.switched
+                token : {
+                    ...prevState.token, erc223: !this.state.token.erc223
+                }
             };
         });
     };
 
+    onChange = (e) => {
+        let value = e.target.value != "on" ?  e.target.value : e.target.checked;
+        let name = e.target.name;
+        this.setState( prevState => {
+           return {
+                token : {
+                    ...prevState.token,
+                    [name]: value
+                }
+           }
+        });
+    }
+
+    ondistributionAddresses = (id) => (e) => {
+        let value = e.target.value != "on" ?  e.target.value : e.target.checked; // Detecting checkboxes
+        let name = e.target.name;
+        const newReceivers = this.state.token.receivers.map((receiver, i) => {
+            if (id !== i) return receiver;
+            return {
+                ...receiver,
+                [name]: [name] != "untilDate" ? value : new Date(value).getTime() / 1000
+            };
+        });
+
+        this.setState( prevState => {
+            return {
+                token : {
+                    ...prevState.token,
+                    receivers: newReceivers
+                }
+            }
+        });
+    }
+
+    onAddReceiver = () => {
+        const newAddress = {
+            address: '',
+            amount: '',
+            freezen: false,
+            untilDate: 0
+        };
+
+        this.setState( prevState => {
+            return {
+                token : {
+                    ...prevState.token,
+                    receivers: prevState.token.receivers.concat(newAddress)
+                }
+            };
+        });
+    }
+
+    getTotalSupply = () => {
+        let amounts = this.state.token.receivers.map((receiver, i) => {
+            console.log(receiver.amount);
+            return (receiver.amount != "" ? parseInt(receiver.amount) : 0);
+        });
+        var sum = amounts.reduce((a, b) => a + b, 0);
+        this.setState( prevState => {
+            return {
+                token : {
+                    ...prevState.token,
+                    totalSupply: sum
+                }
+            }
+        });
+    }
+
+    onSubmit = (e) => {
+        console.log(JSON.stringify(this.state.token));
+        e.preventDefault();
+    }
+
     render() {
-        console.log(this.props);
         return (
             <div className="wrapper">
                 <nav id="sidebar" className={this.state.showHideSidenav}>
@@ -119,23 +210,23 @@ class AddToken extends Component {
                             <div className="row justify-content-center">
                                 <h2 className="text-uppercase">Create token contract</h2>
                             </div>
-                            <form className="row justify-content-left my-4" onSubmit={this.handleSubmit}>
+                            <form className="row justify-content-left my-4">
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
                                     <div className="col-md-12 form-group">
                                         <p>Token name</p>
-                                        <input type="text" className="editor-input w-100" placeholder="My Token Name" />
+                                        <input type="text" onChange={this.onChange} name="name" className="editor-input w-100" placeholder="My Token Name" />
                                     </div>
                                     <div className="w-100"></div>
 
                                     <div className="col-md-12 form-group">
                                         <p>Token symbol</p>
-                                        <input type="text" className="editor-input w-100" placeholder="MTN" />
+                                        <input type="text" onChange={this.onChange} name="symbol" className="editor-input w-100" placeholder="MTN" />
                                     </div>
                                     <div className="w-100"></div>
 
                                     <div className="col-md-12 form-group">
                                         <p>Decimals</p>
-                                        <input type="text" className="editor-input w-100" placeholder="18" />
+                                        <input type="number" defaultValue="18" onChange={this.onChange} name="decimals" className="editor-input w-100" placeholder="18" />
                                     </div>
                                     <div className="w-100"></div>
 
@@ -144,7 +235,7 @@ class AddToken extends Component {
                                         <div className="row justify-content-center">
                                             ERC20
                                             <span className="span-space" />
-                                            <Switch onClick={this.toggleSwitch} on={this.state.switched}/>
+                                            <Switch onClick={this.toggleSwitch} on={this.state.token.erc223}/>
                                             <span className="span-space" />
                                             ERC223
                                         </div>
@@ -152,79 +243,90 @@ class AddToken extends Component {
                                     <div className="w-100"></div>
                                 </div>
                                 <div className="w-100"></div>
+
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
                                     <div className="col-md-12 form-group">
                                         <p>Token owner</p>
-                                        <input type="text" className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
+                                        <input type="text" onChange={this.onChange} name="owner" className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
                                     </div>
                                     <div className="w-100"></div>
+
                                     <div className="col-md-12 form-group">
                                         <p>Token type</p>
                                         <div className="d-flex justify-content-between form-group">
-                                            <label for="pausable">Pausable token <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
-                                            <input type="checkbox" id="pausable" className="check-block"/>
+                                            <label htmlFor="pausable">Pausable token <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
+                                            <input type="checkbox" onChange={this.onChange} name="pausable" id="pausable" className="check-block"/>
                                         </div>
                                         <div className="d-flex justify-content-between form-group">
-                                            <label for="freezable">Freezable token <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
-                                            <input type="checkbox" id="freezable" className="check-block"/>
+                                            <label htmlFor="freezable">Freezable token <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
+                                            <input type="checkbox" onChange={this.onChange} name="freezable" id="freezable" className="check-block"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="w-100"></div>
+
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
                                     <div className="col-md-12 form-group">
                                         <p><b>Add address for distribution</b></p><hr/>
                                     </div>
                                     <div className="w-100"></div>
 
-                                    <div className="col-md-12 form-group">
-                                        <p>Address</p>
-                                        <input type="text" className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
-                                    </div>
-                                    <div className="w-100"></div>
-
-                                    <div className="col-md-12 form-group">
-                                        <p>Amount</p>
-                                        <input type="text" className="editor-input w-100" placeholder="ex. 100000" />
-                                    </div>
-                                    <div className="w-100"></div>
-
-                                    <div className="col-md-12 form-group">
-                                        <div className="d-flex justify-content-between form-group">
-                                            <div className="col-md-6 form-group">
-                                                <p>Frozen</p>
-                                                <div className="row justify-content-center">
-                                                    Yes
-                                                    <span className="span-space" />
-                                                    <Switch onClick={this.toggleSwitch} on={this.state.switched}/>
-                                                    <span className="span-space" />
-                                                    No
-                                                </div>
+                                    { this.state.token.receivers.map((receiver, i) => (
+                                        <div key={i}>
+                                            <div className="col-md-12 form-group">
+                                                <p>Address</p>
+                                                <input type="text" onChange={this.ondistributionAddresses(i)} name="address" className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
                                             </div>
-                                            <div className="col-md-6 form-group">
-                                            <p>Until date</p>
-                                            <input type="date" className="editor-input w-100 min-w-100" placeholder="01.10.2018" />
-                                        </div>
-                                        </div>
-                                    </div>
+                                            <div className="w-100"></div>
 
-                                    <button type="button" className="editor-btn main">
+                                            <div className="col-md-12 form-group">
+                                                <p>Amount</p>
+                                                <input type="number" onChange={this.ondistributionAddresses(i)} onBlur={this.getTotalSupply} name="amount" className="editor-input w-100" placeholder="ex. 100000" />
+                                            </div>
+                                            <div className="w-100"></div>
+
+                                            <div className="col-md-12 form-group">
+                                            <div className="d-flex justify-content-between form-group">
+                                                <div className="col-md-6 form-group">
+                                                    <label htmlFor="frozen">Frozen <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
+                                                    <div className="row justify-content-center">
+                                                        <input type="checkbox" onChange={this.ondistributionAddresses(i)} name="frozen" id="frozen" className="check-block"/>
+                                                    </div>
+                                                </div>
+                                                { this.state.token.receivers[i].frozen  ?
+                                                    <div className="col-md-6 form-group">
+                                                        <p>Until date</p>
+                                                        <input type="date" onChange={this.ondistributionAddresses(i)} name="untilDate" className="editor-input w-100 min-w-100" placeholder="01.10.2018" />
+                                                    </div> :
+                                                    null
+                                                }
+                                            </div>
+                                        </div>
+                                        </div>
+                                    ))}
+
+                                    <i>Total supply is - {this.state.token.totalSupply}</i>
+                                    <div className="w-100"></div>
+
+                                    <button type="button" onClick={this.onAddReceiver} className="editor-btn main">
                                         <i className="fas fa-plus"></i>
                                         <span>&nbsp;&nbsp; Add new address</span>
                                     </button>
                                 </div>
                                 <div className="w-100"></div>
+
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
                                     <div className="col-md-12 m-0 form-group">
                                         <div className="d-flex m-0 justify-content-between form-group">
-                                            <label className="m-0" for="mintable">Future minting <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
-                                            <input type="checkbox" id="mintable" className="check-block"/>
+                                            <label htmlFor="mintable" className="m-0">Future minting <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
+                                            <input type="checkbox" onChange={this.onChange} name="mintable" id="mintable" className="check-block"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="w-100"></div>
+
                                 <div className="col-md-4 col-md-push-8">
-                                    <button className="editor-btn main big" onClick={this.openModal}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; Deploy</button>
+                                    <button className="editor-btn main big" onClick={this.onSubmit}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; Deploy</button>
                                 </div>
                             </form>
                         </div>
