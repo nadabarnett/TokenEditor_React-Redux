@@ -19,7 +19,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="wrapper">
         <nav id="sidebar" className={this.state.showHideSidenav}>

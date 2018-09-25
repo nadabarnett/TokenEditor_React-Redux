@@ -11,7 +11,7 @@ class Settings extends Component {
       showHideSidenav: "",
       switched: false
     }
-  }   
+  }
 
   componentDidMount(){
     document.body.id="billing"
