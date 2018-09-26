@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link }             from 'react-router-dom';
 import Modal                from 'react-modal';
+import {controllerAbi, tokenAbi} from './../components/ContractStore';
+
 const customStyles = {
   content : {
     width                 : '70%',
@@ -18,7 +20,6 @@ const customStyles = {
   }
 };
 
-
 const buttonStyle = {
     border        : 'none',
     // padding       : '0',
@@ -28,35 +29,118 @@ const buttonStyle = {
     cursor        : 'pointer',
 };
 
+const web3Context = window.web3;
+
 Modal.setAppElement('#modal')
 
 class Tokens extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {  "showHideSidenav"   : "",
-                    "modalIsOpen"       : false,
-                    "viewSelection"     : 1,
-                    "firstBtn"          : "selected-li",
-                    "secondBtn"         : "",
-                    "thirdBtn"          : "",
-                    "fourthBtn"         : "",
+    this.state = {
+        "showHideSidenav"   : "",
+        "modalIsOpen"       : false,
+        "viewSelection"     : 1,
+        "firstBtn"          : "selected-li",
+        "secondBtn"         : "",
+        "thirdBtn"          : "",
+        "fourthBtn"         : "",
+        contracts           : [{}]
     };
 
-    this.openModal        = this.openModal.bind(this);
-    this.afterOpenModal   = this.afterOpenModal.bind(this);
-    this.closeModal       = this.closeModal.bind(this);
-    this.showOne          = this.showOne.bind(this);
-    this.showTwo          = this.showTwo.bind(this);
-    this.showThree        = this.showThree.bind(this);
+    this.getTokenAddresses = this.getTokenAddresses.bind(this);
+    this.openModal         = this.openModal.bind(this);
+    this.afterOpenModal    = this.afterOpenModal.bind(this);
+    this.closeModal        = this.closeModal.bind(this);
+    this.showOne           = this.showOne.bind(this);
+    this.showTwo           = this.showTwo.bind(this);
+    this.showThree         = this.showThree.bind(this);
+    this._isMounted        = false;
   }
 
   componentDidMount(){
-    document.body.id=""
+    document.body.id="";
+    this.showContracts();
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  getTokenAddresses = () => {
+    // Controller contract
+    const controllerContract = web3Context.eth.contract(controllerAbi);
+    const contractAddress = "0x4C93107e119346697032270B78F9664CD2BA532B";
+    const controllerInstance = controllerContract.at(contractAddress);
+
+    return new Promise((resolve, reject) => {
+        controllerInstance.getUserContracts(web3Context.eth.coinbase, (error, result) => {
+            if (!error) {
+                return resolve(result);
+            } else {
+                return reject(error)
+            }
+        })
+    })
+  }
+
+  getTokenContracts = (addresses) => {
+    return new Promise((resolve, reject) => {
+        // Token contract
+        const tokenContract = web3Context.eth.contract(tokenAbi);
+        let fetchedContracts = [];
+
+        addresses.forEach(address => {
+            const contractInstance = tokenContract.at(address);
+            const contract = {
+                address: address,
+                name: '',
+                symbol: ''
+            };
+
+            // Getting the name of token
+            new Promise((resolve, reject) => {
+                contractInstance.name((error, response) => {
+                    if(!error) return resolve(response)
+                    else return reject(error)
+                })
+            })
+            // Getting the symbol of token
+            .then(name => {
+                contract.name = name;
+                new Promise((resolve, reject) => {
+                    contractInstance.symbol((error, response) => {
+                        if(!error) return resolve(response)
+                        else return reject(error)
+                    })
+                })
+                // Preparing contract object, and return when loop finished
+                .then(symbol => {
+                    contract.symbol = symbol;
+                    fetchedContracts.push(contract);
+                    if(address == addresses[addresses.length - 1]) {
+                        return resolve(fetchedContracts);
+                    }
+                })
+            })
+        });
+    })
+  }
+
+  showContracts() {
+    this.getTokenAddresses()
+    .then(value => {
+        this.getTokenContracts(value)
+        .then(fetchedContracts => {
+            if(this._isMounted) {
+                this.setState({ contracts: fetchedContracts });
+            }
+        })
+    })
   }
 
   toggleSidenav() {
-
     var css = (this.state.showHideSidenav === "active") ? "" : "active";
     this.setState({"showHideSidenav"  :css});
   }
@@ -170,45 +254,38 @@ class Tokens extends Component {
             </nav>
 
             <div className="container-fluid px-md-5">
-
                 <div className="row justify-content-center">
-                <h2 className="text-uppercase">My Tokens</h2>
-              </div>
+                    <h2 className="text-uppercase">My Tokens</h2>
+                </div>
                 <div className="row my-4">
                     <Link to={'/addToken'} className="nav-link">
                         <button className="editor-btn main big" onClick={this.openModal}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; Create Token</button>
                     </Link>
                 </div>
-
                 <div className="col table-responsive editor-block my-4">
                     <table className="table" bordercolor="white">
                     <thead style={{fontSize:"15px", textAlign:"center"}}>
                         <tr style={{border:"none"}}>
                         <th style={{border:"none"}}>Name</th>
                         <th style={{border:"none"}}>Symbol</th>
-                        <th style={{border:"none"}}>Version</th>
                         <th style={{border:"none"}}>Address</th>
                         </tr>
                     </thead>
                     <tbody style={{fontSize:"13px", textAlign:"center"}}>
-                        <tr>
-                            <td>ExampleToken</td>
-                            <td>EXT</td>
-                            <td>1.0</td>
-                            <td>10xad4777029ae71f2b2kall</td>
-                            <button className="editor-btn main small" onClick={this.openModal}>
-                            <i className="fas fa-edit"></i> Manage
-                        </button>
-                        </tr>
-                        <tr className="my-4">
-                            <td>SuzyToken</td>
-                            <td>SUZY</td>
-                            <td>1.2</td>
-                            <td>0xad4777029ae71f2b2kall</td>
-                            <button className="editor-btn main small" onClick={this.openModal}>
-                                <i className="fas fa-edit"></i> Manage
-                            </button>
-                        </tr>
+                        { this.state.contracts.map((contract, i) => (
+                            <tr key={i}>
+                                <td className="align-middle">{contract.name}</td>
+                                <td className="align-middle">{contract.symbol}</td>
+                                <td className="align-middle">
+                                    <a href={"https://rinkeby.etherscan.io/address/" + contract.address} style={{color: "#45467e"}} target="_blank">{contract.address}</a>
+                                </td>
+                                <td className="align-middle">
+                                    <button className="editor-btn main small" onClick={this.openModal}>
+                                        <i className="fas fa-edit"></i> Manage
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                     </table>
                 </div>
@@ -235,13 +312,13 @@ class Tokens extends Component {
                       </div>
                       <div className="col-md-1">
                         <div className="col-md-12">
-                          <button style = {buttonStyle} 
+                          <button style = {buttonStyle}
                             onClick={this.closeModal}
-                            type="button" 
+                            type="button"
                             aria-label="close"
                           >
                             <p style={{marginLeft:"-20px"}}>CLOSE</p>
-                          </button>                      
+                          </button>
                         </div>
                       </div>
 
