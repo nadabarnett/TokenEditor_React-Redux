@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Switch from 'react-toggle-switch';
 import { Link } from 'react-router-dom';
-import {bytecode,abi} from './../components/ContractStore';
+import {bytecode,tokenAbi} from './../components/ContractStore';
 import Modal from 'react-modal';
 
 const customStyles = {
@@ -176,7 +176,7 @@ class AddToken extends Component {
 
 
         this.setState({modalIsOpen: true});
-        let newTokenContract = web3Context.eth.contract(abi),
+        let newTokenContract = web3Context.eth.contract(tokenAbi),
             newToken = newTokenContract.new(
             name,
             symbol,
