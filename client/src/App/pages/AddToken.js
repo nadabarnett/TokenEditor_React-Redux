@@ -206,7 +206,7 @@ class AddToken extends Component {
                             trxHash: tokenContract.transactionHash,
                             trxURL: "https://rinkeby.etherscan.io/tx/" + tokenContract.transactionHash,
                             tokenAddress: tokenContract.address,
-                            tokenURL: "https://rinkeby.etherscan.io/tx/" + tokenContract.address
+                            tokenURL: "https://rinkeby.etherscan.io/token/" + tokenContract.address
                         }
                     });
                 }
