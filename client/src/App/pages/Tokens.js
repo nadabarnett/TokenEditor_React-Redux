@@ -235,7 +235,7 @@ class Tokens extends Component {
                 value = amount.times(web3Context.toBigNumber(10).pow(decimals));
 
             tokenInstance.transfer(to, value, (err, txHash) => {
-                if (!err) console.log(txHash);
+                if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
             })
             break;
         case 'burn':
@@ -243,7 +243,7 @@ class Tokens extends Component {
             value = amount.times(web3Context.toBigNumber(10).pow(decimals));
 
             tokenInstance.burn(value, (err, txHash) => {
-                if (!err) console.log(txHash);
+                if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
             })
             break;
         case 'mint':
@@ -252,35 +252,35 @@ class Tokens extends Component {
             value = amount.times(web3Context.toBigNumber(10).pow(decimals));
 
             tokenInstance.mint(to, value, (err, txHash) => {
-                if (!err) console.log(txHash);
+                if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
             })
             break;
         case 'pause':
             tokenInstance.pause((err, txHash) => {
-                if (!err) console.log(txHash);
+                if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
             })
             break;
         case 'unpause':
             tokenInstance.unpause((err, txHash) => {
-                if (!err) console.log(txHash);
+                if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
             })
             break;
         case 'freeze':
             to  = web3Context.toChecksumAddress(this.state.selectedToken.features.freezeAddress);
             tokenInstance.freezeAccount(to, (err, txHash) => {
-                if (!err) console.log(txHash);
+                if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
             })
             break;
         case 'unfreeze':
             to  = web3Context.toChecksumAddress(this.state.selectedToken.features.unFreezeAddress);
             tokenInstance.unFreezeAccount(to, (err, txHash) => {
-                if (!err) console.log(txHash);
+                if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
             })
             break;
         case 'transferOwnership':
             to  = web3Context.toChecksumAddress(this.state.selectedToken.features.newOwner);
             tokenInstance.transferOwnership(to, (err, txHash) => {
-                if (!err) console.log(txHash);
+                if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
             })
             break;
 
@@ -468,274 +468,277 @@ class Tokens extends Component {
                           </button>
                         </div>
                       </div>
-
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="panel-body">
-              <div className="row my-4">
-                <div className="col-md-4">
-                  {
+                <div className="row my-4">
+                    <div className="col-md-4">
+                    {
+                        this.state.viewSelection == 1 ?
+                        <button className="row text-center align-items-center editor-button selected-li" onClick={this.showOne}>
+                            <div className="col">
+                            <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_white.png'} /></p>
+                            <p className="Amount">info</p>
+                            </div>
+                        </button>
+                        :
+                        <button className="row text-center align-items-center editor-button" onClick={this.showOne}>
+                            <div className="col">
+                            <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_blue.png'} /></p>
+                            <p className="Amount">info</p>
+                            </div>
+                        </button>
+                    }
+                    </div>
+
+                    <div className="col-md-4">
+                    {
+                        this.state.viewSelection == 2 ?
+                        <button className="row text-center align-items-center editor-button selected-li" onClick={this.showTwo}>
+                            <div className="col">
+                            <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_white.png'} /></p>
+                            <p className="Amount">Basic features</p>
+                            </div>
+                        </button>
+                        :
+                        <button className="row text-center align-items-center editor-button" onClick={this.showTwo}>
+                            <div className="col">
+                            <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_blue.png'} /></p>
+                            <p className="Amount">Basic features</p>
+                            </div>
+                        </button>
+                    }
+                    </div>
+
+                    { this.state.selectedToken.mintable || this.state.selectedToken.pausable || this.state.selectedToken.freezable ?
+                        <div className="col-md-4">
+                        {
+                            this.state.viewSelection == 3 ?
+                            <button className="row text-center align-items-center editor-button selected-li" onClick={this.showThree}>
+                                <div className="col">
+                                <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_white.png'} /></p>
+                                <p className="Amount">Extra features</p>
+                                </div>
+                            </button>
+                            :
+                            <button className="row text-center align-items-center editor-button" onClick={this.showThree}>
+                                <div className="col">
+                                <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_blue.png'} /></p>
+                                <p className="Amount">Extra features</p>
+                                </div>
+                            </button>
+                        }
+                        </div>
+                        :
+                        null
+                    }
+                </div>
+                <hr/>
+
+                {
                     this.state.viewSelection == 1 ?
-                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showOne}>
+                    <div className="row container-fluid my-4">
+                    <div className="col-md-6">
+                        <div className="col-md-12 form-group my-5">
                         <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_white.png'} /></p>
-                          <p className="Amount">info</p>
+                            <p className="Title my-3" style={{textAlign:"center"}}>Name</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedToken.name}</p>
                         </div>
-                      </button>
-                      :
-                      <button className="row text-center align-items-center editor-button" onClick={this.showOne}>
-                        <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_blue.png'} /></p>
-                          <p className="Amount">info</p>
                         </div>
-                      </button>
-                  }
-                </div>
 
-                <div className="col-md-4">
-                  {
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Symbol</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedToken.symbol}</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Decimals</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedToken.decimals}</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Total supply</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedToken.totalSupply}</p>
+                        </div>
+                        </div>
+
+                    </div>
+                    <div className="col-md-6">
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Creation date</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedToken.creationDate}</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Pausable</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedToken.pausable).toUpperCase()}</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Freezable</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedToken.freezable).toUpperCase()}</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Mintable</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedToken.mintable).toUpperCase()}</p>
+                        </div>
+                        </div>
+
+                    </div>
+                    <div className="col-md-12" style={{textAlign:"center"}}>
+                        <a href={"https://rinkeby.etherscan.io/token/" + this.state.selectedToken.contractAddress} style={{color: "#45467e"}} target="_blank">See on Etherscan</a>
+                    </div>
+                    </div>
+                    : null
+                }
+
+                {
                     this.state.viewSelection == 2 ?
-                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showTwo}>
-                        <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_white.png'} /></p>
-                          <p className="Amount">Basic features</p>
-                        </div>
-                      </button>
-                      :
-                      <button className="row text-center align-items-center editor-button" onClick={this.showTwo}>
-                        <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_blue.png'} /></p>
-                          <p className="Amount">Basic features</p>
-                        </div>
-                      </button>
-                  }
-                </div>
-
-                <div className="col-md-4">
-                  {
-                    this.state.viewSelection == 3 ?
-                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showThree}> 
-                        <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_white.png'} /></p>
-                          <p className="Amount">Extra features</p>
-                        </div>
-                      </button>
-                      :
-                      <button className="row text-center align-items-center editor-button" onClick={this.showThree}> 
-                        <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_blue.png'} /></p>
-                          <p className="Amount">Extra features</p>
-                        </div>
-                      </button>
-                  }
-                </div>
-              </div>
-              <hr/>
-
-              {
-                this.state.viewSelection == 1 ?
-                <div className="row container-fluid my-4">
-                  <div className="col-md-6">
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Name</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedToken.name}</p>
-                      </div>
-                    </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Symbol</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedToken.symbol}</p>
-                      </div>
-                    </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Decimals</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedToken.decimals}</p>
-                      </div>
-                    </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Total supply</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedToken.totalSupply}</p>
-                      </div>
-                    </div>
-
-                  </div>
-                  <div className="col-md-6">
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Creation date</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedToken.creationDate}</p>
-                      </div>
-                    </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Pausable</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedToken.pausable).toUpperCase()}</p>
-                      </div>
-                    </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Freezable</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedToken.freezable).toUpperCase()}</p>
-                      </div>
-                    </div>
-
-                    <div className="col-md-12 form-group my-5">
-                      <div className="col">
-                        <p className="Title my-3" style={{textAlign:"center"}}>Mintable</p>
-                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedToken.mintable).toUpperCase()}</p>
-                      </div>
-                    </div>
-
-                  </div>
-                  <div className="col-md-12" style={{textAlign:"center"}}>
-                    <a href={"https://rinkeby.etherscan.io/token/" + this.state.selectedToken.contractAddress} style={{color: "#45467e"}} target="_blank">See on Etherscan</a>
-                  </div>
-                </div>
-                : null
-              }
-
-              {
-                this.state.viewSelection == 2 ?
-                <div className="row container-fluid my-4 mx-3">
-                  <div className="row container-fluid">
-                    <div className="col-md-12 form-group">
-                      <div className="row">
-                        <div className="col-md-12" style={{textAlign:"center"}}>
-                            <p className="Title my-3" style={{textAlign:"center"}}><b>Transfer {this.state.selectedToken.name} Token</b></p>
-                            <form className="d-flex" data-action="transfer" onSubmit={this.doTokenFeature}>
-                                <div className="col">
-                                    <p className="Title my-3" style={{textAlign:"center"}}>ETH address</p>
-                                    <input type="text" onChange={this.onChange} name="transferTo" className="editor-input" placeholder="Text" style={{width:"70%"}} required={true} />
-                                </div>
-                                <div className="col">
-                                    <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
-                                    <input type="text" onChange={this.onChange} name="transferAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}} required={true} />
-                                </div>
-                                <div className="col">
-                                    <input type="submit" className="editor-btn main big my-5" value="Send tokens" />
-                                </div>
-                            </form>
-                        </div>
-                        <div className="col-md-12" style={{textAlign:"center"}}>
-                            <p className="Title my-3" style={{textAlign:"center"}}><b>Burn</b></p>
-                            <form className="d-flex" data-action="burn" onSubmit={this.doTokenFeature}>
-                                <div className="col">
-                                    <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
-                                    <input type="number" onChange={this.onChange} name="burnAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}}/>
-                                </div>
-                                <div className="col">
-                                    <input type="submit" className="editor-btn main big my-5" value="Burn"/>
-                                </div>
-                            </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                : null
-              }
-
-              {
-                this.state.viewSelection == 3 ?
-                <div className="row container-fluid my-4 mx-3">
+                    <div className="row container-fluid my-4 mx-3">
                     <div className="row container-fluid">
-                        {this.state.selectedToken.mintable ?
-                            <form className="col-md-12" data-action="mint" onSubmit={this.doTokenFeature} style={{textAlign:"center"}}>
-                                <p className="Title my-3" style={{textAlign:"center"}}><b>Mint  Example Token</b></p>
-                                <div className="d-flex">
+                        <div className="col-md-12 form-group">
+                        <div className="row">
+                            <div className="col-md-12" style={{textAlign:"center"}}>
+                                <p className="Title my-3" style={{textAlign:"center"}}><b>Transfer {this.state.selectedToken.name} Token</b></p>
+                                <form className="d-flex" data-action="transfer" onSubmit={this.doTokenFeature}>
                                     <div className="col">
-                                        <p className="Title my-3" style={{textAlign:"center"}}>Receiver address</p>
-                                        <input type="text" onChange={this.onChange} name="mintReceiver" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                                        <p className="Title my-3" style={{textAlign:"center"}}>ETH address</p>
+                                        <input type="text" onChange={this.onChange} name="transferTo" className="editor-input" placeholder="Text" style={{width:"70%"}} required={true} />
                                     </div>
                                     <div className="col">
                                         <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
-                                        <input type="number" onChange={this.onChange} name="mintAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}}/>
+                                        <input type="text" onChange={this.onChange} name="transferAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}} required={true} />
                                     </div>
                                     <div className="col">
-                                        <input type="submit" className="editor-btn main big my-5" value="Mint"/>
-                                    </div>
-                                </div>
-                            </form>
-                        :
-                            null
-                        }
-
-                        {this.state.selectedToken.freezable ?
-                            <div className="col-md-12">
-                                <form className="col-md-12 mb-5" data-action="freeze" onSubmit={this.doTokenFeature} style={{textAlign:"center"}}>
-                                    <p className="Title my-3" style={{textAlign:"center"}}><b>Freeze address</b></p>
-                                    <div className="d-flex justify-content-center">
-                                        <div className="col">
-                                            <input type="text" onChange={this.onChange} name="freezeAddress" className="editor-input" placeholder="Address" style={{width:"70%"}}/>
-                                        </div>
-                                        <div className="col">
-                                            <input type="submit" className="editor-btn main big" value="Freeze"/>
-                                        </div>
-                                    </div>
-                                </form>
-                                <form className="col-md-12 mb-5" data-action="unfreeze" onSubmit={this.doTokenFeature} style={{textAlign:"center"}}>
-                                    <p className="Title my-3" style={{textAlign:"center"}}><b>Unfreeze address</b></p>
-                                    <div className="d-flex justify-content-center">
-                                        <div className="col">
-                                            <input type="text" onChange={this.onChange} name="unFreezeAddress" className="editor-input" placeholder="Address" style={{width:"70%"}}/>
-                                        </div>
-                                        <div className="col">
-                                            <input type="submit" className="editor-btn main big" value="Unfreeze"/>
-                                        </div>
+                                        <input type="submit" className="editor-btn main big my-5" value="Send tokens" />
                                     </div>
                                 </form>
                             </div>
-                        :
-                            null
-                        }
-
-                        {this.state.selectedToken.pausable ?
-                            <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
-                                <p className="Title my-3" style={{textAlign:"center"}}><b>Stop/resume transactions</b></p>
-                                <div className="d-flex justify-content-center">
-                                    <div className="col-md-6" style={{textAlign:"center"}}>
-                                        <button data-action="pause" onClick={this.doTokenFeature} className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystop.png'} /> Emergency pause</button> 
+                            <div className="col-md-12" style={{textAlign:"center"}}>
+                                <p className="Title my-3" style={{textAlign:"center"}}><b>Burn</b></p>
+                                <form className="d-flex" data-action="burn" onSubmit={this.doTokenFeature}>
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
+                                        <input type="number" onChange={this.onChange} name="burnAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}}/>
                                     </div>
-                                    <div className="col-md-6" style={{textAlign:"center"}}>
-                                        <button data-action="unpause" onClick={this.doTokenFeature} className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystart.png'} /> Emergency resume</button> 
+                                    <div className="col">
+                                        <input type="submit" className="editor-btn main big my-5" value="Burn"/>
                                     </div>
-                                </div>
+                                </form>
                             </div>
-                        :
-                            null
-                        }
-
-                        {this.state.selectedToken.pausable || this.state.selectedToken.freezable || this.state.selectedToken.mintable ?
-                            <form data-action="transferOwnership" onSubmit={this.doTokenFeature} className="col-md-12 mb-5" style={{textAlign:"center"}}>
-                                <p className="Title my-3" style={{textAlign:"center"}}><b>Transfer ownership</b></p>
-                                <div className="d-flex justify-content-center">
-                                    <div className="col">
-                                        <input type="text" onChange={this.onChange} name="newOwner" className="editor-input" placeholder="Address" style={{width:"70%"}}/>
-                                    </div>
-                                    <div className="col">
-                                        <input type="submit" className="editor-btn main big" value="Transfer"/>
-                                    </div>
-                                </div>
-                            </form>
-                        :
-                            null
-                        }
+                        </div>
+                        </div>
                     </div>
-                </div>
-                : null
-              }
+                    </div>
+                    : null
+                }
+
+                {
+                    this.state.viewSelection == 3 ?
+                    <div className="row container-fluid my-4 mx-3">
+                        <div className="row container-fluid">
+                            {this.state.selectedToken.mintable ?
+                                <form className="col-md-12" data-action="mint" onSubmit={this.doTokenFeature} style={{textAlign:"center"}}>
+                                    <p className="Title my-3" style={{textAlign:"center"}}><b>Mint  Example Token</b></p>
+                                    <div className="d-flex">
+                                        <div className="col">
+                                            <p className="Title my-3" style={{textAlign:"center"}}>Receiver address</p>
+                                            <input type="text" onChange={this.onChange} name="mintReceiver" className="editor-input" placeholder="Text" style={{width:"70%"}}/>
+                                        </div>
+                                        <div className="col">
+                                            <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
+                                            <input type="number" onChange={this.onChange} name="mintAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}}/>
+                                        </div>
+                                        <div className="col">
+                                            <input type="submit" className="editor-btn main big my-5" value="Mint"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            :
+                                null
+                            }
+
+                            {this.state.selectedToken.freezable ?
+                                <div className="col-md-12">
+                                    <form className="col-md-12 mb-5" data-action="freeze" onSubmit={this.doTokenFeature} style={{textAlign:"center"}}>
+                                        <p className="Title my-3" style={{textAlign:"center"}}><b>Freeze address</b></p>
+                                        <div className="d-flex justify-content-center">
+                                            <div className="col">
+                                                <input type="text" onChange={this.onChange} name="freezeAddress" className="editor-input" placeholder="Address" style={{width:"70%"}}/>
+                                            </div>
+                                            <div className="col">
+                                                <input type="submit" className="editor-btn main big" value="Freeze"/>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form className="col-md-12 mb-5" data-action="unfreeze" onSubmit={this.doTokenFeature} style={{textAlign:"center"}}>
+                                        <p className="Title my-3" style={{textAlign:"center"}}><b>Unfreeze address</b></p>
+                                        <div className="d-flex justify-content-center">
+                                            <div className="col">
+                                                <input type="text" onChange={this.onChange} name="unFreezeAddress" className="editor-input" placeholder="Address" style={{width:"70%"}}/>
+                                            </div>
+                                            <div className="col">
+                                                <input type="submit" className="editor-btn main big" value="Unfreeze"/>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            :
+                                null
+                            }
+
+                            {this.state.selectedToken.pausable ?
+                                <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
+                                    <p className="Title my-3" style={{textAlign:"center"}}><b>Stop/resume transactions</b></p>
+                                    <div className="d-flex justify-content-center">
+                                        <div className="col-md-6" style={{textAlign:"center"}}>
+                                            <button data-action="pause" onClick={this.doTokenFeature} className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystop.png'} /> Emergency pause</button> 
+                                        </div>
+                                        <div className="col-md-6" style={{textAlign:"center"}}>
+                                            <button data-action="unpause" onClick={this.doTokenFeature} className="editor-btn main big" style={{width:"100%"}}><img src={window.location.origin + '/assets/images/icon_emergencystart.png'} /> Emergency resume</button> 
+                                        </div>
+                                    </div>
+                                </div>
+                            :
+                                null
+                            }
+
+                            {this.state.selectedToken.pausable || this.state.selectedToken.freezable || this.state.selectedToken.mintable ?
+                                <form data-action="transferOwnership" onSubmit={this.doTokenFeature} className="col-md-12 mb-5" style={{textAlign:"center"}}>
+                                    <p className="Title my-3" style={{textAlign:"center"}}><b>Transfer ownership</b></p>
+                                    <div className="d-flex justify-content-center">
+                                        <div className="col">
+                                            <input type="text" onChange={this.onChange} name="newOwner" className="editor-input" placeholder="Address" style={{width:"70%"}}/>
+                                        </div>
+                                        <div className="col">
+                                            <input type="submit" className="editor-btn main big" value="Transfer"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            :
+                                null
+                            }
+                        </div>
+                    </div>
+                    : null
+                }
             </div>
           </div>
         </Modal>
