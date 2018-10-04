@@ -4,9 +4,14 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 import App from './App/App';
+import { Web3Provider } from 'react-web3';
+
 
 render((
     <BrowserRouter>
-        <App/>
+        <Web3Provider>
+            <App/>
+        </Web3Provider>
     </BrowserRouter>
+
 ), document.getElementById('root'));

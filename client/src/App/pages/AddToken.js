@@ -1,15 +1,62 @@
 import React, { Component } from 'react';
 import Switch from 'react-toggle-switch';
-
 import { Link } from 'react-router-dom';
+import {bytecode,tokenAbi} from './../components/ContractStore';
+import Modal from 'react-modal';
+
+const customStyles = {
+    content : {
+      width                 : '70%',
+      height                : '102%',
+      top                   : '52%',
+      left                  : '50%',
+      right                 : 'auto',
+      transform             : 'translate(-50%, -50%)',
+      transparent           : '1',
+      backgroundColor       : 'rgba(0, 0, 0, .00)',
+      webkitboxshadow       : '0 1px 1px rgba(0,0,0,.05)',
+      boxshadow             : '0 1px 1px rgba(0,0,0,.05)',
+      border                : '0px dashed white',
+      borderRadius          : '20px'
+    }
+};
+
+const web3Context = window.web3;
 
 class AddToken extends Component {
 
     constructor(props) {
         super(props)
+
         this.state = {
           showHideSidenav: "",
-          switched: false
+          switched: false,
+          modalIsOpen: false,
+          user: web3Context.eth.coinbase,
+          transaction: {
+            trxHash: '',
+            trxURL: '',
+            tokenAddress: '',
+            tokenURL: '',
+            issue: ''
+          },
+          token: {
+                name: '',
+                symbol: '',
+                decimals: '18',
+                totalSupply:  0,
+                erc223: false,
+                owner: web3Context.eth.coinbase,
+                pausable: false,
+                freezable: false,
+                mintable: false,
+                receivers: [{
+                    address: web3Context.eth.coinbase,
+                    amount: '',
+                    frozen: false,
+                    untilDate: 0
+                }]
+          }
         }
     }
 
@@ -23,15 +70,179 @@ class AddToken extends Component {
     }
 
     toggleSwitch = () => {
-        this.setState(prevState => {
+        this.setState( prevState => {
             return {
-            switched: !prevState.switched
+                token : {
+                    ...prevState.token, erc223: !this.state.token.erc223
+                }
             };
         });
     };
 
+    onChange = (e) => {
+        let value = e.target.value != "on" ?  e.target.value : e.target.checked;
+        let name = e.target.name;
+        this.setState( prevState => {
+           return {
+                token : {
+                    ...prevState.token,
+                    [name]: value
+                }
+           }
+        });
+    }
+
+    ondistributionAddresses = (id) => (e) => {
+        let value = e.target.value != "on" ?  e.target.value : e.target.checked; // Detecting checkboxes
+        let name = e.target.name;
+        const newReceivers = this.state.token.receivers.map((receiver, i) => {
+            if (id !== i) return receiver;
+            return {
+                ...receiver,
+                [name]: [name] != "untilDate" ? value : new Date(value).getTime() / 1000
+            };
+        });
+
+        this.setState( prevState => {
+            return {
+                token : {
+                    ...prevState.token,
+                    receivers: newReceivers
+                }
+            }
+        });
+    }
+
+    onAddReceiver = () => {
+        const newAddress = {
+            address: '',
+            amount: '',
+            freezen: false,
+            untilDate: 0
+        };
+
+        this.setState( prevState => {
+            return {
+                token : {
+                    ...prevState.token,
+                    receivers: prevState.token.receivers.concat(newAddress)
+                }
+            };
+        });
+    }
+
+    calculateTotalSupply = () => {
+        let amounts = this.state.token.receivers.map((receiver, i) => {
+            return (receiver.amount != "" ? parseInt(receiver.amount) : 0);
+        });
+        var sum = amounts.reduce((a, b) => a + b, 0);
+        this.setState( prevState => {
+            return {
+                token : {
+                    ...prevState.token,
+                    totalSupply: sum
+                }
+            }
+        });
+    }
+
+    onSubmit = (e) => {
+        e.preventDefault();
+
+        let name = this.state.token.name.replace(/\s/g, ''),
+            symbol = this.state.token.symbol.replace(/\s/g, ''),
+            decimals = this.state.token.decimals,
+            erc223 = this.state.token.erc223,
+            owner = web3Context.toChecksumAddress(this.state.token.owner),
+            pausable = this.state.token.pausable,
+            freezable = this.state.token.freezable,
+            mintable = this.state.token.mintable,
+            user = this.state.user,
+            accountSwitched = false,
+            receivers = this.state.token.receivers.map((receiver, i) => {
+                receiver.address = web3Context.toChecksumAddress(receiver.address);
+                return receiver.address;
+            }),
+            amounts = this.state.token.receivers.map((receiver, i) => {
+                receiver.amount = receiver.amount;
+                return receiver.amount;
+            }),
+            frozen = this.state.token.receivers.map((receiver, i) => {
+                receiver.frozen = receiver.frozen;
+                return receiver.frozen;
+            }),
+            untilDate = this.state.token.receivers.map((receiver, i) => {
+                receiver.untilDate = receiver.untilDate;
+                return receiver.untilDate;
+            });
+
+
+        this.setState({modalIsOpen: true});
+        setInterval(function() {
+            if (web3Context.eth.coinbase !== user && !accountSwitched) {
+                accountSwitched = true;
+                alert("You switch the metamask account. \n  \n Please log in with your previus account for getting notification about your token. \n  \n " + user + "");
+            }
+        }, 100);
+
+        let newTokenContract = web3Context.eth.contract(tokenAbi)
+
+        newTokenContract.new(
+            name,
+            symbol,
+            decimals,
+            pausable,
+            freezable,
+            mintable,
+            owner,
+            receivers,
+            amounts,
+            frozen,
+            untilDate,
+            {
+                from: this.state.user,
+                data: '0x' + bytecode,
+                value: 1000000000000000000
+            }, (e, tokenContract) => {
+                if(typeof tokenContract !== 'undefined') {
+                    if (!tokenContract.address) {
+                        this.setState({
+                            transaction: {
+                                trxHash: tokenContract.transactionHash,
+                                trxURL: "https://rinkeby.etherscan.io/tx/" + tokenContract.transactionHash
+                            }
+                        });
+                    } else {
+                        this.setState({
+                            transaction: {
+                                trxHash: tokenContract.transactionHash,
+                                trxURL: "https://rinkeby.etherscan.io/tx/" + tokenContract.transactionHash,
+                                tokenAddress: tokenContract.address,
+                                tokenURL: "https://rinkeby.etherscan.io/token/" + tokenContract.address
+                            }
+                        });
+                    }
+                } else {
+                    this.setState({
+                        transaction: {
+                            issue: 'You have denied the transaction. Please try again.'
+                        }
+                    });
+                }
+              }
+            )
+    }
+
+    closeModal() {
+        this.setState({
+            modalIsOpen: false,
+            transaction: {
+                issue: null
+            }
+        })
+    }
+
     render() {
-        console.log(this.props);
         return (
             <div className="wrapper">
                 <nav id="sidebar" className={this.state.showHideSidenav}>
@@ -119,23 +330,23 @@ class AddToken extends Component {
                             <div className="row justify-content-center">
                                 <h2 className="text-uppercase">Create token contract</h2>
                             </div>
-                            <form className="row justify-content-left my-4" onSubmit={this.handleSubmit}>
+                            <form className="row justify-content-left my-4" onSubmit={this.onSubmit}>
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
                                     <div className="col-md-12 form-group">
                                         <p>Token name</p>
-                                        <input type="text" className="editor-input w-100" placeholder="My Token Name" />
+                                        <input type="text" required={true} onChange={this.onChange} name="name" className="editor-input w-100" placeholder="My Token Name" />
                                     </div>
                                     <div className="w-100"></div>
 
                                     <div className="col-md-12 form-group">
                                         <p>Token symbol</p>
-                                        <input type="text" className="editor-input w-100" placeholder="MTN" />
+                                        <input type="text" required={true} onChange={this.onChange} name="symbol" className="editor-input w-100" placeholder="MTN" />
                                     </div>
                                     <div className="w-100"></div>
 
                                     <div className="col-md-12 form-group">
                                         <p>Decimals</p>
-                                        <input type="text" className="editor-input w-100" placeholder="18" />
+                                        <input type="number" required={true} defaultValue="18" onChange={this.onChange} name="decimals" className="editor-input w-100" placeholder="18" />
                                     </div>
                                     <div className="w-100"></div>
 
@@ -144,7 +355,7 @@ class AddToken extends Component {
                                         <div className="row justify-content-center">
                                             ERC20
                                             <span className="span-space" />
-                                            <Switch onClick={this.toggleSwitch} on={this.state.switched}/>
+                                            <Switch onClick={this.toggleSwitch} on={this.state.token.erc223}/>
                                             <span className="span-space" />
                                             ERC223
                                         </div>
@@ -152,85 +363,185 @@ class AddToken extends Component {
                                     <div className="w-100"></div>
                                 </div>
                                 <div className="w-100"></div>
+
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
                                     <div className="col-md-12 form-group">
                                         <p>Token owner</p>
-                                        <input type="text" className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
+                                        <input type="text" required={true} onChange={this.onChange} name="owner" defaultValue={this.state.token.owner} className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
                                     </div>
                                     <div className="w-100"></div>
+
                                     <div className="col-md-12 form-group">
                                         <p>Token type</p>
                                         <div className="d-flex justify-content-between form-group">
-                                            <label for="pausable">Pausable token <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
-                                            <input type="checkbox" id="pausable" className="check-block"/>
+                                            <label htmlFor="pausable">Pausable token <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
+                                            <input type="checkbox" onChange={this.onChange} name="pausable" id="pausable" className="check-block"/>
                                         </div>
                                         <div className="d-flex justify-content-between form-group">
-                                            <label for="freezable">Freezable token <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
-                                            <input type="checkbox" id="freezable" className="check-block"/>
+                                            <label htmlFor="freezable">Freezable token <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
+                                            <input type="checkbox" onChange={this.onChange} name="freezable" id="freezable" className="check-block"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="w-100"></div>
+
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
                                     <div className="col-md-12 form-group">
-                                        <p><b>Add address for distribution</b></p><hr/>
+                                        <p><b> Token distribution</b></p><hr/>
                                     </div>
                                     <div className="w-100"></div>
 
-                                    <div className="col-md-12 form-group">
-                                        <p>Address</p>
-                                        <input type="text" className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
-                                    </div>
-                                    <div className="w-100"></div>
+                                    { this.state.token.receivers.map((receiver, i) => (
+                                        <div key={i}>
+                                            <div className="col-md-12 form-group">
+                                                <p>Receiver address</p>
+                                                { i !== 0 ?
+                                                    <input type="text" required={true} onChange={this.ondistributionAddresses(i)} name="address" className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
+                                                :
+                                                    <input type="text" required={true} onChange={this.ondistributionAddresses(i)} name="address" className="editor-input w-100" defaultValue={receiver.address} />
+                                                }
+                                            </div>
+                                            <div className="w-100"></div>
 
-                                    <div className="col-md-12 form-group">
-                                        <p>Amount</p>
-                                        <input type="text" className="editor-input w-100" placeholder="ex. 100000" />
-                                    </div>
-                                    <div className="w-100"></div>
+                                            <div className="col-md-12 form-group">
+                                                <p>Tokens amount</p>
+                                                <input type="number"  required={true} onChange={this.ondistributionAddresses(i)} onBlur={this.calculateTotalSupply} name="amount" className="editor-input w-100" placeholder="ex. 100000" />
+                                            </div>
+                                            <div className="w-100"></div>
 
-                                    <div className="col-md-12 form-group">
-                                        <div className="d-flex justify-content-between form-group">
-                                            <div className="col-md-6 form-group">
-                                                <p>Frozen</p>
-                                                <div className="row justify-content-center">
-                                                    Yes
-                                                    <span className="span-space" />
-                                                    <Switch onClick={this.toggleSwitch} on={this.state.switched}/>
-                                                    <span className="span-space" />
-                                                    No
+                                            <div className="col-md-12 form-group">
+                                                <div className="d-flex justify-content-between form-group">
+                                                    <div className="col-md-6 form-group">
+                                                        <label htmlFor={"frozen-" + i}>Frozen <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
+                                                        <div className="row justify-content-center">
+                                                            <input type="checkbox" onChange={this.ondistributionAddresses(i)} name="frozen" id={"frozen-" + i} className="check-block"/>
+                                                        </div>
+                                                    </div>
+                                                    { this.state.token.receivers[i].frozen  ?
+                                                        <div className="col-md-6 form-group">
+                                                            <p>Until date</p>
+                                                            <input type="date"  required={true} onChange={this.ondistributionAddresses(i)} name="untilDate" className="editor-input w-100 min-w-100" placeholder="01.10.2018" />
+                                                        </div> :
+                                                        null
+                                                    }
                                                 </div>
                                             </div>
-                                            <div className="col-md-6 form-group">
-                                            <p>Until date</p>
-                                            <input type="date" className="editor-input w-100 min-w-100" placeholder="01.10.2018" />
                                         </div>
-                                        </div>
-                                    </div>
+                                    ))}
 
-                                    <button type="button" className="editor-btn main">
+                                    <i>Total supply is - {this.state.token.totalSupply} {this.state.token.symbol.toUpperCase()}</i>
+                                    <div className="w-100"></div>
+
+                                    <button type="button" onClick={this.onAddReceiver} className="editor-btn main">
                                         <i className="fas fa-plus"></i>
-                                        <span>&nbsp;&nbsp; Add new address</span>
+                                        <span>&nbsp;&nbsp; Add the another address</span>
                                     </button>
                                 </div>
                                 <div className="w-100"></div>
+
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
                                     <div className="col-md-12 m-0 form-group">
                                         <div className="d-flex m-0 justify-content-between form-group">
-                                            <label className="m-0" for="mintable">Future minting <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
-                                            <input type="checkbox" id="mintable" className="check-block"/>
+                                            <label htmlFor="mintable" className="m-0">Future minting <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></label>
+                                            <input type="checkbox" onChange={this.onChange} name="mintable" id="mintable" className="check-block"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="w-100"></div>
+
                                 <div className="col-md-4 col-md-push-8">
-                                    <button className="editor-btn main big" onClick={this.openModal}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; Deploy</button>
+                                    <input type="submit" className="editor-btn main big" value="Deploy"/>
                                 </div>
                             </form>
                         </div>
                     </div>
                     </div>
                 </div>
+                <Modal
+                    isOpen={this.state.modalIsOpen}
+                    style={customStyles}
+                >
+                    <div className="panel panel-danger">
+                        <div className="container-fluid">
+                            <div className="row justify-content-center">
+                            <div id="stats" style={{backgroundColor: "rgb(69, 70, 123)", color:"white", height:"50px", width:"100%"}}>
+                            <div className="col-md-12">
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <p className="Title" style={{textAlign:"center"}}>Contract deployment</p>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div className="panel-body">
+                            <div className="row container-fluid my-4 mx-3">
+                                <div className="row container-fluid">
+                                    <div className="col-md-12 form-group">
+                                        <div className="row">
+                                            { !this.state.transaction.issue ?
+                                                <div className="col-md-12" style={{textAlign:"center"}}>
+                                                    <p className="Title my-3" style={{textAlign:"center"}}>
+                                                        <b>Making transaction ...</b><br/>
+                                                        <i>NOTE: don't switch your account until transaction confirmation for getting information about transaction status.</i><br/>
+                                                    </p>
+                                                    <div className="w-100 my-5"></div>
+
+                                                    { this.state.transaction.trxHash ?
+                                                            <div>
+                                                                <p className="Title my-5" style={{textAlign:"left"}}>
+                                                                    Well! Transaction created.
+                                                                    <br></br><br/>
+                                                                    Transaction status - <a href={this.state.transaction.trxURL} style={{color: "#45467e"}} target="_blank">{ this.state.transaction.trxHash}</a><br/>
+                                                                </p>
+
+                                                                {this.state.transaction.tokenAddress ?
+                                                                    <div>
+                                                                        <p className="Title my-5" style={{textAlign:"left"}}>
+                                                                            Congratulations! Your token ready.
+                                                                            <br></br><br/>
+                                                                            Token - <a href={this.state.transaction.tokenURL} style={{color: "#45467e"}} target="_blank">{ this.state.transaction.tokenAddress}</a>
+                                                                        </p>
+                                                                        <div className="col">
+                                                                            <a href="/tokens" className="editor-btn main big my-5">Manage tokens</a>
+                                                                            <span onClick={this.closeModal.bind(this)} className="editor-btn copy big my-5">Close modal</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    :
+                                                                    <p className="Title my-5" style={{textAlign:"left"}}>
+                                                                        Retrieving the token.
+                                                                        <br></br><br/>
+                                                                        Please wait ...
+                                                                    </p>
+                                                                }
+                                                            </div>
+                                                            :
+                                                            <p className="Title my-5" style={{textAlign:"left"}}>
+                                                                Please sign the transaction for continue ...
+                                                            </p>
+                                                    }
+                                                    <div className="w-100"></div>
+                                                </div>
+                                                :
+                                                <div className="col-md-12" style={{textAlign:"center"}}>
+                                                    <p className="Title my-3" style={{textAlign:"center"}}><b>Transaction not created</b></p>
+                                                    <div className="w-100 my-5"></div>
+                                                    <p className="Title my-5" style={{textAlign:"left"}}>
+                                                        { this.state.transaction.issue }
+                                                    </p>
+                                                    <div className="col">
+                                                        <span onClick={this.closeModal.bind(this)} className="editor-btn copy big my-5">Close</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
             </div>
         );
     }
