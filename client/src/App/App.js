@@ -14,11 +14,7 @@ import ViewCampaign               from './pages/ViewCampaign';
 import Compaign                   from './pages/Compaign';
 import Crowdsales                 from './pages/Crowdsales';
 import Tokens                     from './pages/Tokens';
-import TokenSetupStep1            from './pages/TokenSetupStep1';
-import TokenSetupStep2            from './pages/TokenSetupStep2';
-import TokenSetupStep3            from './pages/TokenSetupStep3';
-import TokenSetupStep4            from './pages/TokenSetupStep4';
-import TokenSetupStep5            from './pages/TokenSetupStep5';
+import AddCrowdsale               from './pages/AddCrowdsale';
 
 class App extends Component {
   render() {
@@ -38,11 +34,7 @@ class App extends Component {
           <Route path='/ViewCampaign' component={ViewCampaign}/>
           <Route path='/compaign' component={Compaign}/>
           <Route path='/addToken' component={AddToken}/>
-          <Route path='/step1' component={TokenSetupStep1}/>
-          <Route path='/step2' component={TokenSetupStep2}/>
-          <Route path='/step3' component={TokenSetupStep3}/>
-          <Route path='/step4' component={TokenSetupStep4}/>
-          <Route path='/step5' component={TokenSetupStep5}/>
+          <Route path='/addCrowdsale' component={AddCrowdsale}/>
         </Switch>
       </div>
     )

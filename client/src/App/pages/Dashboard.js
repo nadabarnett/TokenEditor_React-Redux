@@ -121,7 +121,7 @@ class Dashboard extends Component {
                     <div className="row text-center align-items-center editor-block square" id="second">
                         <div className="col">
                             <p>Want to generate crowdsale contract?</p>
-                            <Link to={'/step1'} className="nav-link">
+                            <Link to={'/addCrowdsale'} className="nav-link">
                                 <button className="editor-btn main big"><i className="fab fa-lg fa-ethereum"></i> Genetate crowdsale</button>
                             </Link>
                         </div>

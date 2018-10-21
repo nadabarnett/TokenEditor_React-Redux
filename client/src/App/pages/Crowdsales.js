@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link }             from 'react-router-dom';
 import Modal                from 'react-modal';
+import { controllerAbi, crowdsaleTokenAbi, crowdsaleAbi, controllerAddress } from './../components/ContractStore';
+
 const customStyles = {
   content : {
     width                 : '70%',
@@ -18,6 +20,7 @@ const customStyles = {
   }
 };
 
+const web3Context = window.web3;
 
 const buttonStyle = {
     border        : 'none',
@@ -34,13 +37,19 @@ class Crowdsales extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {  "showHideSidenav"   : "",
-                    "modalIsOpen"       : false,
-                    "viewSelection"     : 1,
-                    "firstBtn"          : "selected-li",
-                    "secondBtn"         : "",
-                    "thirdBtn"          : "",
-                    "fourthBtn"         : "",
+    this.state = {
+        "showHideSidenav"   : "",
+        "modalIsOpen"       : false,
+        "viewSelection"     : 1,
+        "firstBtn"          : "selected-li",
+        "secondBtn"         : "",
+        "thirdBtn"          : "",
+        "fourthBtn"         : "",
+        contracts           : [],
+        selectedContract   : {
+            token: {},
+            crowdsale: {}
+        }
     };
 
     this.openModal        = this.openModal.bind(this);
@@ -49,10 +58,79 @@ class Crowdsales extends Component {
     this.showOne          = this.showOne.bind(this);
     this.showTwo          = this.showTwo.bind(this);
     this.showThree        = this.showThree.bind(this);
+    this.showFour        = this.showFour.bind(this);
   }
 
   componentDidMount(){
-    document.body.id=""
+    document.body.id="";
+    this.showContracts();
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  fetchAddresses = () => {
+    // Controller contract
+    const controllerInstance = web3Context.eth.contract(controllerAbi).at(controllerAddress);
+
+    return new Promise((resolve, reject) => {
+        controllerInstance.getUserCrowdsales(web3Context.eth.coinbase, (error, result) => {
+            if (!error)
+                return resolve(result);
+            else
+                return reject(error)
+        })
+    })
+  }
+
+  showContracts() {
+    this.fetchAddresses()
+    .then(value => {
+        this.fetchInfoAddresses(value)
+        .then(fetchedContracts => {
+            if(this._isMounted) {
+                this.setState({ contracts: fetchedContracts });
+            }
+        })
+    })
+  }
+
+  fetchInfoAddresses = (addresses) => {
+    return new Promise((resolve, reject) => {
+        const crowdsaleContract = web3Context.eth.contract(crowdsaleAbi);
+        let fetchedContracts = [];
+
+        addresses.forEach(address => {
+            const crowdsaleInstance = crowdsaleContract.at(address);
+            new Promise((resolve, reject) => {
+                crowdsaleInstance.getState((error, response) => {
+                    if(!error)
+                        return resolve(response)
+                    else
+                        return reject(error)
+                })
+            }).then(data => {
+                let contract = {
+                    walletAddress: web3Context.toChecksumAddress(data[0]),
+                    weiRaised: web3Context.fromWei( Number(data[1]), 'ether'),
+                    tokensSold: web3Context.fromWei( Number(data[2]), 'ether'),
+                    buyersAmount: Number(data[3]),
+                    creationDate: Number(data[4]),
+                    whitelisting: data[5],
+                    burnUnsoldTokens: data[6],
+                    fixDates: data[7],
+                    address: address
+                }
+                fetchedContracts.push(contract);
+
+                if(fetchedContracts.length === addresses.length) {
+                    return resolve(fetchedContracts);
+                }
+            })
+        })
+    })
   }
 
   toggleSidenav() {
@@ -61,8 +139,75 @@ class Crowdsales extends Component {
     this.setState({"showHideSidenav"  :css});
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
+
+  openModal(contract) {
+    this.getInfoAboutToken(contract.address);
+    this.setState({
+        modalIsOpen: true
+    });
+  }
+
+  unixToDate = (timestamp) => {
+    // Months array
+    const months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    // Convert timestamp to milliseconds
+    const date = new Date(timestamp*1000);
+
+    // Year
+    const year = date.getFullYear();
+
+    // Month
+    const month = months_arr[date.getMonth()];
+
+    // Day
+    const day = date.getDate();
+
+    // Hours
+    const hours = date.getHours();
+
+    // Minutes
+    const minutes = "0" + date.getMinutes();
+
+    // Seconds
+    const seconds = "0" + date.getSeconds();
+
+    return month+'-'+day+'-'+year+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+  }
+
+  getInfoAboutToken(address) {
+    const tokenContract = web3Context.eth.contract(crowdsaleTokenAbi);
+    const tokenInstance = tokenContract.at(address);
+    console.log(address);
+
+    new Promise((resolve, reject) => {
+        tokenInstance.getState((error, response) => {
+            if(!error)
+                return resolve(response)
+            else
+                return reject(error)
+        })
+    })
+    .then(data => {
+        this.setState( prevState => {
+            return {
+                selectedContract: {
+                    ...prevState.selectedContract,
+                    token : {
+                        name: data[0],
+                        symbol: data[1],
+                        decimals: Number(data[2]),
+                        totalSupply: web3Context.fromWei( Number(data[3]), 'ether'),
+                        pausable: data[4],
+                        freezable: data[5],
+                        mintable: data[6],
+                        creationDate: this.unixToDate(Number(data[7])),
+                        contractAddress: address
+                    }
+                }
+            }
+        });
+    })
   }
 
   afterOpenModal() {
@@ -84,6 +229,10 @@ class Crowdsales extends Component {
 
   showThree() {
     this.setState({viewSelection : 3});
+  }
+
+  showFour() {
+    this.setState({viewSelection : 4});
   }
 
   render() {
@@ -175,51 +324,48 @@ class Crowdsales extends Component {
                 <h2 className="text-uppercase">My Crowdsales</h2>
               </div>
                 <div className="row my-4">
-                    <Link to={'/step1'} className="nav-link">
+                    <Link to={'/addCrowdsale'} className="nav-link">
                         <button className="editor-btn main big" onClick={this.openModal}><i className="fa fa-plus-circle"></i>&nbsp;&nbsp; Create Crowdsale</button>
                     </Link>
                 </div>
 
                 <div className="col table-responsive editor-block my-4">
-                    <table className="table" bordercolor="white">
-                    <thead style={{fontSize:"15px", textAlign:"center"}}>
-                        <tr style={{border:"none"}}>
-                        <th style={{border:"none"}}>Name</th>
-                        <th style={{border:"none"}}>Stage</th>
-                        <th style={{border:"none"}}>Sold tokens</th>
-                        <th style={{border:"none"}}>Raised ETH</th>
-                        <th style={{border:"none"}}>Token buyers</th>
-                        <th style={{border:"none"}}>Days left</th>
-                        <th style={{border:"none"}}>Address</th>
-                        </tr>
-                    </thead>
-                    <tbody style={{fontSize:"13px", textAlign:"center"}}>
-                        <tr>
-                            <td>Main crowdsale</td>
-                            <td>Pre sale</td>
-                            <td>23456060</td>
-                            <td>56,76</td>
-                            <td>3</td>
-                            <td>12</td>
-                            <td>0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80</td>
-                            <button className="editor-btn main small" onClick={this.openModal}>
-                                <i className="fas fa-edit"></i> Manage
-                            </button>
-                        </tr>
-                        <tr className="my-4">
-                            <td>Second crowdsale</td>
-                            <td>Main sale</td>
-                            <td>5673456060</td>
-                            <td>456,6</td>
-                            <td>53</td>
-                            <td>15</td>
-                            <td>0x45b9359f4201db2a66674h3v0fc5f3f733ebade2t</td>
-                            <button className="editor-btn main small" onClick={this.openModal}>
-                                <i className="fas fa-edit"></i> Manage
-                            </button>
-                        </tr>
-                    </tbody>
-                    </table>
+                    { this.state.contracts.length ?
+                        <table className="table" bordercolor="white">
+                            <thead style={{fontSize:"15px", textAlign:"center"}}>
+                                <tr style={{border:"none"}}>
+                                    <th style={{border:"none"}}>Id</th>
+                                    <th style={{border:"none"}}>Raised ETH</th>
+                                    <th style={{border:"none"}}>Tokens Sold</th>
+                                    <th style={{border:"none"}}>Buyers Amount</th>
+                                    <th style={{border:"none"}}>Funds address</th>
+                                    <th style={{border:"none"}}>Address</th>
+                                    <th style={{border:"none"}}>Settings</th>
+                                </tr>
+                            </thead>
+                            <tbody style={{fontSize:"13px", textAlign:"center"}}>
+                                { this.state.contracts.map((contract, i) => (
+                                    <tr key={i}>
+                                        <td className="align-middle">{ i + 1 }</td>
+                                        <td className="align-middle">{contract.weiRaised}</td>
+                                        <td className="align-middle">{contract.tokensSold}</td>
+                                        <td className="align-middle">{contract.buyersAmount}</td>
+                                        <td className="align-middle">
+                                            <a href={"https://rinkeby.etherscan.io/address/" + contract.walletAddress} style={{color: "#45467e", maxWidth: "120px", wordBreak:"break-all"}} target="_blank">{contract.walletAddress}</a>
+                                        </td>
+                                        <td className="align-middle">
+                                            <a href={"https://rinkeby.etherscan.io/address/" + contract.address} style={{color: "#45467e", maxWidth: "120px", wordBreak:"break-all"}} target="_blank">{contract.address}</a>
+                                        </td>
+                                        <td className="align-middle">
+                                            <input type="button" className="editor-btn main small" onClick={() => this.openModal(contract)} value="Manage" />
+                                        </td>
+                                    </tr>
+                                ))}
+                        </tbody>
+                        </table>
+                    :
+                        null
+                    }
                 </div>
             </div>
         </div>
@@ -267,14 +413,14 @@ class Crowdsales extends Component {
                       <button className="row text-center align-items-center editor-button selected-li" onClick={this.showOne}> 
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_white.png'} /></p>
-                          <p className="Amount">info</p>
+                          <p className="Amount">Crowdsale Info</p>
                         </div>
                       </button>
                       :
                       <button className="row text-center align-items-center editor-button" onClick={this.showOne}> 
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_blue.png'} /></p>
-                          <p className="Amount">info</p>
+                          <p className="Amount">Crowdsale Info</p>
                         </div>
                       </button>
                   }
@@ -285,15 +431,15 @@ class Crowdsales extends Component {
                     this.state.viewSelection == 2 ?
                       <button className="row text-center align-items-center editor-button selected-li" onClick={this.showTwo}> 
                         <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_white.png'} /></p>
-                          <p className="Amount">Basic features</p>
+                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_white.png'} /></p>
+                          <p className="Amount">Token info</p>
                         </div>
                       </button>
                       :
                       <button className="row text-center align-items-center editor-button" onClick={this.showTwo}> 
                         <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_blue.png'} /></p>
-                          <p className="Amount">Basic features</p>
+                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_blue.png'} /></p>
+                          <p className="Amount">Token info</p>
                         </div>
                       </button>
                   }
@@ -305,11 +451,30 @@ class Crowdsales extends Component {
                       <button className="row text-center align-items-center editor-button selected-li" onClick={this.showThree}> 
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_white.png'} /></p>
+                          <p className="Amount">Basic features</p>
+                        </div>
+                      </button>
+                      :
+                      <button className="row text-center align-items-center editor-button" onClick={this.showThree}>
+                        <div className="col">
+                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_blue.png'} /></p>
+                          <p className="Amount">Basic features</p>
+                        </div>
+                      </button>
+                  }
+                </div>
+
+                <div className="col-md-4">
+                  {
+                    this.state.viewSelection == 4 ?
+                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showFour}>
+                        <div className="col">
+                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_white.png'} /></p>
                           <p className="Amount">Extra features</p>
                         </div>
                       </button>
                       :
-                      <button className="row text-center align-items-center editor-button" onClick={this.showThree}> 
+                      <button className="row text-center align-items-center editor-button" onClick={this.showFour}> 
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_blue.png'} /></p>
                           <p className="Amount">Extra features</p>
@@ -453,7 +618,78 @@ class Crowdsales extends Component {
               }
 
               {
-                this.state.viewSelection == 2 ?
+                this.state.viewSelection === 2 ?
+                <div className="row container-fluid my-4">
+                    <div className="col-md-6">
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Name</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.name}</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Symbol</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.symbol}</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Decimals</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.decimals}</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Total supply</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.totalSupply}</p>
+                        </div>
+                        </div>
+
+                    </div>
+                    <div className="col-md-6">
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Creation date</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.creationDate}</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Pausable</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.token.pausable).toUpperCase()}</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Freezable</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.token.freezable).toUpperCase()}</p>
+                        </div>
+                        </div>
+
+                        <div className="col-md-12 form-group my-5">
+                        <div className="col">
+                            <p className="Title my-3" style={{textAlign:"center"}}>Mintable</p>
+                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.token.mintable).toUpperCase()}</p>
+                        </div>
+                        </div>
+
+                    </div>
+                    <div className="col-md-12" style={{textAlign:"center"}}>
+                        <a href={"https://rinkeby.etherscan.io/token/" + this.state.selectedContract.token.contractAddress} style={{color: "#45467e"}} target="_blank">See on Etherscan</a>
+                    </div>
+                </div>
+                : null
+              }
+
+              {
+                this.state.viewSelection == 3 ?
                 <div className="row container-fluid my-4 mx-3">
                   <div className="row container-fluid">
                     <div className="col-md-12 form-group">
@@ -533,7 +769,7 @@ class Crowdsales extends Component {
               }
 
               {
-                this.state.viewSelection == 3 ?
+                this.state.viewSelection == 4 ?
                 <div className="row container-fluid my-4 mx-3">
                     <div className="row container-fluid">
                         <div className="col-md-12 mb-5" style={{textAlign:"center"}}>

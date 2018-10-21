@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Switch from 'react-toggle-switch';
 import { Link } from 'react-router-dom';
-import {bytecode,tokenAbi} from './../components/ContractStore';
+import { tokenBytecode, tokenAbi } from './../components/ContractStore';
 import Modal from 'react-modal';
 
 const customStyles = {
@@ -201,7 +201,7 @@ class AddToken extends Component {
             untilDate,
             {
                 from: this.state.user,
-                data: '0x' + bytecode,
+                data: '0x' + tokenBytecode,
                 value: 1000000000000000000
             }, (e, tokenContract) => {
                 if(typeof tokenContract !== 'undefined') {
