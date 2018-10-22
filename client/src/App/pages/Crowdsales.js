@@ -139,7 +139,6 @@ class Crowdsales extends Component {
     this.setState({"showHideSidenav"  :css});
   }
 
-
   openModal(contract) {
     this.getInfoAboutToken(contract.address);
     this.setState({
@@ -178,8 +177,8 @@ class Crowdsales extends Component {
   getInfoAboutToken(address) {
     const tokenContract = web3Context.eth.contract(crowdsaleTokenAbi);
     const tokenInstance = tokenContract.at(address);
+    if(typeof address === 'undefined') return false;
     console.log(address);
-
     new Promise((resolve, reject) => {
         tokenInstance.getState((error, response) => {
             if(!error)

@@ -32,7 +32,7 @@ class AddToken extends Component {
           showHideSidenav: "",
           switched: false,
           modalIsOpen: false,
-          user: web3Context.eth.coinbase,
+          user: web3Context.eth.coinbase ? web3Context.eth.coinbase : 'Will be set automatically',
           transaction: {
             trxHash: '',
             trxURL: '',
