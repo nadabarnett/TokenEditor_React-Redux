@@ -1284,7 +1284,7 @@ class AddCrowdsale extends Component {
                                                 <div className="col-md-12" style={{textAlign:"center"}}>
                                                     <p className="Title my-3 mb-5" style={{textAlign:"center"}}>
                                                         <b>Making transaction ...</b><br/>
-                                                        <i>NOTE: don't switch your Mtamask account until the all 4 transactions confirmation.</i><br/>
+                                                        <i>NOTE: don't switch your Metamask account until the all 4 transactions confirmation.</i><br/>
                                                     </p>
                                                     <p className="Title my-3" style={{textAlign:"left"}}>
                                                         1. Deploying Token contract - { this.state.transactions.token.status }
