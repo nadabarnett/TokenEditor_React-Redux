@@ -153,7 +153,6 @@ class AddToken extends Component {
             symbol = this.state.token.symbol.replace(/\s/g, ''),
             decimals = this.state.token.decimals,
             erc223 = this.state.token.erc223,
-            owner = web3Context.toChecksumAddress(this.state.token.owner),
             pausable = this.state.token.pausable,
             freezable = this.state.token.freezable,
             mintable = this.state.token.mintable,
@@ -194,7 +193,6 @@ class AddToken extends Component {
             pausable,
             freezable,
             mintable,
-            owner,
             receivers,
             amounts,
             frozen,
@@ -367,7 +365,7 @@ class AddToken extends Component {
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
                                     <div className="col-md-12 form-group">
                                         <p>Token owner</p>
-                                        <input type="text" required={true} onChange={this.onChange} name="owner" defaultValue={this.state.token.owner} className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
+                                        <input type="text" required={true} value={this.state.token.owner} className="editor-input w-100" readOnly placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
                                     </div>
                                     <div className="w-100"></div>
 
