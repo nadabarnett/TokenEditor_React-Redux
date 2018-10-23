@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Switch from 'react-toggle-switch';
 import { Link } from 'react-router-dom';
-import { crowdsaleAbi, crowdsaleBytecode, crowdsaleTokenAbi, crowdsaleTokenBytecode } from './../components/ContractStore';
+import { crowdsaleAbi, crowdsaleBytecode, tokenAbi, tokenBytecode } from './../components/ContractStore';
 import Modal from 'react-modal';
 import { parse } from 'url';
 
@@ -450,7 +450,7 @@ class AddCrowdsale extends Component {
 
     tokenDeploy = (token) => {
         const user = this.getUser();
-        const newTokenContract = web3Context.eth.contract(crowdsaleTokenAbi);
+        const newTokenContract = web3Context.eth.contract(tokenAbi);
         return new Promise((resolve, reject) => {
             newTokenContract.new(
                 token.name,
@@ -465,7 +465,8 @@ class AddCrowdsale extends Component {
                 token.untilDate,
                 {
                     from: user,
-                    data: '0x' + crowdsaleTokenBytecode
+                    data: '0x' + tokenBytecode,
+                    value: 1000000000000000000
                 },
                 (error, result) => {
                     if(!error)
@@ -703,7 +704,7 @@ class AddCrowdsale extends Component {
         const tokensForSale = this.toBigNumber(this.state.stages.tokensForSale);
         const tokenAddress = this.state.transactions.token.address;
         crowdsaleAddress = web3Context.toChecksumAddress(crowdsaleAddress);
-        const tokenInstance = web3Context.eth.contract(crowdsaleTokenAbi).at(tokenAddress);
+        const tokenInstance = web3Context.eth.contract(tokenAbi).at(tokenAddress);
 
         return new Promise((resolve, reject) => {
             tokenInstance.transfer(crowdsaleAddress, tokensForSale, (error, txHash) => {

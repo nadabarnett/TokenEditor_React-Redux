@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link }             from 'react-router-dom';
 import Modal                from 'react-modal';
-import { controllerAbi, crowdsaleTokenAbi, crowdsaleAbi, controllerAddress } from './../components/ContractStore';
+import { controllerAbi, tokenAbi, crowdsaleAbi, controllerAddress } from './../components/ContractStore';
 
 const customStyles = {
   content : {
@@ -175,7 +175,7 @@ class Crowdsales extends Component {
   }
 
   getInfoAboutToken(address) {
-    const tokenContract = web3Context.eth.contract(crowdsaleTokenAbi);
+    const tokenContract = web3Context.eth.contract(tokenAbi);
     const tokenInstance = tokenContract.at(address);
     if(typeof address === 'undefined') return false;
     console.log(address);
