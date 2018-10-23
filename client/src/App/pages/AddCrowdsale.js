@@ -174,7 +174,6 @@ class AddCrowdsale extends Component {
             value = target.value;
 
         if(Number.isNaN(value)) value = 0;
-        console.log(value);
         switch (this.state.step) {
             case 1:
                 this.setState( prevState => {
@@ -225,7 +224,6 @@ class AddCrowdsale extends Component {
             value = target.value;
 
         if(Number.isNaN(value)) value = 0;
-        console.log(value);
         const newRounds = this.state.stages.rounds.map((stage, i) => {
             if (id !== i) return stage;
             return {
@@ -257,7 +255,6 @@ class AddCrowdsale extends Component {
             value = target.value;
 
         if(Number.isNaN(value)) value = 0;
-        console.log(value);
         const newReceivers = this.state.token.receivers.map((receiver, i) => {
             if (id !== i) return receiver;
             return {
@@ -285,9 +282,7 @@ class AddCrowdsale extends Component {
             return (receiver.amount != "" ? receiver.amount : 0);
         });
         let sum = amounts.reduce((a, b) => a + b, 0);
-        console.log(sum);
         sum += this.state.stages.tokensForSale;
-        console.log(sum);
 
         this.setState( prevState => {
             return {
@@ -369,9 +364,7 @@ class AddCrowdsale extends Component {
     onSubmit = (e) => {
         e.preventDefault();
 
-        this.detectSwitch(this.getUser());
         this.setState({modalIsOpen: true});
-
         let tokenData = this.getTokenParams();
         let icoData = this.getCrowdsaleParams();
 
@@ -379,8 +372,10 @@ class AddCrowdsale extends Component {
         .then((tokenAddress) => {
             this.crowdsaleDeploy(tokenAddress, icoData)
             .then((crowdsaleAddress) => {
-                this.transferTokens(crowdsaleAddress);
-                this.setUpStages(crowdsaleAddress)
+                this.transferTokens(crowdsaleAddress)
+                .then(() => {
+                    this.setUpStages(crowdsaleAddress);
+                });
             })
         })
         .catch(error => {
@@ -403,15 +398,23 @@ class AddCrowdsale extends Component {
         else return(user);
     }
 
-    detectSwitch = (currentUser) => {
-        let accountSwitched = false;
-        setInterval(() => {
-            if (web3Context.eth.coinbase !== currentUser && !accountSwitched) {
-                accountSwitched = true;
-                alert("You switch the metamask account. \n  \n Please log in with your previus account for getting notification about your token. \n  \n " + currentUser + "");
-            }
-        }, 100);
-    }
+    getTransactionReceiptMined = (txHash) => {
+        return new Promise((resolve, reject) => {
+            (function transactionReceiptAsync () {
+                web3Context.eth.getTransactionReceipt(txHash, (error, receipt) => {
+                    if (error) {
+                        reject(error);
+                    } else if (receipt == null) {
+                        setTimeout(
+                            () => transactionReceiptAsync()
+                        , 1000);
+                    } else {
+                        resolve(receipt);
+                    }
+                });
+            })();
+        });
+    };
 
     getTokenParams = () => {
         const tokenState = this.state.token;
@@ -638,22 +641,18 @@ class AddCrowdsale extends Component {
                                 }
                             };
                         });
-                        web3Context.eth.getTransactionReceipt(txHash, (error, tx) => {
-                            if(tx) {
-                                this.setState( prevState => {
-                                    return {
-                                        transactions : {
-                                            ...prevState.transactions,
-                                            settings: {
-                                                ...prevState.transactions.settings,
-                                                status: "Done"
-                                            }
+                        this.getTransactionReceiptMined(txHash).then(() => {
+                            this.setState( prevState => {
+                                return {
+                                    transactions : {
+                                        ...prevState.transactions,
+                                        settings: {
+                                            ...prevState.transactions.settings,
+                                            status: "Done"
                                         }
-                                    };
-                                });
-                            }
-                            else
-                                console.log(error)
+                                    }
+                                };
+                            });
                         })
                     }
                     else
@@ -667,37 +666,33 @@ class AddCrowdsale extends Component {
                 stageData.maxInvest,
                 stageData.startDate,
                 stageData.finishDate,
-                (error, hash) => {
+                (error, txHash) => {
                     if (!error) {
                         this.setState( prevState => {
                             return {
                                 transactions : {
                                     ...prevState.transactions,
                                     settings: {
-                                        txHash: hash,
-                                        txUrl: "https://rinkeby.etherscan.io/tx/" + hash,
+                                        txHash: txHash,
+                                        txUrl: "https://rinkeby.etherscan.io/tx/" + txHash,
                                         status: "Pending ..."
                                     }
                                 }
                             };
                         });
-                        web3Context.eth.getTransactionReceipt(hash, (error, tx) => {
-                            if(tx) {
-                                this.setState( prevState => {
-                                    return {
-                                        transactions : {
-                                            ...prevState.transactions,
-                                            settings: {
-                                                ...prevState.transactions.settings,
-                                                status: "Done"
-                                            }
+                        this.getTransactionReceiptMined(txHash).then(() => {
+                            this.setState( prevState => {
+                                return {
+                                    transactions : {
+                                        ...prevState.transactions,
+                                        settings: {
+                                            ...prevState.transactions.settings,
+                                            status: "Done"
                                         }
-                                    };
-                                });
-                            }
-                            else
-                                console.log(error)
-                        })
+                                    }
+                                };
+                            });
+                        });
                     }
                     else
                         console.error(error)
@@ -711,44 +706,37 @@ class AddCrowdsale extends Component {
         const tokenInstance = web3Context.eth.contract(crowdsaleTokenAbi).at(tokenAddress);
 
         return new Promise((resolve, reject) => {
-            tokenInstance.transfer(crowdsaleAddress, tokensForSale, (error, hash) => {
-                if (!error)
-                    web3Context.eth.getTransactionReceipt(hash, (error, tx) => {
-                        if(tx) {
-                            this.setState( prevState => {
-                                return {
-                                    transactions : {
-                                        ...prevState.transactions,
-                                        transfer: {
-                                            txHash: hash,
-                                            txUrl: "https://rinkeby.etherscan.io/tx/" + hash,
-                                            status: "Pending ..."
-                                        }
-                                    }
-                                };
-                            });
-                            if(tx.blockNumber  === "0x1") {
-                                this.setState( prevState => {
-                                    return {
-                                        transactions : {
-                                            ...prevState.transactions,
-                                            transfer: {
-                                                ...prevState.transactions.transfer,
-                                                status: "Done"
-                                            }
-                                        }
-                                    };
-                                });
-                                resolve(true)
+            tokenInstance.transfer(crowdsaleAddress, tokensForSale, (error, txHash) => {
+                if(txHash) {
+                    this.setState( prevState => {
+                        return {
+                            transactions : {
+                                ...prevState.transactions,
+                                transfer: {
+                                    txHash: txHash,
+                                    txUrl: "https://rinkeby.etherscan.io/tx/" + txHash,
+                                    status: "Pending ..."
+                                }
                             }
-                        }
-                        else
-                            reject(error)
+                        };
+                    });
+                    this.getTransactionReceiptMined(txHash).then(() => {
+                        this.setState( prevState => {
+                            return {
+                                transactions : {
+                                    ...prevState.transactions,
+                                    transfer: {
+                                        ...prevState.transactions.transfer,
+                                        status: "Done"
+                                    }
+                                }
+                            };
+                        });
+                        resolve(crowdsaleAddress);
                     })
-                else
-                    reject(error)
+                }
             })
-        });
+        })
     }
 
     ////
@@ -1265,7 +1253,7 @@ class AddCrowdsale extends Component {
                                     <button type="submit" className="editor-btn big mb-5">Continue</button> : null
                                 }
                                 { step === 5 ?
-                                    <input type="submit" className="editor-btn big mb-5" onClick={this.onSubmit} value="Deploy" /> : null
+                                    <button className="editor-btn big mb-5" onClick={this.onSubmit}>Deploy</button> : null
                                 }
                             </div>
                         </form>
@@ -1295,19 +1283,19 @@ class AddCrowdsale extends Component {
                                                 <div className="col-md-12" style={{textAlign:"center"}}>
                                                     <p className="Title my-3 mb-5" style={{textAlign:"center"}}>
                                                         <b>Making transaction ...</b><br/>
-                                                        <i>NOTE: don't switch your account until transaction confirmation for getting information about transaction status.</i><br/>
+                                                        <i>NOTE: don't switch your Mtamask account until the all 4 transactions confirmation.</i><br/>
                                                     </p>
                                                     <p className="Title my-3" style={{textAlign:"left"}}>
-                                                        1. Deploying Token contract - {this.state.transactions.token.status }
+                                                        1. Deploying Token contract - { this.state.transactions.token.status }
                                                     </p>
                                                     <p className="Title my-3" style={{textAlign:"left"}}>
-                                                        2. Deploying Crowdsale contract - {this.state.transactions.crowdsale.status }
+                                                        2. Deploying Crowdsale contract - { this.state.transactions.crowdsale.status }
                                                     </p>
                                                     <p className="Title my-3" style={{textAlign:"left"}}>
-                                                        3. Setting necessary values for Crowdsale stages - {this.state.transactions.settings.status }
+                                                        3. Transfering tokens for Crowdsale - { this.state.transactions.transfer.status }
                                                     </p>
                                                     <p className="Title my-3" style={{textAlign:"left"}}>
-                                                        4. Transfering tokens for Crowdsale - {this.state.transactions.transfer.status }
+                                                        4. Setting necessary values for Crowdsale stages - { this.state.transactions.settings.status }
                                                     </p>
                                                     <div className="w-100 my-5"></div>
                                                     { (this.state.transactions.settings.status === "Done" &&
