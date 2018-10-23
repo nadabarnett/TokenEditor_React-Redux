@@ -817,7 +817,7 @@ class AddCrowdsale extends Component {
                     <div className="w-100 my-2"></div>
 
                     <div className="col">
-                        <form onSubmit={this.handleSubmit}>
+                        <form onSubmit={this.goToNext}>
                             { step === 1 ?
                                 <div className="row justify-content-center">
                                     <div className="col-md-5 form-group">
@@ -1262,7 +1262,7 @@ class AddCrowdsale extends Component {
                                     <button className="editor-btn big mb-5" onClick={this.goToPrev}>Prev</button> : null
                                 }
                                 { step < 5 ?
-                                    <button className="editor-btn big mb-5" onClick={this.goToNext}>Continue</button> : null
+                                    <button type="submit" className="editor-btn big mb-5">Continue</button> : null
                                 }
                                 { step === 5 ?
                                     <input type="submit" className="editor-btn big mb-5" onClick={this.onSubmit} value="Deploy" /> : null
