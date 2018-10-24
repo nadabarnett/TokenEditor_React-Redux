@@ -24,7 +24,7 @@ const customStyles = {
     }
 };
 
-let initialState = {
+const initialState = {
     step: 1,
     user: web3Context.eth.coinbase,
     modalIsOpen: false,
@@ -59,8 +59,9 @@ let initialState = {
         minInvest: '',
         maxInvest: '',
         rounds: [{
-            tokensForSale: 0,
-            tokenPrice: 0,
+            name: '',
+            tokensForSale: '',
+            tokenPrice: '',
             startDate: '',
             finishDate: ''
         }]
@@ -161,7 +162,7 @@ class AddCrowdsale extends Component {
     //  Detect and update state
     ////
 
-    onChange = (e) => {
+    detectValue = (e) => {
         let target = e.target;
         let name = target.name;
         let value;
@@ -174,6 +175,12 @@ class AddCrowdsale extends Component {
             value = target.value;
 
         if(Number.isNaN(value)) value = 0;
+
+        return [name, value];
+    }
+
+    onChange = (e) => {
+        const [name, value] = this.detectValue(e);
         switch (this.state.step) {
             case 1:
                 this.setState( prevState => {
@@ -211,19 +218,7 @@ class AddCrowdsale extends Component {
     }
 
     onStagesChange = (id) => (e) => {
-        let target = e.target;
-        let name = target.name;
-        let value;
-
-
-        if(target.type === 'checkbox')
-            value = target.checked;
-        else if(target.type === 'number')
-            value = parseInt(target.value)
-        else
-            value = target.value;
-
-        if(Number.isNaN(value)) value = 0;
+        const [name, value] = this.detectValue(e);
         const newRounds = this.state.stages.rounds.map((stage, i) => {
             if (id !== i) return stage;
             return {
@@ -243,18 +238,7 @@ class AddCrowdsale extends Component {
     }
 
     ondistributionAddressesChange = (id) => (e) => {
-        let target = e.target;
-        let name = target.name;
-        let value;
-
-        if(target.type === 'checkbox')
-            value = target.checked;
-        else if(target.type === 'number')
-            value = parseInt(target.value)
-        else
-            value = target.value;
-
-        if(Number.isNaN(value)) value = 0;
+        const [name, value] = this.detectValue(e);
         const newReceivers = this.state.token.receivers.map((receiver, i) => {
             if (id !== i) return receiver;
             return {
@@ -282,8 +266,8 @@ class AddCrowdsale extends Component {
             return (receiver.amount != "" ? receiver.amount : 0);
         });
         let sum = amounts.reduce((a, b) => a + b, 0);
-        sum += this.state.stages.tokensForSale;
 
+        sum += this.state.stages.tokensForSale;
         this.setState( prevState => {
             return {
                 token: {
@@ -296,9 +280,10 @@ class AddCrowdsale extends Component {
 
     calculateTokensMultiStage = () => {
         let amounts = this.state.stages.rounds.map((stage, i) => {
-            return (stage.tokensAmount != "" ? stage.tokensAmount : 0);
+            return (stage.tokensForSale != "" ? stage.tokensForSale : 0);
         });
         let sum = amounts.reduce((a, b) => a + b, 0);
+
         this.setState( prevState => {
             return {
                 stages: {
@@ -323,8 +308,9 @@ class AddCrowdsale extends Component {
 
     onAddStage = () => {
         const newRound = {
-            tokensAmount: '',
-            price: '',
+            name: '',
+            tokensForSale: '',
+            tokenPrice: '',
             startDate: '',
             finishDate: ''
         };
@@ -343,7 +329,7 @@ class AddCrowdsale extends Component {
         const newAddress = {
             address: '',
             amount: '',
-            freezen: false,
+            frozen: false,
             untilDate: ''
         };
 
@@ -364,9 +350,9 @@ class AddCrowdsale extends Component {
     onSubmit = (e) => {
         e.preventDefault();
 
+        const tokenData = this.getTokenParams();
+        const icoData = this.getCrowdsaleParams();
         this.setState({modalIsOpen: true});
-        let tokenData = this.getTokenParams();
-        let icoData = this.getCrowdsaleParams();
 
         this.tokenDeploy(tokenData)
         .then((tokenAddress) => {
@@ -384,18 +370,12 @@ class AddCrowdsale extends Component {
     }
 
     showIssue = (error) => {
+        console.error(error);
         this.setState({
             transactions: {
-                issue: "You made some issue in form, please check it again."
+                issue: "Something goes wrong ( Please try again."
             }
         });
-    }
-
-    getUser = () => {
-        let user = this.state.user;
-        if(user !== this.state.ico.owner)
-            alert("The owner of ICO is this address " + this.state.ico.owner +". Now you used this address " + user + ". Please switch account for continue and deploy the contract.")
-        else return(user);
     }
 
     getTransactionReceiptMined = (txHash) => {
@@ -414,7 +394,15 @@ class AddCrowdsale extends Component {
                 });
             })();
         });
-    };
+    }
+
+    getUser = () => {
+        const user = this.state.user;
+        if(user !== this.state.ico.owner)
+            alert("The owner of ICO is this address " + this.state.ico.owner +". Now you used this address " + user + ". Please switch account for continue and deploy the contract.")
+        else
+            return user;
+    }
 
     getTokenParams = () => {
         const tokenState = this.state.token;
@@ -435,7 +423,7 @@ class AddCrowdsale extends Component {
                     receiver.amount = this.toBigNumber(this.state.stages.tokensForSale);
                 else
                     receiver.amount = this.toBigNumber(receiver.amount);
-                return receiver.amount;
+                    return receiver.amount;
             }),
             frozen: tokenState.receivers.map((receiver, i) => {
                 return receiver.frozen;
@@ -467,8 +455,7 @@ class AddCrowdsale extends Component {
                     from: user,
                     data: '0x' + tokenBytecode,
                     value: 1000000000000000000
-                },
-                (error, result) => {
+                }, (error, result) => {
                     if(!error)
                         if (!result.address)
                             this.setState( prevState => {
@@ -499,9 +486,9 @@ class AddCrowdsale extends Component {
                                     }
                                 };
                             });
-                            return resolve(result.address);
+                            resolve(result.address);
                         }
-                    else
+                    else {
                         this.setState( prevState => {
                             return {
                                 ...prevState,
@@ -511,6 +498,8 @@ class AddCrowdsale extends Component {
                                 }
                             }
                         });
+                        reject(error)
+                    }
             })
         })
     }
@@ -570,7 +559,7 @@ class AddCrowdsale extends Component {
                                     }
                                 };
                             });
-                            return resolve(result.address);
+                            resolve(result.address);
                         }
                     else
                         this.setState({
@@ -589,18 +578,18 @@ class AddCrowdsale extends Component {
 
         if(_stages.multiStages)
             stages = {
-                tokenPrices: _stages.map((stage, i) => {
+                tokenPrices: _stages.rounds.map((stage, i) => {
                     return stage.tokenPrice;
                 }),
-                startDates: _stages.map((stage, i) => {
+                startDates: _stages.rounds.map((stage, i) => {
                     stage.startDate = new Date(stage.startDate).getTime() / 1000;
                     return stage.startDate;
                 }),
-                finishDates: _stages.map((stage, i) => {
+                finishDates: _stages.rounds.map((stage, i) => {
                     stage.finishDate = new Date(stage.finishDate).getTime() / 1000;
                     return stage.finishDate;
                 }),
-                tokensForSale: _stages.map((stage, i) => {
+                tokensForSale: _stages.rounds.map((stage, i) => {
                     return this.toBigNumber(stage.tokensForSale);
                 }),
             }
@@ -787,10 +776,10 @@ class AddCrowdsale extends Component {
     ////
 
     render() {
-        let step = this.state.step;
-        let token = this.state.token;
-        let ico = this.state.ico;
-        let stages = this.state.stages;
+        const step = this.state.step;
+        const token = this.state.token;
+        const ico = this.state.ico;
+        const stages = this.state.stages;
 
         return (
             <div className="container my-4">
@@ -959,7 +948,7 @@ class AddCrowdsale extends Component {
                                                 <div key={i} className="row justify-content-center">
                                                     { i !== 0 ? <hr className="w-100 my-5" /> : null }
 
-                                                    <h2 style={{minHeight: 38}} className="w-100 mb-5"> {stage.name} </h2>
+                                                    <h2 style={{minHeight: 38}} className="w-100 mb-5">{stage.name}</h2>
                                                     <div className="col">
                                                         <div className="row justify-content-center">
                                                             <div className="col-md-12 form-group">
@@ -975,8 +964,8 @@ class AddCrowdsale extends Component {
 
                                                             <div className="w-100"></div>
                                                             <div className="col-md-12 form-group">
-                                                                <p>Tokens for sale <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Third Period tooltip on top"></i></p>
-                                                                <input type="number" name="tokensAmount" required={true} onChange={this.onStagesChange(i)} value={stage.tokensAmount} className="editor-input w-100" placeholder="10000" />
+                                                                <p>Tokens amount for sale <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Third Period tooltip on top"></i></p>
+                                                                <input type="number" name="tokensForSale" required={true} onChange={this.onStagesChange(i)} value={stage.tokensForSale} className="editor-input w-100" placeholder="10000" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1184,7 +1173,7 @@ class AddCrowdsale extends Component {
 
                                                         <div className="col-md-12 form-group">
                                                             <p>Tokens for stage</p>
-                                                            <p className="main-color font-weight-bold">{stage.tokensAmount}</p>
+                                                            <p className="main-color font-weight-bold">{stage.tokensForSale}</p>
                                                         </div>
                                                         <div className="w-100"></div>
 
@@ -1284,7 +1273,7 @@ class AddCrowdsale extends Component {
                                                 <div className="col-md-12" style={{textAlign:"center"}}>
                                                     <p className="Title my-3 mb-5" style={{textAlign:"center"}}>
                                                         <b>Making transaction ...</b><br/>
-                                                        <i>NOTE: don't switch your Metamask account until the all 4 transactions confirmation.</i><br/>
+                                                        <i>NOTE: please don't reload the page <br/> and dont switch your Metamask account until the all 4 transactions confirmation.</i><br/>
                                                     </p>
                                                     <p className="Title my-3" style={{textAlign:"left"}}>
                                                         1. Deploying Token contract - { this.state.transactions.token.status }

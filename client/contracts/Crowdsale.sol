@@ -25,7 +25,7 @@ contract Crowdsale is Whitelist {
   // The token being sold
   IERC20 private _token;
 
-  IController private _TEcontroller = IController(0x3Eb8344a5f13a712eE2cf47bD1b32CAdde2Bc353);
+  IController private _TEcontroller = IController(0xaAd1241C85f83c016F3de46CEb9C2eBa710198B3);
   address private _TEwallet = 0x0471fbe8D691B37591Ba715B5F93827E53c07669;
 
   address private _wallet;
@@ -103,7 +103,7 @@ contract Crowdsale is Whitelist {
   // Crowdsale getters
   // -----------------------------------------
 
-  function getState() external view returns(address, uint256, uint256, uint256, uint256 ,bool, bool, bool) {
+  function getState() external view returns(address, uint256, uint256, uint256, uint256 ,bool, bool, bool, uint256) {
     return (
         _wallet,
         _weiRaised,
@@ -112,14 +112,14 @@ contract Crowdsale is Whitelist {
         _TEcontroller.getCreationDateOfContract(address(this)),
         _whitelisting,
         _burnUnsoldTokens,
-        _fixDates
+        _fixDates,
+        availableTokens()
     );
   }
 
-  function getSingleStageInfo() external view returns(uint256, uint256, uint256, uint256, uint256, uint256) {
+  function getSingleStageInfo() external view returns(uint256, uint256, uint256, uint256, uint256) {
     return (
         _rate,
-        availableTokens(),
         _startDate,
         _finishDate,
         _minLimit,
@@ -128,14 +128,22 @@ contract Crowdsale is Whitelist {
   }
 
   function getMultistageInfo() external view returns (uint256, uint256, uint256, uint256) {
+    Stage memory stage;
+
     uint256 i;
     while(i < stages.length) {
       if(stages[i].startDate < block.timestamp && stages[i].finishDate > block.timestamp) {
-          return (stages[i].rate, stages[i].tokensAmount, stages[i].startDate, stages[i].finishDate);
+          stage = stages[i];
       }
       i++;
     }
 
+    return (
+        stage.rate,
+        stage.tokensAmount,
+        stage.startDate,
+        stage.finishDate
+    );
   }
 
   function getStagesLength() external view returns(uint256) {
@@ -346,5 +354,27 @@ contract Crowdsale is Whitelist {
   function tokensSold() public view returns (uint256) {
       return _tokensSold;
   }
+  
+  
+  /**
+   * @return the amount of sold tokens
+   */
+  function changeFundsAddress(address newOwner) public onlyOwner {
+      require(newOwner != address(0));
+      _wallet = newOwner;
+  }
+  
+  /**
+   * @return the amount of sold tokens
+   */
+  function changeRate(uint256 newRate) public onlyOwner {
+      _rate = newRate;
+  }
+  
+
+  function transferTokensToNonEthBuyers(address to, uint256 amount) public onlyOwner {
+      _token.transfer(to, amount);
+  }
+
 
 }

@@ -13,34 +13,33 @@ import "./TokenTimeLock.sol";
  * @dev Token smart contract
  */
 contract Token is ERC20Detailed, ERC20Pausable, ERC20Freezable, ERC20Mintable, ERC20Burnable {
-    Controller private _TEcontroller = Controller(0x3Eb8344a5f13a712eE2cf47bD1b32CAdde2Bc353);
+    IController private _TEcontroller = IController(0xaAd1241C85f83c016F3de46CEb9C2eBa710198B3);
     address private _TEwallet = 0x0471fbe8D691B37591Ba715B5F93827E53c07669;
 
     constructor(
-            string name,
-            string symbol,
+            string name, 
+            string symbol, 
             uint8 decimals,
-            bool _pausable,
-            bool _freezable,
+            bool _pausable, 
+            bool _freezable, 
             bool _mintable,
-            address _owner,
-            address [] _receivers,
-            uint256 [] _amounts,
+            address [] _receivers, 
+            uint256 [] _amounts, 
             bool [] _frozen,
             uint256 [] _untilDate
-        )
-        public
-        ERC20Detailed(name,symbol,decimals)
+        ) 
+        public 
+        ERC20Detailed(name,symbol,decimals) 
         payable
         {
             require(msg.value == 1 ether);
 
             for (uint256 j = 0; j < _receivers.length; j++) {
                 if(!_frozen[j]) {
-                   _mint(_receivers[j], _amounts[j] * 10**uint256(decimals));
+                   _mint(_receivers[j], _amounts[j]);
                 } else {
                     address lockedTokens = new TokenTimelock(IERC20(address(this)), _receivers[j], _untilDate[j]);
-                    _mint(lockedTokens, _amounts[j] * 10**uint256(decimals));
+                    _mint(lockedTokens, _amounts[j]);
                 }
             }
 
@@ -55,11 +54,7 @@ contract Token is ERC20Detailed, ERC20Pausable, ERC20Freezable, ERC20Mintable, E
             if(!_mintable) {
                 finishMinting();
             }
-
-            if(msg.sender != _owner) {
-                transferOwnership(_owner);
-            }
-
+            
             _TEcontroller.addTokenToUser(msg.sender, address(this));
             _TEwallet.transfer(1 ether);
     }

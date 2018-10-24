@@ -79,6 +79,14 @@ class AddToken extends Component {
         });
     };
 
+    toBigNumber = (amount) => {
+        const decimals = web3Context.toBigNumber(this.state.token.decimals);
+        const bigNumber = web3Context.toBigNumber(amount);
+        const value = bigNumber.times(web3Context.toBigNumber(10).pow(decimals));
+
+        return value;
+    }
+
     onChange = (e) => {
         let value = e.target.value != "on" ?  e.target.value : e.target.checked;
         let name = e.target.name;
@@ -163,15 +171,13 @@ class AddToken extends Component {
                 return receiver.address;
             }),
             amounts = this.state.token.receivers.map((receiver, i) => {
-                receiver.amount = receiver.amount;
+                receiver.amount = this.toBigNumber(receiver.amount);
                 return receiver.amount;
             }),
             frozen = this.state.token.receivers.map((receiver, i) => {
-                receiver.frozen = receiver.frozen;
                 return receiver.frozen;
             }),
             untilDate = this.state.token.receivers.map((receiver, i) => {
-                receiver.untilDate = receiver.untilDate;
                 return receiver.untilDate;
             });
 

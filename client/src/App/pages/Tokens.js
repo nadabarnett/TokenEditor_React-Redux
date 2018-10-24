@@ -613,40 +613,40 @@ class Tokens extends Component {
                 {
                     this.state.viewSelection === 2 ?
                     <div className="row container-fluid my-4 mx-3">
-                    <div className="row container-fluid">
-                        <div className="col-md-12 form-group">
-                        <div className="row">
-                            <div className="col-md-12" style={{textAlign:"center"}}>
-                                <p className="Title my-3" style={{textAlign:"center"}}><b>Transfer {this.state.selectedToken.name} Token</b></p>
-                                <form className="d-flex" data-action="transfer" onSubmit={this.doTokenFeature}>
-                                    <div className="col">
-                                        <p className="Title my-3" style={{textAlign:"center"}}>ETH address</p>
-                                        <input type="text" onChange={this.onChange} name="transferTo" className="editor-input" placeholder="Text" style={{width:"70%"}} required={true} />
+                        <div className="row container-fluid">
+                            <div className="col-md-12 form-group">
+                                <div className="row">
+                                    <div className="col-md-12" style={{textAlign:"center"}}>
+                                        <p className="Title my-3" style={{textAlign:"center"}}><b>Transfer {this.state.selectedToken.name} Token</b></p>
+                                        <form className="d-flex" data-action="transfer" onSubmit={this.doTokenFeature}>
+                                            <div className="col">
+                                                <p className="Title my-3" style={{textAlign:"center"}}>ETH address</p>
+                                                <input type="text" onChange={this.onChange} name="transferTo" className="editor-input" placeholder="Text" style={{width:"70%"}} required={true} />
+                                            </div>
+                                            <div className="col">
+                                                <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
+                                                <input type="text" onChange={this.onChange} name="transferAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}} required={true} />
+                                            </div>
+                                            <div className="col">
+                                                <input type="submit" className="editor-btn main big my-5" value="Send tokens" />
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div className="col">
-                                        <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
-                                        <input type="text" onChange={this.onChange} name="transferAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}} required={true} />
+                                    <div className="col-md-12" style={{textAlign:"center"}}>
+                                        <p className="Title my-3" style={{textAlign:"center"}}><b>Burn</b></p>
+                                        <form className="d-flex" data-action="burn" onSubmit={this.doTokenFeature}>
+                                            <div className="col">
+                                                <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
+                                                <input type="number" onChange={this.onChange} name="burnAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}}/>
+                                            </div>
+                                            <div className="col">
+                                                <input type="submit" className="editor-btn main big my-5" value="Burn"/>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div className="col">
-                                        <input type="submit" className="editor-btn main big my-5" value="Send tokens" />
-                                    </div>
-                                </form>
-                            </div>
-                            <div className="col-md-12" style={{textAlign:"center"}}>
-                                <p className="Title my-3" style={{textAlign:"center"}}><b>Burn</b></p>
-                                <form className="d-flex" data-action="burn" onSubmit={this.doTokenFeature}>
-                                    <div className="col">
-                                        <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
-                                        <input type="number" onChange={this.onChange} name="burnAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}}/>
-                                    </div>
-                                    <div className="col">
-                                        <input type="submit" className="editor-btn main big my-5" value="Burn"/>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                        </div>
-                    </div>
                     </div>
                     : null
                 }
