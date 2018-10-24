@@ -48,7 +48,8 @@ class Crowdsales extends Component {
         contracts           : [],
         selectedContract   : {
             token: {},
-            crowdsale: {}
+            crowdsale: {},
+            stage: {}
         }
     };
 
@@ -58,10 +59,9 @@ class Crowdsales extends Component {
     this.showOne          = this.showOne.bind(this);
     this.showTwo          = this.showTwo.bind(this);
     this.showThree        = this.showThree.bind(this);
-    this.showFour        = this.showFour.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     document.body.id="";
     this.showContracts();
     this._isMounted = true;
@@ -71,7 +71,7 @@ class Crowdsales extends Component {
     this._isMounted = false;
   }
 
-  fetchAddresses = () => {
+  fetchAddresses() {
     // Controller contract
     const controllerInstance = web3Context.eth.contract(controllerAbi).at(controllerAddress);
 
@@ -124,7 +124,6 @@ class Crowdsales extends Component {
                     address: address
                 }
                 fetchedContracts.push(contract);
-
                 if(fetchedContracts.length === addresses.length) {
                     return resolve(fetchedContracts);
                 }
@@ -140,7 +139,7 @@ class Crowdsales extends Component {
   }
 
   openModal(contract) {
-    this.getInfoAboutToken(contract.address);
+    this.fetchContractInfo(contract.address);
     this.setState({
         modalIsOpen: true
     });
@@ -174,40 +173,126 @@ class Crowdsales extends Component {
     return month+'-'+day+'-'+year+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
   }
 
-  getInfoAboutToken(address) {
+  fetchContractInfo(address) {
+    // Crowdsale instance
+    const crowdsaleContract = web3Context.eth.contract(crowdsaleAbi);
+    const crowdsaleInstance = crowdsaleContract.at(address);
+
+    // Token instance
     const tokenContract = web3Context.eth.contract(tokenAbi);
-    const tokenInstance = tokenContract.at(address);
-    if(typeof address === 'undefined') return false;
-    console.log(address);
-    new Promise((resolve, reject) => {
-        tokenInstance.getState((error, response) => {
-            if(!error)
-                return resolve(response)
-            else
-                return reject(error)
+
+    // Getting the main state
+    const crowdsale = new Promise((resolve, reject) => {
+        crowdsaleInstance.getState((error, response) => {
+            if(!error) return resolve(response)
+            else return reject(error)
+        })
+    }).then((data) => {
+        return new Promise((resolve, reject) => {
+            if(data[7]) {
+                crowdsaleInstance.getSingleStageInfo((error, response) => {
+                    if(!error) {
+                        return resolve([data, response])
+                    }
+                    else
+                        return reject(error)
+                })
+            } else {
+                crowdsaleInstance.getMultistageInfo((error, response) => {
+                    if(!error) {
+                        return resolve(response, response)
+                    }
+                    else
+                        return reject(error)
+                })
+            }
         })
     })
-    .then(data => {
-        this.setState( prevState => {
-            return {
-                selectedContract: {
-                    ...prevState.selectedContract,
-                    token : {
-                        name: data[0],
-                        symbol: data[1],
-                        decimals: Number(data[2]),
-                        totalSupply: web3Context.fromWei( Number(data[3]), 'ether'),
-                        pausable: data[4],
-                        freezable: data[5],
-                        mintable: data[6],
-                        creationDate: this.unixToDate(Number(data[7])),
-                        contractAddress: address
-                    }
+
+    const token = new Promise((resolve, reject) => {
+        crowdsaleInstance.token((error, response) => {
+            if(!error) return resolve(response)
+            else return reject(error)
+        })
+    }).then((hash) => {
+        return new Promise((resolve, reject) => {
+            tokenContract.at(hash).getState((error, response) => {
+                if(!error) {
+                    response.push(hash);
+                    return resolve(response)
                 }
+                else return reject(error)
+            })
+        })
+    })
+
+    Promise.all([crowdsale, token])
+    .then((values) => {
+        const crowdsale = values[0][0];
+        const stage = values[0][1];
+        const token = values[1];
+
+        const tokenState = {
+            name: token[0],
+            symbol: token[1],
+            decimals: Number(token[2]),
+            totalSupply: web3Context.fromWei( Number(token[3]), 'ether'),
+            pausable: token[4],
+            freezable: token[5],
+            mintable: token[6],
+            creationDate: this.unixToDate(Number(token[7])),
+            contractAddress: token[8]
+        }
+
+        const crowdaleState = {
+            fundsAddress: crowdsale[0],
+            weiRaised: web3Context.fromWei( Number(crowdsale[1]), 'ether'),
+            tokensSold: web3Context.fromWei( Number(crowdsale[2]), 'ether'),
+            buyersAmount: Number(crowdsale[3]),
+            creationDate: this.unixToDate(Number(crowdsale[4])),
+            whitelisting: crowdsale[5],
+            burnUnsold: crowdsale[6],
+            fixDates: crowdsale[7],
+            contractAddress: address,
+        }
+
+        let stageState = {};
+
+        if(crowdaleState.fixDates)
+            stageState = {
+                rate: Number(stage[0]),
+                availableTokens: web3Context.fromWei( Number(stage[1]), 'ether'),
+                startDate: this.unixToDate(Number(stage[2])),
+                finishDate: this.unixToDate(Number(stage[3])),
+                minLimit: web3Context.fromWei( Number(stage[4]), 'ether'),
+                maxLimit: web3Context.fromWei( Number(stage[5]), 'ether'),
+            }
+        else {
+            if(stage[0] === 0 && stage[1] === 0 && stage[2] === 0 && stage[3] === 0)
+                stageState = "No active stages"
+            else
+                stageState = {
+                    rate: Number(stage[0]),
+                    availableTokens: web3Context.fromWei( Number(stage[1]), 'ether'),
+                    startDate: this.unixToDate(Number(stage[2])),
+                    finishDate: this.unixToDate(Number(stage[3])),
+                }
+        }
+
+        console.log(crowdaleState);
+        console.log(stageState);
+
+        this.setState({
+            selectedContract : {
+                token: tokenState,
+                crowdsale: crowdaleState,
+                stage: stageState,
             }
         });
-    })
+    });
+
   }
+
 
   afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -230,12 +315,7 @@ class Crowdsales extends Component {
     this.setState({viewSelection : 3});
   }
 
-  showFour() {
-    this.setState({viewSelection : 4});
-  }
-
   render() {
-
     return (
       <div className="wrapper">
         <nav id="sidebar" className={this.state.showHideSidenav}>
@@ -409,52 +489,32 @@ class Crowdsales extends Component {
                 <div className="col-md-4">
                   {
                     this.state.viewSelection == 1 ?
-                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showOne}> 
+                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showOne}>
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_white.png'} /></p>
-                          <p className="Amount">Crowdsale Info</p>
+                          <p className="Amount">Info</p>
                         </div>
                       </button>
                       :
-                      <button className="row text-center align-items-center editor-button" onClick={this.showOne}> 
+                      <button className="row text-center align-items-center editor-button" onClick={this.showOne}>
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_blue.png'} /></p>
-                          <p className="Amount">Crowdsale Info</p>
+                          <p className="Amount">Info</p>
                         </div>
                       </button>
                   }
                 </div>
-
                 <div className="col-md-4">
                   {
                     this.state.viewSelection == 2 ?
-                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showTwo}> 
-                        <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_white.png'} /></p>
-                          <p className="Amount">Token info</p>
-                        </div>
-                      </button>
-                      :
-                      <button className="row text-center align-items-center editor-button" onClick={this.showTwo}> 
-                        <div className="col">
-                          <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_info_blue.png'} /></p>
-                          <p className="Amount">Token info</p>
-                        </div>
-                      </button>
-                  }
-                </div>
-
-                <div className="col-md-4">
-                  {
-                    this.state.viewSelection == 3 ?
-                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showThree}> 
+                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showTwo}>
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_white.png'} /></p>
                           <p className="Amount">Basic features</p>
                         </div>
                       </button>
                       :
-                      <button className="row text-center align-items-center editor-button" onClick={this.showThree}>
+                      <button className="row text-center align-items-center editor-button" onClick={this.showTwo}>
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_blue.png'} /></p>
                           <p className="Amount">Basic features</p>
@@ -462,18 +522,17 @@ class Crowdsales extends Component {
                       </button>
                   }
                 </div>
-
                 <div className="col-md-4">
                   {
-                    this.state.viewSelection == 4 ?
-                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showFour}>
+                    this.state.viewSelection == 3 ?
+                      <button className="row text-center align-items-center editor-button selected-li" onClick={this.showThree}>
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_white.png'} /></p>
                           <p className="Amount">Extra features</p>
                         </div>
                       </button>
                       :
-                      <button className="row text-center align-items-center editor-button" onClick={this.showFour}> 
+                      <button className="row text-center align-items-center editor-button" onClick={this.showThree}>
                         <div className="col">
                           <p className="Title my-3"><img src={window.location.origin + '/assets/images/icon_ico_blue.png'} /></p>
                           <p className="Amount">Extra features</p>
@@ -486,209 +545,135 @@ class Crowdsales extends Component {
 
               {
                 this.state.viewSelection == 1 ?
-                <div className="row container-fluid my-4">
-                    <div className="col-md-3">
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Token name/symbol</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Example token / EXT</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Total supply</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>150,000,000 EXT</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Decimals</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>18</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Initial supply</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>190000000</p>
-                        </div>
-                        </div>
-
-                    </div>
-                    <div className="col-md-3">
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>ICO type</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Refundable</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Soft cap</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>150,000 ETH</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Upcoming stages</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Main sale</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Unsold tokens burn</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>No</p>
-                        </div>
-                        </div>
-
-                    </div>
-                    <div className="col-md-3">
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Current stage</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>Pre-sale</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Min contribution amount</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>10 ETH</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Start date</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>01/10/2018</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Finish date</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>01/12/2018</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Token rate</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>1 EXT = 0.03 ETH</p>
-                        </div>
-                        </div>
-                    </div>
-                    <div className="col-md-3">
-                        <div className="col-md-12 form-group my-5">
-                            <div className="col">
-                                <p className="Title my-3" style={{textAlign:"center"}}>Token Buyers</p>
-                                <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>3</p>
+                <div className="row justify-content-center my-5">
+                    <div className="col">
+                        <div className="row justify-content-center">
+                            <h3>Crowdsale info</h3>
+                            <div className="w-100"></div>
+                            <div className="col-md-6">
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>ETH raised</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.weiRaised}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Investors amount</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.buyersAmount}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Whitelisting</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.crowdsale.whitelisting).toUpperCase()}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Created at</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.creationDate}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-12 form-group my-5">
-                            <div className="col">
-                                <p className="Title my-3" style={{textAlign:"center"}}>ETH funded</p>
-                                <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>56,76</p>
+                            <div className="col-md-6">
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Tokens sold</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.tokensSold}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Funds wallet</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}><a href={"https://rinkeby.etherscan.io/address/" + this.state.selectedContract.crowdsale.fundsAddress +"/"} target="_blank">Here</a></p>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Burn unsold tokens</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.crowdsale.burnUnsold).toUpperCase()}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>ICO type</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.fixDates ? "Single stage" : "Multi stage"}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-12 form-group my-5">
-                            <div className="col">
-                                <p className="Title my-3" style={{textAlign:"center"}}>Sold Tokens</p>
-                                <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>23456060</p>
-                            </div>
-                        </div>
-                        <div className="col-md-12 form-group my-5">
-                            <div className="col">
-                                <p className="Title my-3" style={{textAlign:"center"}}>Available Tokens</p>
-                                <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>23456060</p>
+                            <div className="col-md-12" style={{textAlign:"center"}}>
+                                <a href={"https://rinkeby.etherscan.io/address/" + this.state.selectedContract.crowdsale.contractAddress} style={{color: "#45467e"}} target="_blank">See crowdsale contract in Etherscan</a>
                             </div>
                         </div>
                     </div>
-                   <div className="col-md-12" style={{textAlign:"center"}}>
-                    <a href="https://etherscan.io/address/0x58b6a8a3302369daec383334672404ee733ab239" target="_blank">See on Etherscan</a>
-                </div>
-                </div>
-                : null
-              }
-
-              {
-                this.state.viewSelection === 2 ?
-                <div className="row container-fluid my-4">
-                    <div className="col-md-6">
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Name</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.name}</p>
+                    <div className="col">
+                        <div className="row justify-content-center">
+                            <h3>Token info</h3>
+                            <div className="w-100"></div>
+                            <div className="col-md-6">
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Name</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.name}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Symbol</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.symbol}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Decimals</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.decimals}</p>
+                                    </div>
+                                </div>
+                               <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Creation date</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.creationDate}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Total supply</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.totalSupply}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Pausable</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.token.pausable).toUpperCase()}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Freezable</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.token.freezable).toUpperCase()}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 form-group my-5">
+                                    <div className="col">
+                                        <p className="Title my-3" style={{textAlign:"center"}}>Mintable</p>
+                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.token.freezable).toUpperCase()}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-12" style={{textAlign:"center"}}>
+                                <a href={"https://rinkeby.etherscan.io/token/" + this.state.selectedContract.token.contractAddress} style={{color: "#45467e"}} target="_blank">See token contract in Etherscan</a>
+                            </div>
                         </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Symbol</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.symbol}</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Decimals</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.decimals}</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Total supply</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.totalSupply}</p>
-                        </div>
-                        </div>
-
-                    </div>
-                    <div className="col-md-6">
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Creation date</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.creationDate}</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Pausable</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.token.pausable).toUpperCase()}</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Freezable</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.token.freezable).toUpperCase()}</p>
-                        </div>
-                        </div>
-
-                        <div className="col-md-12 form-group my-5">
-                        <div className="col">
-                            <p className="Title my-3" style={{textAlign:"center"}}>Mintable</p>
-                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.token.mintable).toUpperCase()}</p>
-                        </div>
-                        </div>
-
-                    </div>
-                    <div className="col-md-12" style={{textAlign:"center"}}>
-                        <a href={"https://rinkeby.etherscan.io/token/" + this.state.selectedContract.token.contractAddress} style={{color: "#45467e"}} target="_blank">See on Etherscan</a>
                     </div>
                 </div>
                 : null
               }
 
               {
-                this.state.viewSelection == 3 ?
+                this.state.viewSelection == 2 ?
                 <div className="row container-fluid my-4 mx-3">
                   <div className="row container-fluid">
                     <div className="col-md-12 form-group">
@@ -768,7 +753,7 @@ class Crowdsales extends Component {
               }
 
               {
-                this.state.viewSelection == 4 ?
+                this.state.viewSelection == 3 ?
                 <div className="row container-fluid my-4 mx-3">
                     <div className="row container-fluid">
                         <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
