@@ -193,6 +193,14 @@ class Crowdsales extends Component {
         });
     }
 
+    isAddressValid = (address) => {
+        if(web3Context.isAddress(address))
+            return true
+        else
+            alert("The address is not a valid ETH address, please check it.")
+            return false;
+    }
+
     doFeature = (e) => {
         e.preventDefault();
 
@@ -225,26 +233,30 @@ class Crowdsales extends Component {
                 break;
             case 'crowdsaleChangeFunds':
                 address  = web3Context.toChecksumAddress(this.state.selectedContract.crowdsale.features.newFundAddress);
+                if(!this.isAddressValid(address)) break;
                 crowdsaleInstance.changeFundsAddress(address, (err, txHash) => {
                     if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
                 })
                 break;
             case 'crowdsaleAddToWhitelist':
                 address = web3Context.toChecksumAddress(this.state.selectedContract.crowdsale.features.whitelistAddress);
+                if(!this.isAddressValid(address)) break;
                 crowdsaleInstance.addToWhiteList(address, (err, txHash) => {
                     if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
                 })
                 break;
             case 'crowdsaleTransfer':
-                address  = web3Context.toChecksumAddress(this.state.selectedContract.crowdsale.features.transferTo);
                 value = this.toBigNumber(this.state.selectedContract.crowdsale.features.transferAmount);
+                address  = web3Context.toChecksumAddress(this.state.selectedContract.crowdsale.features.transferTo);
+                if(!this.isAddressValid(address)) break;
                 crowdsaleInstance.transferTokensToNonEthBuyers(address, value, (err, txHash) => {
                     if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
                 })
                 break;
             case 'transfer':
-                address  = web3Context.toChecksumAddress(this.state.selectedContract.token.features.transferTo);
                 value = this.toBigNumber(this.state.selectedContract.token.features.transferAmount);
+                address  = web3Context.toChecksumAddress(this.state.selectedContract.token.features.transferTo);
+                if(!this.isAddressValid(address)) break;
                 tokenInstance.transfer(address, value, (err, txHash) => {
                     if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
                 })
@@ -258,6 +270,7 @@ class Crowdsales extends Component {
             case 'mint':
                 value = this.toBigNumber(this.state.selectedContract.token.features.mintAmount);
                 address  = web3Context.toChecksumAddress(this.state.selectedContract.token.features.mintReceiver);
+                if(!this.isAddressValid(address)) break;
                 tokenInstance.mint(address, value, (err, txHash) => {
                     if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
                 })
@@ -274,18 +287,21 @@ class Crowdsales extends Component {
                 break;
             case 'freeze':
                 address  = web3Context.toChecksumAddress(this.state.selectedContract.token.features.freezeAddress);
+                if(!this.isAddressValid(address)) break;
                 tokenInstance.freezeAccount(address, (err, txHash) => {
                     if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
                 })
                 break;
             case 'unfreeze':
                 address  = web3Context.toChecksumAddress(this.state.selectedContract.token.features.unFreezeAddress);
+                if(!this.isAddressValid(address)) break;
                 tokenInstance.unFreezeAccount(address, (err, txHash) => {
                     if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
                 })
                 break;
             case 'transferOwnership':
                 address  = web3Context.toChecksumAddress(this.state.selectedContract.token.features.newOwner);
+                if(!this.isAddressValid(address)) break;
                 tokenInstance.transferOwnership(address, (err, txHash) => {
                     if (!err) console.log('https://rinkeby.etherscan.io/tx/' + txHash);
                 })
@@ -426,13 +442,20 @@ class Crowdsales extends Component {
                 }
             else {
                 if(stage[0] === 0 && stage[1] === 0 && stage[2] === 0 && stage[3] === 0)
-                    stageState = "No active stages"
+                    stageState = {
+                        rate: 0,
+                        tokensForSale: 0,
+                        startDate: 0,
+                        finishDate: 0,
+                        issue: 'No active rounds for now.'
+                    }
                 else
                     stageState = {
                         rate: Number(stage[0]),
                         tokensForSale: web3Context.fromWei( Number(stage[1]), 'ether'),
                         startDate: this.unixToDate(Number(stage[2])),
                         finishDate: this.unixToDate(Number(stage[3])),
+                        issue: ''
                     }
             }
 
@@ -704,6 +727,21 @@ class Crowdsales extends Component {
                                             <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.crowdsale.whitelisting).toUpperCase()}</p>
                                             </div>
                                         </div>
+                                        {this.state.selectedContract.crowdsale.fixDates ?
+                                            <div className="col-md-12 form-group my-5">
+                                                <div className="col">
+                                                    <p className="Title my-3" style={{textAlign:"center"}}>Start date</p>
+                                                    <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.startDate}</p>
+                                                </div>
+                                            </div>
+                                            :
+                                            <div className="col-md-12 form-group my-5">
+                                                <div className="col">
+                                                    <p className="Title my-3" style={{textAlign:"center"}}>Round start date</p>
+                                                    <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.startDate !== 0 ? this.state.selectedContract.stage.startDate : this.state.selectedContract.stage.issue}</p>
+                                                </div>
+                                            </div>
+                                        }
                                         <div className="col-md-12 form-group my-5">
                                             <div className="col">
                                             <p className="Title my-3" style={{textAlign:"center"}}>Created at</p>
@@ -730,6 +768,24 @@ class Crowdsales extends Component {
                                             <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{String(this.state.selectedContract.crowdsale.burnUnsold).toUpperCase()}</p>
                                             </div>
                                         </div>
+                                        {this.state.selectedContract.crowdsale.fixDates ?
+                                            <div className="col-md-12 form-group my-5">
+                                                <div className="col">
+                                                    <p className="Title my-3" style={{textAlign:"center"}}>Finish date</p>
+                                                    <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.finishDate}</p>
+                                                </div>
+                                            </div>
+                                            :
+                                            <div className="col-md-12 form-group my-5">
+                                                {this.state.selectedContract.stage.startDate !== 0 ?
+                                                    <div className="col">
+                                                        <p className="Title my-3" style={{textAlign:"center"}}>Round finish date</p>
+                                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.finishDate}</p>
+                                                    </div>
+                                                    : null
+                                                }
+                                            </div>
+                                        }
                                         <div className="col-md-12 form-group my-5">
                                             <div className="col">
                                             <p className="Title my-3" style={{textAlign:"center"}}>ICO type</p>
@@ -821,7 +877,7 @@ class Crowdsales extends Component {
                                                 </div>
                                                 <div className="col">
                                                     <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
-                                                    <input type="text" onChange={this.onCrowdsaleChange} name="transferAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}} required={true} />
+                                                    <input type="number" onChange={this.onCrowdsaleChange} name="transferAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}} required={true} />
                                                 </div>
                                                 <div className="col">
                                                     <input type="submit" className="editor-btn main big my-5" value="Transfer" />
@@ -857,7 +913,7 @@ class Crowdsales extends Component {
                                             <form className="d-flex" data-action="crowdsaleChangeRate" onSubmit={this.doFeature}>
                                                 <div className="col">
                                                     <p className="Title my-3" style={{textAlign:"center"}}>New rate</p>
-                                                    <input type="text" onChange={this.onCrowdsaleChange} name="newRate" className="editor-input" placeholder="1000" style={{width:"70%"}} required={true} />
+                                                    <input type="number" onChange={this.onCrowdsaleChange} name="newRate" className="editor-input" placeholder="1000" style={{width:"70%"}} required={true} />
                                                 </div>
                                                 <div className="col">
                                                     <input type="submit" className="editor-btn main big my-5" value="Change" />
@@ -909,7 +965,7 @@ class Crowdsales extends Component {
                                                     </div>
                                                     <div className="col">
                                                         <p className="Title my-3" style={{textAlign:"center" }}>Amount of tokens</p>
-                                                        <input type="text" onChange={this.onTokenChange} name="transferAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}} required={true} />
+                                                        <input type="number" onChange={this.onTokenChange} name="transferAmount" className="editor-input" placeholder="ex: 10000" style={{width:"70%"}} required={true} />
                                                     </div>
                                                     <div className="col">
                                                         <input type="submit" className="editor-btn main big my-5" value="Send tokens" />

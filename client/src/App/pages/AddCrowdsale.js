@@ -352,6 +352,7 @@ class AddCrowdsale extends Component {
 
         const tokenData = this.getTokenParams();
         const icoData = this.getCrowdsaleParams();
+
         this.setState({modalIsOpen: true});
 
         this.tokenDeploy(tokenData)
@@ -402,6 +403,15 @@ class AddCrowdsale extends Component {
             alert("The owner of ICO is this address " + this.state.ico.owner +". Now you used this address " + user + ". Please switch account for continue and deploy the contract.")
         else
             return user;
+    }
+
+    isAddressValid = (e) => {
+        const address = e.target.value;
+        if(web3Context.isAddress(address) || address === '')
+            return true
+        else
+            alert("The wrong ETH address found, please check it.")
+            return false;
     }
 
     getTokenParams = () => {
@@ -857,7 +867,7 @@ class AddCrowdsale extends Component {
 
                                             <div className="col-md-5 form-group">
                                                 <p>Investments storage address <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Token Price tooltip on top"></i></p>
-                                                <input type="text" name="fundsAddress" required={true} onChange={this.onChange} value={ico.fundsAddress} className="editor-input w-100" placeholder="0x...." />
+                                                <input type="text" name="fundsAddress" required={true} onBlur={this.isAddressValid} onChange={this.onChange} value={ico.fundsAddress} className="editor-input w-100" placeholder="0x..." />
                                             </div>
                                             <div className="w-100"></div>
 
@@ -1023,7 +1033,7 @@ class AddCrowdsale extends Component {
                                                     <div className="row justify-content-center">
                                                         <div className="col-md-12 form-group">
                                                             <p>Receiver address</p>
-                                                            <input type="text" name="address" required={true} placeholder="0x...." onChange={this.ondistributionAddressesChange(i)} value={receiver.address} className="editor-input w-100" />
+                                                            <input type="text" name="address" required={true} placeholder="0x..." onBlur={this.isAddressValid} onChange={this.ondistributionAddressesChange(i)} value={receiver.address} className="editor-input w-100" />
                                                         </div>
                                                         <div className="col-md-12 form-group">
                                                             <div className="row">
