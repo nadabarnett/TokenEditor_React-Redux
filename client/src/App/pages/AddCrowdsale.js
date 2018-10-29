@@ -25,7 +25,7 @@ const customStyles = {
 };
 
 const initialState = {
-    step: 1,
+    step: 4,
     user: web3Context.eth.coinbase,
     modalIsOpen: false,
     token: {
@@ -38,6 +38,7 @@ const initialState = {
         freezable: false,
         mintable: false,
         receivers: [{
+            id: 0,
             address: web3Context.eth.coinbase,
             amount: '',
             frozen: false,
@@ -59,6 +60,7 @@ const initialState = {
         minInvest: '',
         maxInvest: '',
         rounds: [{
+            id: 0,
             name: '',
             tokensForSale: '',
             tokenPrice: '',
@@ -235,6 +237,8 @@ class AddCrowdsale extends Component {
                 }
             }
         });
+
+        console.log(this.state.stages);
     }
 
     ondistributionAddressesChange = (id) => (e) => {
@@ -308,6 +312,7 @@ class AddCrowdsale extends Component {
 
     onAddStage = () => {
         const newRound = {
+            id: this.state.stages.rounds.length,
             name: '',
             tokensForSale: '',
             tokenPrice: '',
@@ -325,8 +330,21 @@ class AddCrowdsale extends Component {
         });
     }
 
+    onDeleteStage = (id) => {
+        const sampleRoundes = this.state.stages.rounds.filter(round => round.id !== id)
+        this.setState( prevState => {
+            return {
+                stages: {
+                    ...prevState.stages,
+                    rounds: sampleRoundes
+                }
+            };
+        });
+    }
+
     onAddReceiver = () => {
         const newAddress = {
+            id: this.state.token.receivers.length,
             address: '',
             amount: '',
             frozen: false,
@@ -338,6 +356,18 @@ class AddCrowdsale extends Component {
                 token : {
                     ...prevState.token,
                     receivers: prevState.token.receivers.concat(newAddress)
+                }
+            };
+        });
+    }
+
+    onDeleteReceiver = (id) => {
+        const sampleReceivers = this.state.token.receivers.filter(receiver => receiver.id !== id)
+        this.setState( prevState => {
+            return {
+                token : {
+                    ...prevState.token,
+                    receivers: sampleReceivers
                 }
             };
         });
@@ -911,20 +941,20 @@ class AddCrowdsale extends Component {
                                                 <div className="col">
                                                     <div className="row justify-content-center">
                                                         <div className="col-md-12 form-group">
-                                                            <p>Total amount of tokens for sale <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Initial supply tooltip on top"></i></p>
+                                                            <p>Amount of tokens for sale <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Initial supply tooltip on top"></i></p>
                                                             <input type="number" required={true} value={stages.tokensForSale} onChange={this.onChange} name="tokensForSale" className="editor-input w-100" placeholder="ex: 100000" />
                                                         </div>
                                                         <div className="w-100"></div>
 
                                                         <div className="col-md-12 form-group">
                                                             <p>Start date <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></p>
-                                                            <input type="date" name="startDate" required={true} onChange={this.onChange} value={stages.startDate} className="editor-input w-100" placeholder="01.10.2018" />
+                                                            <input type="date" name="startDate" onChange={this.onChange} value={stages.startDate} className="editor-input w-100" placeholder="01.10.2018" />
                                                         </div>
                                                         <div className="w-100"></div>
 
                                                         <div className="col-md-12 form-group">
                                                             <p>Minimum contribution amount ({token.symbol}) <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></p>
-                                                            <input type="number" name="minInvest" required={true} onChange={this.onChange} value={stages.minInvest} className="editor-input w-100" placeholder="ex: 10" />
+                                                            <input type="number" name="minInvest" onChange={this.onChange} value={stages.minInvest} className="editor-input w-100" placeholder="ex: 10" />
                                                         </div>
                                                         <div className="w-100"></div>
                                                     </div>
@@ -932,20 +962,20 @@ class AddCrowdsale extends Component {
                                                 <div className="col">
                                                     <div className="row justify-content-center">
                                                         <div className="col-md-12 form-group">
-                                                            <p>How much {token.symbol} tokens buys 1 ETH <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Initial supply tooltip on top"></i></p>
+                                                            <p>Tokens for 1 ETH <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Initial supply tooltip on top"></i></p>
                                                             <input type="number" name="tokenPrice" required={true} onChange={this.onChange} value={stages.tokenPrice} className="editor-input w-100" placeholder="ex: 1000 (1 ETH = 1000 Tokens)" />
                                                         </div>
                                                         <div className="w-100"></div>
 
                                                         <div className="col-md-12 form-group">
                                                             <p>Finish date <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></p>
-                                                            <input type="date" name="finishDate" required={true} onChange={this.onChange} value={stages.finishDate} className="editor-input w-100" placeholder="01.12.2018" />
+                                                            <input type="date" name="finishDate" onChange={this.onChange} value={stages.finishDate} className="editor-input w-100" placeholder="01.12.2018" />
                                                         </div>
                                                         <div className="w-100"></div>
 
                                                         <div className="col-md-12 form-group">
                                                             <p>Maximum contribution amount ({token.symbol}) <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></p>
-                                                            <input type="number" name="maxInvest" required={true} onChange={this.onChange} value={stages.maxInvest} className="editor-input w-100" placeholder="ex: 100000" />
+                                                            <input type="number" name="maxInvest" onChange={this.onChange} value={stages.maxInvest} className="editor-input w-100" placeholder="ex: 100000" />
                                                         </div>
                                                         <div className="w-100"></div>
                                                     </div>
@@ -969,7 +999,7 @@ class AddCrowdsale extends Component {
                                                             <div className="w-100"></div>
                                                             <div className="col-md-12 form-group">
                                                                 <p>Start date <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="ex: 1000 (1 ETH = 1000 Tokens)"></i></p>
-                                                                <input type="date" name="startDate" required={true} onChange={this.onStagesChange(i)} value={stage.startDate} className="editor-input w-100" placeholder="01-10-2018" />
+                                                                <input type="date" name="startDate" onChange={this.onStagesChange(i)} value={stage.startDate} className="editor-input w-100" placeholder="01-10-2018" />
                                                             </div>
 
                                                             <div className="w-100"></div>
@@ -982,15 +1012,24 @@ class AddCrowdsale extends Component {
                                                     <div className="col">
                                                         <div className="row justify-content-center">
                                                             <div className="col-md-12 form-group">
-                                                                <p>How much {token.symbol} tokens buys 1 ETH <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="ex: 1000 (1 ETH = 1000 Tokens)"></i></p>
+                                                                <p>Tokens for 1ETH <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="ex: 1000 (1 ETH = 1000 Tokens)"></i></p>
                                                                 <input type="number" name="tokenPrice" required={true} onChange={this.onStagesChange(i)} value={stage.tokenPrice} className="editor-input w-100" placeholder="ex: 1000 (1 ETH = 1000 Tokens)" />
                                                             </div>
 
                                                             <div className="w-100"></div>
                                                             <div className="col-md-12 form-group">
                                                                 <p>Finish date <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Second Bonus tooltip on top"></i></p>
-                                                                <input type="date" name="finishDate" required={true} onChange={this.onStagesChange(i)} value={stage.finishDate} className="editor-input w-100" placeholder="01-10-2018" />
+                                                                <input type="date" name="finishDate" onChange={this.onStagesChange(i)} value={stage.finishDate} className="editor-input w-100" placeholder="01-10-2018" />
                                                             </div>
+                                                            <div className="w-100"></div>
+
+                                                            { i !== 0 ?
+                                                                <div className="col-md-12 form-group">
+                                                                    <p>Remove round <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Presale Bonus tooltip on top"></i></p>
+                                                                    <button onClick={() => this.onDeleteStage(stage.id)} className="editor-btn main"><i className="fa fa-minus"></i> Remove</button>
+                                                                </div>
+                                                                : null
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -999,7 +1038,7 @@ class AddCrowdsale extends Component {
                                             <div className="w-100 mt-5"></div>
                                             <div className="offset-md-3 col-md-6 form-group">
                                                 <p>Add new stage <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Presale Bonus tooltip on top"></i></p>
-                                                <button onClick={this.onAddStage} className="editor-btn big"><i className="fa fa-plus"></i> Add</button>
+                                                <button onClick={this.onAddStage} className="editor-btn main"><i className="fa fa-plus"></i> Add</button>
                                             </div>
                                         </div>
                                     }
@@ -1059,16 +1098,21 @@ class AddCrowdsale extends Component {
                                                             <p>Tokens amount</p>
                                                             <input type="number" name="amount" required={true} onChange={this.ondistributionAddressesChange(i)} value={receiver.amount} placeholder="ex: 10000" className="editor-input w-100" />
                                                         </div>
+
+                                                        <div className="w-100"></div>
+                                                        <div className="col-md-12 form-group">
+                                                            <p>Remove receiver <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Presale Bonus tooltip on top"></i></p>
+                                                            <button onClick={() => this.onDeleteReceiver(receiver.id)} className="editor-btn main"><i className="fa fa-minus"></i> Remove</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                     ))}
-                                    <div className="w-100"></div>
-                                    <div className="offset-md-6 col-md-6 form-group">
-                                        <button onClick={this.onAddReceiver} type="button" className="editor-btn main">
-                                        <i className="fas fa-plus"></i>
-                                        <span>&nbsp;&nbsp; Add new address</span>
-                                        </button>
+
+                                    <div className="w-100 mt-5"></div>
+                                    <div className="offset-md-3 col-md-6 form-group">
+                                        <p>Add new receiver <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Presale Bonus tooltip on top"></i></p>
+                                        <button onClick={this.onAddReceiver} type="button" className="editor-btn main"><i className="fas fa-plus"></i> Add</button>
                                     </div>
                                 </div> : null
                             }
