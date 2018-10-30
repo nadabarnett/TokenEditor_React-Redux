@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { crowdsaleAbi, crowdsaleBytecode, tokenAbi, tokenBytecode } from './../components/ContractStore';
 import Modal from 'react-modal';
 import { parse } from 'url';
+import { throws } from 'assert';
 
 const web3Context = window.web3;
 
@@ -25,7 +26,7 @@ const customStyles = {
 };
 
 const initialState = {
-    step: 4,
+    step: 1,
     user: web3Context.eth.coinbase,
     modalIsOpen: false,
     token: {
@@ -65,7 +66,9 @@ const initialState = {
             tokensForSale: '',
             tokenPrice: '',
             startDate: '',
-            finishDate: ''
+            finishDate: '',
+            minInvest: '',
+            maxInvest: '',
         }]
     },
     transactions: {
@@ -117,11 +120,14 @@ class AddCrowdsale extends Component {
     goToNext = (e) => {
         e.preventDefault();
         switch (this.state.step) {
+            case 1:
+                this.checkAddress();
+                break;
             case 3:
-                this.state.stages.multiStages ? this.calculateTokensMultiStage() : null;
+                this.calculateTokensForSale();
                 break;
             case 4:
-                this.state.token.receivers.length > 1 ? this.calculateTotalSupply() : null;
+                this.calculateTotalSupply();
                 break;
             default:
                 break;
@@ -176,7 +182,7 @@ class AddCrowdsale extends Component {
         else
             value = target.value;
 
-        if(Number.isNaN(value)) value = 0;
+        value = Number.isNaN(value) ? '' : value;
 
         return [name, value];
     }
@@ -237,8 +243,6 @@ class AddCrowdsale extends Component {
                 }
             }
         });
-
-        console.log(this.state.stages);
     }
 
     ondistributionAddressesChange = (id) => (e) => {
@@ -267,7 +271,7 @@ class AddCrowdsale extends Component {
 
     calculateTotalSupply = () => {
         let amounts = this.state.token.receivers.map((receiver, i) => {
-            return (receiver.amount != "" ? receiver.amount : 0);
+            return (receiver.amount ? receiver.amount : 0);
         });
         let sum = amounts.reduce((a, b) => a + b, 0);
 
@@ -282,11 +286,15 @@ class AddCrowdsale extends Component {
         });
     }
 
-    calculateTokensMultiStage = () => {
-        let amounts = this.state.stages.rounds.map((stage, i) => {
-            return (stage.tokensForSale != "" ? stage.tokensForSale : 0);
-        });
-        let sum = amounts.reduce((a, b) => a + b, 0);
+    calculateTokensForSale = () => {
+        let sum = this.state.stages.tokensForSale;
+
+        if(this.state.stages.multiStages) {
+            let amounts = this.state.stages.rounds.map((stage, i) => {
+                return (stage.tokensForSale != "" ? stage.tokensForSale : 0);
+            });
+            sum = amounts.reduce((a, b) => a + b, 0);
+        }
 
         this.setState( prevState => {
             return {
@@ -317,9 +325,10 @@ class AddCrowdsale extends Component {
             tokensForSale: '',
             tokenPrice: '',
             startDate: '',
-            finishDate: ''
+            finishDate: '',
+            minInvest: '',
+            maxInvest: '',
         };
-
         this.setState( prevState => {
             return {
                 stages: {
@@ -397,14 +406,14 @@ class AddCrowdsale extends Component {
         })
         .catch(error => {
             this.showIssue(error);
-        });;
+        });
     }
 
     showIssue = (error) => {
         console.error(error);
         this.setState({
             transactions: {
-                issue: "Something goes wrong ( Please try again."
+                issue: "Something goes wrong :( Please try again."
             }
         });
     }
@@ -444,6 +453,19 @@ class AddCrowdsale extends Component {
             return false;
     }
 
+    checkAddress = () => {
+        if(!this.state.ico.owner) {
+            this.setState( prevState => {
+                return {
+                    ico : {
+                        ...prevState.ico,
+                        owner: web3Context.eth.coinbase
+                    }
+                };
+            });
+        }
+    }
+
     getTokenParams = () => {
         const tokenState = this.state.token;
         const tokenData = {
@@ -455,22 +477,16 @@ class AddCrowdsale extends Component {
             freezable: tokenState.freezable,
             mintable: tokenState.mintable,
             receivers: tokenState.receivers.map((receiver, i) => {
-                receiver.address = web3Context.toChecksumAddress(receiver.address);
-                return receiver.address;
+                return web3Context.toChecksumAddress(receiver.address);
             }),
             amounts: tokenState.receivers.map((receiver, i) => {
-                if(i === 0)
-                    receiver.amount = this.toBigNumber(this.state.stages.tokensForSale);
-                else
-                    receiver.amount = this.toBigNumber(receiver.amount);
-                    return receiver.amount;
+                return i === 0 ? this.toBigNumber(this.state.stages.tokensForSale) : this.toBigNumber(receiver.amount);
             }),
             frozen: tokenState.receivers.map((receiver, i) => {
                 return receiver.frozen;
             }),
             untilDate: tokenState.receivers.map((receiver, i) => {
-                receiver.untilDate = receiver.untilDate ? (new Date(receiver.untilDate).getTime() / 1000) : '';
-                return receiver.untilDate;
+                return receiver.untilDate ? (new Date(receiver.untilDate).getTime() / 1000) : '';
             })
         }
         return tokenData;
@@ -570,7 +586,7 @@ class AddCrowdsale extends Component {
                     data: '0x' + crowdsaleBytecode
                 },
                 (error, result) => {
-                    if(!error)
+                    if(result)
                         if (!result.address)
                             this.setState( prevState => {
                                 return {
@@ -601,12 +617,14 @@ class AddCrowdsale extends Component {
                             });
                             resolve(result.address);
                         }
-                    else
+                    else {
                         this.setState({
                             transactions: {
-                                issue: 'You have denied the transaction. Please try again.'
+                                issue: 'Transaction was failed. Please try again.'
                             }
                         });
+                        reject(error);
+                    }
                 }
             )
         });
@@ -621,26 +639,30 @@ class AddCrowdsale extends Component {
                 tokenPrices: _stages.rounds.map((stage, i) => {
                     return stage.tokenPrice;
                 }),
-                startDates: _stages.rounds.map((stage, i) => {
-                    stage.startDate = new Date(stage.startDate).getTime() / 1000;
-                    return stage.startDate;
-                }),
-                finishDates: _stages.rounds.map((stage, i) => {
-                    stage.finishDate = new Date(stage.finishDate).getTime() / 1000;
-                    return stage.finishDate;
-                }),
                 tokensForSale: _stages.rounds.map((stage, i) => {
                     return this.toBigNumber(stage.tokensForSale);
                 }),
+                minInvest: _stages.rounds.map((stage, i) => {
+                    return stage.minInvest ? this.toBigNumber(stage.minInvest) : 0;
+                }),
+                maxInvest: _stages.rounds.map((stage, i) => {
+                    return stage.maxInvest ? this.toBigNumber(stage.maxInvest) : this.toBigNumber(stage.tokensForSale);
+                }),
+                startDates: _stages.rounds.map((stage, i) => {
+                    return stage.startDate ? (new Date(stage.startDate).getTime() / 1000) : 0;
+                }),
+                finishDates: _stages.rounds.map((stage, i) => {
+                    return stage.finishDate ? (new Date(stage.finishDate).getTime() / 1000) : 1924981199;
+                })
             }
         else
             stages = {
-                tokensForSale: this.toBigNumber(_stages.tokensForSale),
                 tokenPrice: _stages.tokenPrice,
-                startDate: new Date(_stages.startDate).getTime() / 1000,
-                finishDate: new Date(_stages.finishDate).getTime() / 1000,
-                minInvest: this.toBigNumber(_stages.minInvest),
-                maxInvest: this.toBigNumber(_stages.maxInvest),
+                tokensForSale: this.toBigNumber(_stages.tokensForSale),
+                minInvest: _stages.minInvest ? this.toBigNumber(_stages.minInvest) : 0,
+                maxInvest: _stages.maxInvest ? this.toBigNumber(_stages.maxInvest) : this.toBigNumber(_stages.tokensForSale),
+                startDate: _stages.startDate ? (new Date(_stages.startDate).getTime() / 1000) : 0,
+                finishDate: _stages.finishDate ? (new Date(_stages.finishDate).getTime() / 1000) : 1924981199
             }
 
         return stages;
@@ -650,11 +672,12 @@ class AddCrowdsale extends Component {
         const stageData = this.getStages();
         crowdsaleAddress = web3Context.toChecksumAddress(crowdsaleAddress);
         const crowdsaleInstance = web3Context.eth.contract(crowdsaleAbi).at(crowdsaleAddress);
-
         if(this.state.stages.multiStages)
             crowdsaleInstance.setStages(
                 stageData.tokenPrices,
                 stageData.tokensForSale,
+                stageData.minInvest,
+                stageData.maxInvest,
                 stageData.startDates,
                 stageData.finishDates,
                 (error, txHash) => {
@@ -995,14 +1018,20 @@ class AddCrowdsale extends Component {
                                                                 <p>Stage name <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="ex: Private sale"></i></p>
                                                                 <input type="text" name="name" required={true} onChange={this.onStagesChange(i)} value={stage.name} className="editor-input w-100" placeholder="Pre sale" />
                                                             </div>
-
                                                             <div className="w-100"></div>
+
+                                                            <div className="col-md-12 form-group">
+                                                                <p>Minimum contribution amount ({token.symbol}) <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></p>
+                                                                <input type="number" name="minInvest" onChange={this.onStagesChange(i)} value={stage.minInvest} className="editor-input w-100" placeholder="ex: 10" />
+                                                            </div>
+                                                            <div className="w-100"></div>
+
                                                             <div className="col-md-12 form-group">
                                                                 <p>Start date <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="ex: 1000 (1 ETH = 1000 Tokens)"></i></p>
                                                                 <input type="date" name="startDate" onChange={this.onStagesChange(i)} value={stage.startDate} className="editor-input w-100" placeholder="01-10-2018" />
                                                             </div>
-
                                                             <div className="w-100"></div>
+
                                                             <div className="col-md-12 form-group">
                                                                 <p>Tokens amount for sale <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Third Period tooltip on top"></i></p>
                                                                 <input type="number" name="tokensForSale" required={true} onChange={this.onStagesChange(i)} value={stage.tokensForSale} className="editor-input w-100" placeholder="10000" />
@@ -1015,8 +1044,14 @@ class AddCrowdsale extends Component {
                                                                 <p>Tokens for 1ETH <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="ex: 1000 (1 ETH = 1000 Tokens)"></i></p>
                                                                 <input type="number" name="tokenPrice" required={true} onChange={this.onStagesChange(i)} value={stage.tokenPrice} className="editor-input w-100" placeholder="ex: 1000 (1 ETH = 1000 Tokens)" />
                                                             </div>
-
                                                             <div className="w-100"></div>
+
+                                                            <div className="col-md-12 form-group">
+                                                                <p>Maximum contribution amount ({token.symbol}) <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Start Time tooltip on top"></i></p>
+                                                                <input type="number" name="maxInvest" onChange={this.onStagesChange(i)} value={stage.maxInvest} className="editor-input w-100" placeholder="ex: 100000" />
+                                                            </div>
+                                                            <div className="w-100"></div>
+
                                                             <div className="col-md-12 form-group">
                                                                 <p>Finish date <i className="fa fa-question-circle main-color" data-toggle="tooltip" data-placement="top" title="Second Bonus tooltip on top"></i></p>
                                                                 <input type="date" name="finishDate" onChange={this.onStagesChange(i)} value={stage.finishDate} className="editor-input w-100" placeholder="01-10-2018" />
@@ -1211,6 +1246,7 @@ class AddCrowdsale extends Component {
                                                     <p className="main-color font-weight-bold">{stages.rounds.length}</p>
                                             </div>
                                             <div className="w-100"></div>
+
                                             { stages.rounds.map((stage, i) => (
                                                 <div key={i} className="col">
                                                     { i === 0 ?
@@ -1239,15 +1275,22 @@ class AddCrowdsale extends Component {
 
                                                         <div className="col-md-12 form-group">
                                                             <p>Start date</p>
-                                                            <p className="main-color font-weight-bold">{stage.startDate}</p>
+                                                            <p className="main-color font-weight-bold">{stage.startDate ? stage.startDate : "Not setted"}</p>
                                                         </div>
                                                         <div className="w-100"></div>
 
                                                         <div className="col-md-12 form-group">
                                                             <p>Finish date</p>
-                                                            <p className="main-color font-weight-bold">{stage.finishDate}</p>
+                                                            <p className="main-color font-weight-bold">{stage.finishDate ? stage.finishDate : "Not setted"}</p>
                                                         </div>
                                                         <div className="w-100"></div>
+
+                                                        <div className="col-md-12 form-group">
+                                                            <p>Min/Max investments amounts</p>
+                                                            <p className="main-color font-weight-bold">{Number(stage.minInvest) ? Number(stage.minInvest) : "Not setted"} / {Number(stage.maxInvest) ? Number(stage.maxInvest) : "Not setted"}</p>
+                                                        </div>
+                                                        <div className="w-100"></div>
+
                                                     </div>
                                                 </div>
                                             ))}
@@ -1262,25 +1305,19 @@ class AddCrowdsale extends Component {
 
                                             <div className="col-md-12 form-group">
                                                 <p>Start Date</p>
-                                                <p className="main-color font-weight-bold">{stages.startDate}</p>
+                                                <p className="main-color font-weight-bold">{stages.startDate ? stages.startDate : "Not setted"}</p>
                                             </div>
                                             <div className="w-100"></div>
 
                                             <div className="col-md-12 form-group">
                                                 <p>Finish date</p>
-                                                <p className="main-color font-weight-bold">{stages.finishDate}</p>
+                                                <p className="main-color font-weight-bold">{stages.finishDate ? stages.finishDate : "Not setted"}</p>
                                             </div>
                                             <div className="w-100"></div>
 
                                             <div className="col-md-12 form-group">
-                                                <p>Minimum investing amount ({token.symbol})</p>
-                                                <p className="main-color font-weight-bold">{stages.minInvest}</p>
-                                            </div>
-                                            <div className="w-100"></div>
-
-                                            <div className="col-md-12 form-group">
-                                                <p>Maximum investing amount ({token.symbol})</p>
-                                                <p className="main-color font-weight-bold">{stages.maxInvest}</p>
+                                                <p>Min/Max investments amounts</p>
+                                                <p className="main-color font-weight-bold">{Number(stages.minInvest) ? Number(stages.minInvest) : "Not setted"} / {Number(stages.maxInvest) ? Number(stages.maxInvest) : "Not setted"}</p>
                                             </div>
                                             <div className="w-100"></div>
                                         </div>

@@ -51,6 +51,7 @@ class AddToken extends Component {
                 freezable: false,
                 mintable: false,
                 receivers: [{
+                    id: 0,
                     address: web3Context.eth.coinbase,
                     amount: '',
                     frozen: false,
@@ -123,6 +124,7 @@ class AddToken extends Component {
 
     onAddReceiver = () => {
         const newAddress = {
+            id: this.state.token.receivers.length,
             address: '',
             amount: '',
             freezen: false,
@@ -134,6 +136,18 @@ class AddToken extends Component {
                 token : {
                     ...prevState.token,
                     receivers: prevState.token.receivers.concat(newAddress)
+                }
+            };
+        });
+    }
+
+    onDeleteReceiver = (id) => {
+        const sampleReceivers = this.state.token.receivers.filter(receiver => receiver.id !== id)
+        this.setState( prevState => {
+            return {
+                token : {
+                    ...prevState.token,
+                    receivers: sampleReceivers
                 }
             };
         });
@@ -398,6 +412,7 @@ class AddToken extends Component {
                                     { this.state.token.receivers.map((receiver, i) => (
                                         <div key={i}>
                                             <div className="col-md-12 form-group">
+                                                { i !== 0 ? <hr className="w-100 my-5" /> : null }
                                                 <p>Receiver address</p>
                                                 { i !== 0 ?
                                                     <input type="text" required={true} onChange={this.ondistributionAddresses(i)} name="address" className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
@@ -425,7 +440,8 @@ class AddToken extends Component {
                                                         <div className="col-md-6 form-group">
                                                             <p>Until date</p>
                                                             <input type="date"  required={true} onChange={this.ondistributionAddresses(i)} name="untilDate" className="editor-input w-100 min-w-100" placeholder="01.10.2018" />
-                                                        </div> :
+                                                        </div>
+                                                        :
                                                         null
                                                     }
                                                 </div>

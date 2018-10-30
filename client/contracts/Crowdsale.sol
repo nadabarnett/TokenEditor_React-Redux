@@ -32,6 +32,7 @@ contract Crowdsale is Whitelist {
   uint256 private _rate;
   bool private _whitelisting;
   bool private _burnUnsoldTokens;
+  bool private _stagesSetted = false;
 
   bool private _fixDates;
   uint256 private _startDate = 0;
@@ -50,6 +51,8 @@ contract Crowdsale is Whitelist {
       uint256 tokensAmount;
       uint256 startDate;
       uint256 finishDate;
+      uint256 minLimit;
+      uint256 maxLimit;
   }
 
   Stage[] private stages;
@@ -77,25 +80,33 @@ contract Crowdsale is Whitelist {
 
   // If user wants one stage for all
   function setValues(uint256 rate, uint256 tokensAmount, uint256 minLimit, uint256 maxLimit, uint256 startDate, uint256 finishDate) external onlyOwner {
+    require(!_stagesSetted);
     _fixDates = true;
 
     _rate = rate;
     _tokensAmont = tokensAmount;
-    _startDate = startDate;
-    _finishDate = finishDate;
     _minLimit = minLimit;
     _maxLimit = maxLimit;
+    _startDate = startDate;
+    _finishDate = finishDate;
+
+    _stagesSetted = true;
   }
 
   // If user wants many stages
-  function setStages(uint256 [] rates, uint256 [] tokensAmount, uint256 [] startDates, uint256 [] finishDates) external onlyOwner {
+  function setStages(uint256 [] rates, uint256 [] tokensAmount, uint256 [] minLimits, uint256 [] maxLimits, uint256 [] startDates, uint256 [] finishDates) external onlyOwner {
+    require(!_stagesSetted);
     _fixDates = false;
 
     uint256 i = 0;
-    for (i = 0; i < rates.length; i++) {
-      Stage memory stage = Stage(rates[i], tokensAmount[i], startDates[i], finishDates[i]);
+    while(i < rates.length) {
+      Stage memory stage = Stage(rates[i], tokensAmount[i], minLimits[i], maxLimits[i], startDates[i], finishDates[i]);
       stages.push(stage);
+
+      i++;
     }
+
+    _stagesSetted = true;
   }
 
 
@@ -103,51 +114,49 @@ contract Crowdsale is Whitelist {
   // Crowdsale getters
   // -----------------------------------------
 
-  function getState() external view returns(address, uint256, uint256, uint256, uint256 ,bool, bool, bool, uint256) {
-    return (
-        _wallet,
-        _weiRaised,
-        _tokensSold,
-        _buyersAmount,
-        _TEcontroller.getCreationDateOfContract(address(this)),
-        _whitelisting,
-        _burnUnsoldTokens,
-        _fixDates,
-        availableTokens()
-    );
+  function getState() external view returns(address wallet, uint256 weiRaised, uint256 tokensSold, uint256 buyersAmount, uint256 initialBalance, bool whitelisting, bool burnUnsoldTokens, bool fixDates, uint256 currentBalance) {
+        wallet = _wallet;
+        weiRaised = _weiRaised;
+        tokensSold = _tokensSold;
+        buyersAmount = _buyersAmount;
+        initialBalance = _TEcontroller.getCreationDateOfContract(address(this));
+        whitelisting = _whitelisting;
+        burnUnsoldTokens = _burnUnsoldTokens;
+        fixDates = _fixDates;
+        currentBalance = availableTokens();
   }
 
-  function getSingleStageInfo() external view returns(uint256, uint256, uint256, uint256, uint256) {
-    return (
-        _rate,
-        _startDate,
-        _finishDate,
-        _minLimit,
-        _maxLimit
-    );
+  function getSingleStageInfo() external view returns(uint256 rate, uint256 tokensAmount, uint256 minLimit, uint256 maxLimits, uint256 startDate, uint256 finishDate) {
+    rate = _rate;
+    tokensAmount = _tokensAmont;
+    startDate = _startDate;
+    finishDate = _finishDate;
+    minLimit = _minLimit;
+    maxLimits = _maxLimit;
   }
 
-  function getMultistageInfo() external view returns (uint256, uint256, uint256, uint256) {
-    Stage memory stage;
+  function getMultistageInfo() external view returns (uint256 rate, uint256 tokensAmount, uint256 minLimit, uint256 maxLimits, uint256 startDate, uint256 finishDate) {
+    Stage memory stage = _returnStage();
 
-    uint256 i;
-    while(i < stages.length) {
-      if(stages[i].startDate < block.timestamp && stages[i].finishDate > block.timestamp) {
-          stage = stages[i];
-      }
-      i++;
-    }
-
-    return (
-        stage.rate,
-        stage.tokensAmount,
-        stage.startDate,
-        stage.finishDate
-    );
+    rate = stage.rate;
+    tokensAmount = stage.tokensAmount;
+    minLimit = stage.minLimit;
+    maxLimits = stage.maxLimit;
+    startDate = stage.startDate;
+    finishDate = stage.finishDate;
   }
 
   function getStagesLength() external view returns(uint256) {
       return stages.length;
+  }
+  
+  function getStageInfo(uint256 id) public view returns (uint256 rate, uint256 tokensAmount, uint256 minLimit, uint256 maxLimits, uint256 startDate, uint256 finishDate) {
+    rate = stages[id].rate;
+    tokensAmount = stages[id].tokensAmount;
+    minLimit = stages[id].minLimit;
+    maxLimits = stages[id].maxLimit;
+    startDate = stages[id].startDate;
+    finishDate = stages[id].finishDate;
   }
 
 
@@ -175,12 +184,13 @@ contract Crowdsale is Whitelist {
     if(!_fixDates) {
         Stage storage stage = _returnStage();
         tokens = _getTokenAmount(weiAmount, stage.rate);
-        require(stage.tokensAmount.sub(tokens) >= 0);
+        require(stage.tokensAmount >= tokens);
 
         stage.tokensAmount = stage.tokensAmount.sub(tokens);
+        _minMaxValidation(tokens, stage.minLimit, stage.maxLimit);
     } else {
         tokens = _getTokenAmount(weiAmount, _rate);
-        _minMaxValidation(tokens);
+        _minMaxValidation(tokens, _minLimit, _maxLimit);
     }
 
     // update state
@@ -220,25 +230,25 @@ contract Crowdsale is Whitelist {
 
   /**
    * @dev Checking tokens amount for min max limits
-   * @param tokensAmount Amount of tokens
    */
-  function _minMaxValidation( uint256 tokensAmount ) internal view {
-    require(tokensAmount.mul(1 ether) >= _minLimit);
-    require(tokensAmount.mul(1 ether) < _maxLimit);
+  function _minMaxValidation( uint256 tokensAmount, uint256 minLimit, uint256 maxLimit) internal pure {
+    require(tokensAmount >= minLimit);
+    require(tokensAmount < maxLimit);
   }
 
   /**
    * @dev Detect stage by date
    */
   function _returnStage() internal view returns (Stage storage) {
-      uint256 i;
+      uint256 i = 0;
       bool isOpen = false;
 
-      for (i = 0; i < stages.length; i++) {
+      while(i < stages.length) {
           if(stages[i].startDate < block.timestamp && stages[i].finishDate > block.timestamp) {
               Stage storage stage = stages[i];
               isOpen = true;
           }
+          i++;
       }
 
       require(isOpen);
@@ -354,8 +364,7 @@ contract Crowdsale is Whitelist {
   function tokensSold() public view returns (uint256) {
       return _tokensSold;
   }
-  
-  
+
   /**
    * @return the amount of sold tokens
    */
@@ -363,18 +372,19 @@ contract Crowdsale is Whitelist {
       require(newOwner != address(0));
       _wallet = newOwner;
   }
-  
+
   /**
    * @return the amount of sold tokens
    */
   function changeRate(uint256 newRate) public onlyOwner {
       _rate = newRate;
   }
-  
-
+    
+  /**
+   * @dev Transfer tokens manually
+   */
   function transferTokensToNonEthBuyers(address to, uint256 amount) public onlyOwner {
       _token.transfer(to, amount);
   }
-
 
 }

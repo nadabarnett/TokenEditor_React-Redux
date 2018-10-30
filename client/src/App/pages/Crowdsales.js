@@ -432,30 +432,30 @@ class Crowdsales extends Component {
 
             let stageState = {};
 
-            if(crowdsaleState.fixDates)
+            if(crowdsaleState.fixDates) {
                 stageState = {
                     rate: Number(stage[0]),
-                    startDate: this.unixToDate(Number(stage[1])),
-                    finishDate: this.unixToDate(Number(stage[2])),
-                    minLimit: web3Context.fromWei( Number(stage[3]), 'ether'),
-                    maxLimit: web3Context.fromWei( Number(stage[4]), 'ether'),
-                }
+                    tokensForSale: web3Context.fromWei( Number(stage[1]), 'ether'),
+                    minLimit: web3Context.fromWei( Number(stage[2]), 'ether'),
+                    maxLimit: web3Context.fromWei( Number(stage[3]), 'ether'),
+                    startDate: stage[4] != 0 ? this.unixToDate(Number(stage[4])) : 'Not setted',
+                    finishDate: stage[5] != 1924981199 ? this.unixToDate(Number(stage[5])) : 'Not setted',
+                    issue: false
+                }}
             else {
-                if(stage[0] === 0 && stage[1] === 0 && stage[2] === 0 && stage[3] === 0)
-                    stageState = {
-                        rate: 0,
-                        tokensForSale: 0,
-                        startDate: 0,
-                        finishDate: 0,
-                        issue: 'No active rounds for now.'
-                    }
-                else
+                if(Number(stage[0]) != 0)
                     stageState = {
                         rate: Number(stage[0]),
                         tokensForSale: web3Context.fromWei( Number(stage[1]), 'ether'),
-                        startDate: this.unixToDate(Number(stage[2])),
-                        finishDate: this.unixToDate(Number(stage[3])),
-                        issue: ''
+                        minLimit: web3Context.fromWei( Number(stage[4]), 'ether'),
+                        maxLimit: web3Context.fromWei( Number(stage[5]), 'ether'),
+                        startDate: stage[2] != 0 ? this.unixToDate(Number(stage[2])) : 'Not setted',
+                        finishDate: stage[3] != 1924981199 ? this.unixToDate(Number(stage[3])) : 'Not setted',
+                        issue: false
+                    }
+                else
+                    stageState = {
+                        issue: true
                     }
             }
 
@@ -706,8 +706,12 @@ class Crowdsales extends Component {
                             <div className="row justify-content-center my-5">
                                 <div className="col">
                                 <div className="row justify-content-center">
-                                    <h3>Crowdsale info</h3>
+                                    <h3 className="d-block">Crowdsale info</h3>
                                     <div className="w-100"></div>
+
+                                    { this.state.selectedContract.stage.issue ? <h5 className="d-block"><i>No active rounds at this moment</i></h5> : null }
+                                    <div className="w-100"></div>
+
                                     <div className="col-md-6">
                                         <div className="col-md-12 form-group my-5">
                                             <div className="col">
@@ -715,12 +719,12 @@ class Crowdsales extends Component {
                                             <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.weiRaised}</p>
                                             </div>
                                         </div>
-                                            <div className="col-md-12 form-group my-5">
-                                                <div className="col">
-                                                    <p className="Title my-3" style={{textAlign:"center"}}>Investors amount</p>
-                                                    <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.buyersAmount}</p>
-                                                </div>
+                                        <div className="col-md-12 form-group my-5">
+                                            <div className="col">
+                                            <p className="Title my-3" style={{textAlign:"center"}}>Tokens sold</p>
+                                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.tokensSold}</p>
                                             </div>
+                                        </div>
                                         <div className="col-md-12 form-group my-5">
                                             <div className="col">
                                             <p className="Title my-3" style={{textAlign:"center"}}>Whitelisting</p>
@@ -735,33 +739,61 @@ class Crowdsales extends Component {
                                                 </div>
                                             </div>
                                             :
+                                            !this.state.selectedContract.stage.issue ?
+                                                <div className="col-md-12 form-group my-5">
+                                                    <div className="col">
+                                                        <p className="Title my-3" style={{textAlign:"center"}}>Round start date</p>
+                                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.startDate}</p>
+                                                    </div>
+                                                </div>
+                                            :
+                                                null
+                                        }
+                                        {this.state.selectedContract.crowdsale.fixDates ?
                                             <div className="col-md-12 form-group my-5">
                                                 <div className="col">
-                                                    <p className="Title my-3" style={{textAlign:"center"}}>Round start date</p>
-                                                    <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.startDate !== 0 ? this.state.selectedContract.stage.startDate : this.state.selectedContract.stage.issue}</p>
+                                                    <p className="Title my-3" style={{textAlign:"center"}}>Minimum investment</p>
+                                                    <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.minLimit}</p>
                                                 </div>
                                             </div>
+                                            :
+                                            !this.state.selectedContract.stage.issue ?
+                                                <div className="col-md-12 form-group my-5">
+                                                    {this.state.selectedContract.stage.startDate !== 0 ?
+                                                        <div className="col">
+                                                            <p className="Title my-3" style={{textAlign:"center"}}>Round minimum investment</p>
+                                                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.minLimit}</p>
+                                                        </div>
+                                                        : null
+                                                    }
+                                                </div>
+                                            :
+                                                null
                                         }
-                                        <div className="col-md-12 form-group my-5">
-                                            <div className="col">
-                                            <p className="Title my-3" style={{textAlign:"center"}}>Created at</p>
-                                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.creationDate}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="col-md-12 form-group my-5">
-                                            <div className="col">
-                                            <p className="Title my-3" style={{textAlign:"center"}}>Tokens sold</p>
-                                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.tokensSold}</p>
-                                            </div>
-                                        </div>
                                         <div className="col-md-12 form-group my-5">
                                             <div className="col">
                                             <p className="Title my-3" style={{textAlign:"center"}}>Funds wallet</p>
                                             <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}><a href={"https://rinkeby.etherscan.io/address/" + this.state.selectedContract.crowdsale.fundsAddress +"/"} target="_blank">Here</a></p>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="col-md-12 form-group my-5">
+                                            <div className="col">
+                                                <p className="Title my-3" style={{textAlign:"center"}}>Investors amount</p>
+                                                <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.buyersAmount}</p>
+                                            </div>
+                                        </div>
+                                        { !this.state.selectedContract.stage.issue ?
+                                            <div className="col-md-12 form-group my-5">
+                                                <div className="col">
+                                                <p className="Title my-3" style={{textAlign:"center"}}>Initial tokens</p>
+                                                <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.tokensForSale}</p>
+                                                </div>
+                                            </div>
+                                        :
+                                            null
+                                        }
                                         <div className="col-md-12 form-group my-5">
                                             <div className="col">
                                             <p className="Title my-3" style={{textAlign:"center"}}>Burn unsold tokens</p>
@@ -776,15 +808,39 @@ class Crowdsales extends Component {
                                                 </div>
                                             </div>
                                             :
+                                            !this.state.selectedContract.stage.issue ?
+                                                <div className="col-md-12 form-group my-5">
+                                                    {this.state.selectedContract.stage.startDate !== 0 ?
+                                                        <div className="col">
+                                                            <p className="Title my-3" style={{textAlign:"center"}}>Round finish date</p>
+                                                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.finishDate}</p>
+                                                        </div>
+                                                        : null
+                                                    }
+                                                </div>
+                                            :
+                                                null
+                                        }
+                                        {this.state.selectedContract.crowdsale.fixDates ?
                                             <div className="col-md-12 form-group my-5">
-                                                {this.state.selectedContract.stage.startDate !== 0 ?
-                                                    <div className="col">
-                                                        <p className="Title my-3" style={{textAlign:"center"}}>Round finish date</p>
-                                                        <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.finishDate}</p>
-                                                    </div>
-                                                    : null
-                                                }
+                                                <div className="col">
+                                                    <p className="Title my-3" style={{textAlign:"center"}}>Maximum investment</p>
+                                                    <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.maxLimit}</p>
+                                                </div>
                                             </div>
+                                            :
+                                            !this.state.selectedContract.stage.issue ?
+                                                <div className="col-md-12 form-group my-5">
+                                                    {this.state.selectedContract.stage.startDate !== 0 ?
+                                                        <div className="col">
+                                                            <p className="Title my-3" style={{textAlign:"center"}}>Round maximum investment</p>
+                                                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.stage.maxLimit}</p>
+                                                        </div>
+                                                        : null
+                                                    }
+                                                </div>
+                                            :
+                                                null
                                         }
                                         <div className="col-md-12 form-group my-5">
                                             <div className="col">
@@ -793,7 +849,14 @@ class Crowdsales extends Component {
                                             </div>
                                         </div>
                                     </div>
+                                    <div className="col-md-12 form-group">
+                                            <div className="col">
+                                            <p className="Title my-3" style={{textAlign:"center"}}>Created at</p>
+                                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.crowdsale.creationDate}</p>
+                                            </div>
+                                        </div>
                                     <div className="col-md-12" style={{textAlign:"center"}}>
+                                        <hr className="mb-4" />
                                         <a href={"https://rinkeby.etherscan.io/address/" + this.state.selectedContract.crowdsale.contractAddress} style={{color: "#45467e"}} target="_blank">See crowdsale contract in Etherscan</a>
                                     </div>
                                 </div>
@@ -819,6 +882,12 @@ class Crowdsales extends Component {
                                             <div className="col">
                                             <p className="Title my-3" style={{textAlign:"center"}}>Decimals</p>
                                             <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}>{this.state.selectedContract.token.decimals}</p>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12 form-group my-5">
+                                            <div className="col">
+                                            <p className="Title my-3" style={{textAlign:"center"}}>Funds wallet</p>
+                                            <p className="Amount" style={{textAlign:"center", color:"rgb(69, 70, 123)"}}><a href={"https://rinkeby.etherscan.io/address/" + this.state.selectedContract.crowdsale.fundsAddress +"/"} target="_blank">Here</a></p>
                                             </div>
                                         </div>
                                         <div className="col-md-12 form-group my-5">
@@ -855,6 +924,7 @@ class Crowdsales extends Component {
                                         </div>
                                     </div>
                                     <div className="col-md-12" style={{textAlign:"center"}}>
+                                        <hr className="mb-4" />
                                         <a href={"https://rinkeby.etherscan.io/token/" + this.state.selectedContract.token.contractAddress} style={{color: "#45467e"}} target="_blank">See token contract in Etherscan</a>
                                     </div>
                                 </div>
@@ -868,7 +938,7 @@ class Crowdsales extends Component {
                                 <div className="row container-fluid">
                                 <div className="col-md-12 form-group">
                                     <div className="row">
-                                        <div className="col-md-12" style={{textAlign:"center"}}>
+                                        <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
                                             <p className="Title my-3" style={{textAlign:"center"}}><b>Transfer tokens to non ETH buyers</b></p>
                                             <form className="d-flex" data-action="crowdsaleTransfer" onSubmit={this.doFeature}>
                                                 <div className="col">
@@ -956,7 +1026,7 @@ class Crowdsales extends Component {
                                 <div className="row container-fluid">
                                     <div className="col-md-12 form-group">
                                         <div className="row">
-                                            <div className="col-md-12" style={{textAlign:"center"}}>
+                                            <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
                                                 <p className="Title my-3" style={{textAlign:"center"}}><b>Transfer {this.state.selectedContract.token.name}</b></p>
                                                 <form className="d-flex" data-action="transfer" onSubmit={this.doFeature}>
                                                     <div className="col">
@@ -972,7 +1042,7 @@ class Crowdsales extends Component {
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div className="col-md-12" style={{textAlign:"center"}}>
+                                            <div className="col-md-12 mb-5" style={{textAlign:"center"}}>
                                                 <p className="Title my-3" style={{textAlign:"center"}}><b>Burn</b></p>
                                                 <form className="d-flex" data-action="burn" onSubmit={this.doFeature}>
                                                     <div className="col">
@@ -985,8 +1055,8 @@ class Crowdsales extends Component {
                                                 </form>
                                             </div>
                                             {this.state.selectedContract.token.mintable ?
-                                                <form className="col-md-12" data-action="mint" onSubmit={this.doFeature} style={{textAlign:"center"}}>
-                                                    <p className="Title my-3" style={{textAlign:"center"}}><b>Mint  Example Token</b></p>
+                                                <form className="col-md-12 mb-5" data-action="mint" onSubmit={this.doFeature} style={{textAlign:"center"}}>
+                                                    <p className="Title my-3" style={{textAlign:"center"}}><b>Mint {this.state.selectedContract.token.symbol} Token</b></p>
                                                     <div className="d-flex">
                                                         <div className="col">
                                                             <p className="Title my-3" style={{textAlign:"center"}}>Receiver address</p>
@@ -1006,7 +1076,7 @@ class Crowdsales extends Component {
                                             }
 
                                             {this.state.selectedContract.token.freezable ?
-                                                <div className="col-md-12">
+                                                <div className="col-md-12 mb-5">
                                                     <form className="col-md-12 mb-5" data-action="freeze" onSubmit={this.doFeature} style={{textAlign:"center"}}>
                                                         <p className="Title my-3" style={{textAlign:"center"}}><b>Freeze address</b></p>
                                                         <div className="d-flex justify-content-center">
