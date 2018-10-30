@@ -111,8 +111,34 @@ class Crowdsales extends Component {
                         else
                             reject(error)
                     })
-                }).then(data => {
+                })
+                .then((crowdsaleInfo) => {
+                    return new Promise((resolve, reject) => {
+                        crowdsaleInstance.token((error, tokenAddress) => {
+                            if(!error)
+                                return resolve([crowdsaleInfo, tokenAddress])
+                            else
+                                return reject(error)
+                        })
+                    })
+                })
+                .then(data => {
+                    return new Promise((resolve, reject) => {
+                        const tokenContract = web3Context.eth.contract(tokenAbi).at(data[1]);
+                        tokenContract.symbol((error, symbol) => {
+                            if(!error)
+                                return resolve([data, symbol])
+                            else
+                                return reject(error)
+                        })
+                    })
+                })
+                .then(final => {
+                    const symbol = final[1];
+                    const data = final[0][0];
+
                     const contract = {
+                        tokenSymbol: symbol,
                         weiRaised: web3Context.fromWei( Number(data[1]), 'ether'),
                         tokensSold: web3Context.fromWei( Number(data[2]), 'ether'),
                         buyersAmount: Number(data[3]),
@@ -576,8 +602,8 @@ class Crowdsales extends Component {
                             <table className="table" bordercolor="white">
                             <thead style={{fontSize:"15px", textAlign:"center"}}>
                             <tr style={{border:"none"}}>
-                                <th style={{border:"none"}}>Id</th>
-                                <th style={{border:"none"}}>Available tokens</th>
+                                <th style={{border:"none"}}>Token Symbol</th>
+                                <th style={{border:"none"}}>Available Tokens</th>
                                 <th style={{border:"none"}}>Tokens Sold</th>
                                 <th style={{border:"none"}}>Raised ETH</th>
                                 <th style={{border:"none"}}>Buyers Amount</th>
@@ -588,7 +614,7 @@ class Crowdsales extends Component {
                             <tbody style={{fontSize:"13px", textAlign:"center"}}>
                             { this.state.contracts.map((contract, i) => (
                             <tr key={i}>
-                                <td className="align-middle">{ i + 1 }</td>
+                                <td className="align-middle">{contract.tokenSymbol}</td>
                                 <td className="align-middle">{contract.availableTokens}</td>
                                 <td className="align-middle">{contract.tokensSold}</td>
                                 <td className="align-middle">{contract.weiRaised}</td>
