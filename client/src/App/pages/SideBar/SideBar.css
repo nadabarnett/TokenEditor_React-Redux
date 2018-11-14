@@ -1,0 +1,19 @@
+.side-bar {
+  padding-top: 45px;
+  padding-bottom: 45px;
+  margin-left: 50px;
+  width: 171px;
+  /* height: '986px'; */
+  box-shadow: 2px 0px 24px rgba(105,103,121,0.11);
+  background-color: rgba(255,255,255,0.5019607843137255);
+}
+
+.side-bar-item {
+  margin-bottom: 5px;
+}
+
+.side-bar-item-title {
+  font-size: 18px;
+  color: #959b9c;
+  font-family: "S FPro Text";
+}

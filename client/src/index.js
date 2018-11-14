@@ -7,10 +7,9 @@ import './index.css';
 import App from './App/App';
 
 render((
-    <BrowserRouter>
-        <Web3Provider>
-            <App/>
-        </Web3Provider>
-    </BrowserRouter>
-
+  <BrowserRouter>
+    <Web3Provider>
+        <App/>
+    </Web3Provider>
+  </BrowserRouter>
 ), document.getElementById('root'));
