@@ -32,22 +32,50 @@ const NavBarIconGroup = () => (
   </Fragment>
 )
 
+
 export default () => (
-  <nav className="navbar sticky-top top-navbar rounded-0 mb-0">
+<nav class="navbar navbar-expand-lg sticky-top top-navbar py-0 rounded-0 mb-0 navbar-light bg-light">
+  <div>
+    <Link className="navbar-brand" to='/'>
+      <img src={headerLogo} alt='Token Editor' className='top-navbar-logo'/>
+    </Link>
+  </div>
 
-    <div className='ml-100px'>
-      <Link className="navbar-brand" to='/'>
-        <img src={headerLogo} alt='Token Editor'/>
-      </Link>
-      <span className='navbar-text top-navbar-ico-text'>
-        +NEW ICO
-      </span>
-    </div>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <span className='navbar-text top-navbar-ico-text'>
+          +NEW ICO
+        </span>
+      </li>
+    </ul>
     <div className='mr-5'>
       <NavBarIconGroup />
-      <NavBarAvatar /> 
+      <NavBarAvatar />
     </div>
-  </nav>
+  </div>
+</nav>
 )
+
+// export default () => (
+//   <nav className="navbar sticky-top top-navbar rounded-0 mb-0">
+
+//     <div className='ml-100px'>
+//       <Link className="navbar-brand" to='/'>
+//         <img src={headerLogo} alt='Token Editor'/>
+//       </Link>
+//       <span className='navbar-text top-navbar-ico-text'>
+//         +NEW ICO
+//       </span>
+//     </div>
+
+    // <div className='mr-5'>
+    //   <NavBarIconGroup />
+    //   <NavBarAvatar />
+    // </div>
+//   </nav>
+// )

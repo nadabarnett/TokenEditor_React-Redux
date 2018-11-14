@@ -1136,15 +1136,22 @@ hr {
 .top-navbar {
   position: sticky;
   top: 0px;
-  height: 97px;
+  /* height: 97px; */
   box-shadow: 2px 0px 24px rgba(105,103,121,0.17);
   background-color: #ffffff;
   z-index: 2;
 }
 
+
 .top-navbar-logo {
-  margin-top: 20px;
-  left: 113px;
+  margin-top: 15px;
+  margin-left: 25px;
+}
+
+@media (min-width: 768px) {
+  .top-navbar-logo {
+    margin-left: 100px;
+  }
 }
 
 .ml-30px {
@@ -1167,4 +1174,66 @@ hr {
 .mx-30px {
   margin-left: 15px;
   margin-right: 15px;
+}
+
+.dashboard-card {
+  border-radius: 15px;
+  background-color: #ffffff;
+  border-right: 9px solid rgba(255,255,255,0.6);
+  margin: 0 10px 0;
+  height: 136px;
+}
+
+.dashboard-card-title {
+  line-height: 80px;
+  color: #666674;
+  font-family: "Roboto";
+  font-weight: 800;
+}
+
+.dashboard-card-portag {
+  box-shadow: 0px 5px 21px rgba(95,137,250,0.2);
+  border-left: 9px solid #a198f2;
+}
+
+.dashboard-card-sunglo {
+  box-shadow: 0px 5px 21px rgba(232,108,107,0.2);
+  border-left: 9px solid #e86c6b;
+}
+
+.dashboard-card-viking {
+  box-shadow: 0px 5px 21px rgba(0,206,201,0.2);
+  border-left: 9px solid #00cec9;
+}
+
+.dashboard-card-sweet-corn {
+  box-shadow: 0px 5px 21px rgba(250,216,127,0.2);
+  border-left: 9px solid #ffc93c;
+}
+
+.campaign-wrapper {
+  height: 453px;
+  border-radius: 15px;
+  box-shadow: 0px 19px 24px rgba(105,103,121,0.15);
+  background-color: rgba(255,255,255,0.6);
+}
+
+.campaign-2 {
+  background-image: url('images/v2/campaign2.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+
+@media (min-width: 768px) {
+  .content-wrapper {
+    margin-right: 200px
+  }
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    margin-left: 25px;
+    margin-right: 25px;
+  }
 }

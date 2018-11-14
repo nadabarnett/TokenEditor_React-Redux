@@ -3,76 +3,63 @@ import { Link }             from 'react-router-dom';
 import SideBar              from './SideBar';
 import NavBar               from './NavBar';
 
-const Content = ({onSidebarToggle}) => (
-  <div id="content">
-    <nav className="navbar navbar-expand-lg">
-        <div className="container-fluid">
+import campaign_eye from "./campaign_eye.svg"
 
-            <button type="button" id="sidebarCollapse" onClick={onSidebarToggle} className="editor-btn main">
-                <i className="fas fa-align-left"></i>
-                <span> Collapse menu</span>
-            </button>
-            <button className="editor-btn main d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <i className="fas fa-align-justify"></i>
-            </button>
-
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="nav navbar-nav ml-auto">
-                    <li className="nav-item">
-                      <Link to={'/'} className="nav-link">
-                        Log out
-                      </Link>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div className="row justify-content-center mb-5">
-        <div className="col-md-4 mb-3">
-            <div className="row text-center align-items-center editor-block square" id="first">
-                <div className="col">
-                    <p>Want to generate token?</p>
-                    <Link to={'/addToken'} className="nav-link">
-                        <button className="editor-btn main big"><i className="fa fa-lg fa-coins"></i> Create token</button>
-                    </Link>
-                </div>
-            </div>
-        </div>
-        <div className="w-100"></div>
-        <div className="col-md-4">
-            <div className="row text-center align-items-center editor-block square" id="second">
-                <div className="col">
-                    <p>Want to generate crowdsale contract?</p>
-                    <Link to={'/step1'} className="nav-link">
-                        <button className="editor-btn main big"><i className="fab fa-lg fa-ethereum"></i> Genetate crowdsale</button>
-                    </Link>
-                </div>
-            </div>
-        </div>
-        <div className="col-md-4">
-            <div className="row text-center align-items-center editor-block square" id="third">
-                <div className="col">
-                    <p>Want to create a campaign?</p>
-                    <Link to={'/compaign'} className="nav-link">
-                        <button className="editor-btn main big"><i className="fas fa-lg fa-sign"></i> Create campaign</button>
-                    </Link>
-                </div>
-            </div>
-        </div>
+const DashboardCard = ({ variant, title, subTitle }) => (
+  <div className={`my-1 col dashboard-card dashboard-card-${variant}`}>
+    <div class="card border-0">
+      <div class="card-body pb-0">
+        <h5 class="card-title"> {title} </h5>
+        <p class="card-text" style={{wordWrap: 'break-word'}}>{subTitle}</p>
+      </div>
     </div>
   </div>
 )
 
+const Content = () => (
+  <div className='content-wrapper'>
+    <div className="row justify-content-between" style={{marginTop: '50px'}}>
+      <DashboardCard variant='portag' title='2,000 ETH' subTitle='Amount Raised' />
+      <DashboardCard variant='sunglo' title='1.0%' subTitle='(3cv/300uu), Yesterday' />
+      <DashboardCard variant='viking' title='1.0%' subTitle='(30cv/ 3000uu), Total' />
+      <DashboardCard variant='sweet-corn' title='25 users' subTitle='Unverified AML/KYC' />
+    </div>
 
+    <div className='row justify-content-between campaign-wrapper' style={{margin: '30px 0 0 0'}}>
+      <div className='col-12 col-lg-6' style={{padding: '50px'}}>
+        <div style={{color: '#929799'}} className='clearfix'>
+          <span className='float-left'>Example campaign</span>
+          <span className='float-right'>
+            <img src={campaign_eye}/>
+          </span>
+        </div>
+
+        <div className='clearfix' style={{marginTop: '70px'}}>
+          <span className='float-left'>Description of Campaign</span>
+        </div>
+  
+        <div className='clearfix' style={{ marginTop: '35px', color: '#666674', fontSize: '50px' }}>
+          <span className='float-left font-weight-bold'>ETH 237,650</span>
+        </div>
+      </div>
+      <div className='col-12 col-lg-6 campaign-2' />
+    </div>
+  </div>
+)
 class Dashboard extends React.PureComponent {
-  state = { isSideBarHidden: false };
+  constructor(props) {
+    super(props)
+
+    this.state = { isSideBarHidden: false }
+
+    this.toggleSideNav = this.toggleSideNav.bind(this)
+  }
 
   componentDidMount() {
     document.body.id = '';
   }
 
-  toggleSidenav() {
+  toggleSideNav() {
     this.setState(({ isSideBarHidden }) => ({
       isSideBarHidden: !isSideBarHidden
     }))
@@ -87,7 +74,7 @@ class Dashboard extends React.PureComponent {
           <div id="sidebar" className={this.state.isSideBarHidden ? 'active' : ''}>
             <SideBar />
           </div>
-          <Content onSidebarToggle={this.toggleSidenav.bind(this)}/>
+          <Content onSidebarToggle={this.toggleSideNav}/>
         </div>
       </div>
     );
