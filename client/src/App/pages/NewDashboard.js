@@ -5,7 +5,7 @@ import NavBar               from './NavBar';
 
 import campaign_eye from "./campaign_eye.svg"
 
-const DashboardCard = ({ variant, title, subTitle }) => (
+const DashboardCard = React.memo(({ variant, title, subTitle }) => (
   <div className={`my-1 col dashboard-card dashboard-card-${variant}`}>
     <div class="card border-0">
       <div class="card-body pb-0">
@@ -14,7 +14,7 @@ const DashboardCard = ({ variant, title, subTitle }) => (
       </div>
     </div>
   </div>
-)
+))
 
 const Content = () => (
   <div className='content-wrapper'>

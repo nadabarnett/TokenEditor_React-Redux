@@ -6,11 +6,11 @@ import notification from './icons/notification.svg';
 import rightArrow from './icons/right-arrow.svg';
 import Avatar from 'react-avatar';
 
-const NavBarIcon = props => (
+const NavBarIcon = React.memo(props => (
   <img {...props} className='mx-30px'/>
-)
+))
 
-const NavBarAvatar = () => (
+const NavBarAvatar = React.memo(() => (
   <span className='ml-30px'>
     <Avatar
       color='#a39bf0'
@@ -22,18 +22,17 @@ const NavBarAvatar = () => (
       style={{ boxShadow: "0px 5px 10px rgba(108,92,231,0.27)" }}
     />
   </span>
-)
+))
 
-const NavBarIconGroup = () => (
+const NavBarIconGroup = React.memo(() => (
   <Fragment>
     <NavBarIcon src={inbox} title='Inbox' />
     <NavBarIcon src={notification} title='Notification' />
-    <NavBarIcon src={rightArrow} title='Right Arroe' />
+    <NavBarIcon src={rightArrow} title='Right Arrow' />
   </Fragment>
-)
+))
 
-
-export default () => (
+export default React.memo(() => (
 <nav class="navbar navbar-expand-lg sticky-top top-navbar py-0 rounded-0 mb-0 navbar-light bg-light">
   <div>
     <Link className="navbar-brand" to='/'>
@@ -59,7 +58,7 @@ export default () => (
     </div>
   </div>
 </nav>
-)
+))
 
 // export default () => (
 //   <nav className="navbar sticky-top top-navbar rounded-0 mb-0">
