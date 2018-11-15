@@ -1143,6 +1143,16 @@ hr {
 }
 
 
+.top-navbar-ellipse {
+  width: 11px;
+  height: 11px;
+  border-radius: 5px;
+  box-shadow: 0px 3px 6px rgba(0,206,201,0.27);
+  background-color: #5fdbdb;
+  vertical-align: baseline;
+  margin-right: 14px;
+}
+
 .top-navbar-logo {
   margin-top: 15px;
   margin-left: 25px;
@@ -1159,12 +1169,17 @@ hr {
 }
 
 .top-navbar-ico-text {
-  margin-left: 85px;
   font-size: 18px;
   letter-spacing: 0px;
-  line-height: 85px;
+  /* line-height: 85px; */
   color: #929799;
-  font-family: "S FPro Textffff";
+  font-family: "SF Pro Text";
+}
+
+@media (min-width: 768px) {
+  .top-navbar-ico-text {
+    margin-left: 85px;
+  }
 }
 
 .ml-100px {
@@ -1181,7 +1196,7 @@ hr {
   background-color: #ffffff;
   border-right: 9px solid rgba(255,255,255,0.6);
   margin: 0 10px 0;
-  height: 136px;
+  min-height: 136px;
 }
 
 .dashboard-card-title {
