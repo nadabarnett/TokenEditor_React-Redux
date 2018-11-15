@@ -1231,14 +1231,8 @@ hr {
   border-radius: 15px;
   box-shadow: 0px 19px 24px rgba(105,103,121,0.15);
   background-color: rgba(255,255,255,0.6);
+  margin: 30px 0 0 0;
 }
-
-.campaign-2 {
-  background-image: url('images/v2/campaign2.png');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-}
-
 
 @media (min-width: 768px) {
   .content-wrapper {
@@ -1246,9 +1240,23 @@ hr {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .content-wrapper {
     margin-left: 25px;
     margin-right: 25px;
   }
+}
+
+.funding-target {
+  font-size: 4vmin;
+  letter-spacing: -1px;
+  color: #666674;
+  font-family: "Roboto";
+  font-weight: 800;
+}
+
+.funding-achieved {
+  font-size: 2vmin;
+  color: #666674;
+  font-family: "SF Pro Text";
 }

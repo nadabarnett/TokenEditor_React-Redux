@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { Link }             from 'react-router-dom';
-import SideBar              from './SideBar';
-import NavBar               from './NavBar';
+import React     from 'react';
+import { Link }  from 'react-router-dom';
+import SideBar   from './SideBar';
+import NavBar    from './NavBar';
 
 import campaign_eye from "./campaign_eye.svg"
+import campaignImg from "./campaign2.png"
 
 const DashboardCard = React.memo(({ variant, title, subTitle }) => (
   <div className={`my-1 col dashboard-card dashboard-card-${variant}`}>
@@ -16,24 +17,27 @@ const DashboardCard = React.memo(({ variant, title, subTitle }) => (
   </div>
 ))
 
+const DashboardCards = () => (
+  <div className="row justify-content-between" style={{marginTop: '50px'}}>
+    <DashboardCard variant='portag' title='2,000 ETH' subTitle='Amount Raised' />
+    <DashboardCard variant='sunglo' title='1.0%' subTitle='(3cv/ 300uu), Yesterday' />
+    <DashboardCard variant='viking' title='1.0%' subTitle='(30cv/ 3000uu), Total' />
+    <DashboardCard variant='sweet-corn' title='25 users' subTitle='Unverified AML/KYC' />
+  </div>
+)
 
-const FundingItem = ({current, target}) => (
+const FundingItem = React.memo(({current, target}) => (
   <div className='col text-left'>
     <h2 className='funding-target'>{current}</h2>
     <p className='funding-achieved'>{target}</p>
   </div>
-)
+))
 
 const Content = () => (
   <div className='content-wrapper'>
-    <div className="row justify-content-between" style={{marginTop: '50px'}}>
-      <DashboardCard variant='portag' title='2,000 ETH' subTitle='Amount Raised' />
-      <DashboardCard variant='sunglo' title='1.0%' subTitle='(3cv/ 300uu), Yesterday' />
-      <DashboardCard variant='viking' title='1.0%' subTitle='(30cv/ 3000uu), Total' />
-      <DashboardCard variant='sweet-corn' title='25 users' subTitle='Unverified AML/KYC' />
-    </div>
+    <DashboardCards />
 
-    <div className='row justify-content-between campaign-wrapper' style={{margin: '30px 0 0 0'}}>
+    <div className='row justify-content-between campaign-wrapper'>
       <div className='col-12 col-lg-6' style={{padding: '8vmin'}}>
         <div style={{color: '#929799'}} className='clearfix'>
           <span className='float-left'>Example campaign</span>
@@ -57,7 +61,9 @@ const Content = () => (
         </div>
       </div>
 
-      <div className='col-12 col-lg-6 campaign-2' />
+      <div className='col-12 col-lg-6 campaign-2 px-0' >
+        <img src={campaignImg} className='img-fluid h-100'/>
+      </div>
     </div>
   </div>
 )
