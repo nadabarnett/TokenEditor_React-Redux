@@ -1236,7 +1236,7 @@ hr {
 
 @media (min-width: 768px) {
   .content-wrapper {
-    margin-right: 200px
+    margin-right: 100px
   }
 }
 
@@ -1259,4 +1259,10 @@ hr {
   font-size: 2vmin;
   color: #666674;
   font-family: "SF Pro Text";
+}
+
+.example-campaign {
+  padding: 5vmin 3vw 0 3vw;
+
+  /* border: 1px solid red; */
 }

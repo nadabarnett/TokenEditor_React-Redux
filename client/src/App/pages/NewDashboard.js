@@ -38,20 +38,26 @@ const Content = () => (
     <DashboardCards />
 
     <div className='row justify-content-between campaign-wrapper'>
-      <div className='col-12 col-lg-6' style={{padding: '8vmin'}}>
-        <div style={{color: '#929799'}} className='clearfix'>
+
+      <div className='col-12 col-lg-6 example-campaign'>
+        <div style={{ color: '#929799' }} className='clearfix'>
           <span className='float-left'>Example campaign</span>
           <span className='float-right'>
             <img src={campaign_eye}/>
           </span>
         </div>
 
-        <div className='clearfix' style={{marginTop: '70px'}}>
+        <div className='clearfix ' style={{marginTop: '70px'}}>
           <span className='float-left'>Description of Campaign</span>
         </div>
   
         <div className='clearfix' style={{ marginTop: '35px', color: '#666674', fontSize: '50px' }}>
-          <span className='float-left font-weight-bold' style={{fontSize: '6vmin'}}>ETH 237,650</span>
+          <span className='float-left font-weight-bold' style={{fontSize: '5vmin'}}>ETH 237,650</span>
+        </div>
+
+        <div className='clearfix text-left'>
+          Raised
+          TODO: Add progress
         </div>
 
         <div className='row'>
@@ -88,14 +94,16 @@ class Dashboard extends React.PureComponent {
 
   render() {
     return (
-      <div className="App">
+      <div className='text-center'>
         <NavBar />
 
-        <div className='d-flex'>
-          <div id="sidebar" className={this.state.isSideBarHidden ? 'active' : ''}>
-            <SideBar />
+        <div className="App">
+          <div className='d-flex'>
+            <div id="sidebar" className={this.state.isSideBarHidden ? 'active' : ''}>
+              <SideBar />
+            </div>
+            <Content onSidebarToggle={this.toggleSideNav}/>
           </div>
-          <Content onSidebarToggle={this.toggleSideNav}/>
         </div>
       </div>
     );
