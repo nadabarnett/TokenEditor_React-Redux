@@ -271,8 +271,8 @@ a:focus {
 
 
 #sidebar ul li a:hover {
-    color: white;
-    background: #45467B;
+    /* color: white;
+    background: #45467B; */
 }
 
 /* Disturbs Navbar langauage avatar */

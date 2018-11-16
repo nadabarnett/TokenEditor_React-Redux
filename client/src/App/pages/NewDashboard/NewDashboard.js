@@ -67,7 +67,7 @@ const Content = () => (
         <div className='clearfix text-left'>
           <span style={{color: '#666674', fontFamily: 'SF Pro Text', fontSize: '18px'}}>Raised</span>
 
-          <div class="progress" style={{ height: '7px', borderRadius: '2px', marginBottom: '37px', marginTop: '15px' }}>
+          <div class="progress" style={{ height: '7px', borderRadius: '2px', marginBottom: '37px', marginTop: '15px', marginRight: '1px' }}>
             <div class="progress-bar" role="progressbar" style={{ width: '75%', backgroundImage: "linear-gradient(90deg, #ef4d5b 0%, #fe687b 100%)" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
             </div>
           </div>

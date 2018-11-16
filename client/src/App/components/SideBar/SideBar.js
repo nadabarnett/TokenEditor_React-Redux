@@ -28,11 +28,30 @@ import TransactionsActive from './icons/8_2_Transactions.png';
 
 import "./SideBar.css"
 
-const SideBarItem = React.memo(
-  withRouter(({ to, icon, activeIcon, title, location: { pathname } }) => {
-    const isActive = pathname.startsWith(to)
+class SideBarItem_ extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = { isHovering: false }
+
+    this.onMouseEnter = this.onMouseEnter.bind(this)
+    this.onMouseLeave = this.onMouseLeave.bind(this)
+  }
+
+  onMouseEnter(e) {
+    this.setState({ isHovering: true })
+  }
+
+  onMouseLeave(e) {
+    this.setState({ isHovering: false })
+  }
+
+  render() {
+    const { to, icon, activeIcon, title, location: { pathname } } = this.props
+
+    const isActive = this.state.isHovering || pathname.startsWith(to)
     return (
-      <li className='side-bar-item text-center'>
+      <li className='side-bar-item text-center' onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
         <Link to={to}>
           <img src={isActive ? activeIcon : icon} alt={title} />
           <div className={`side-bar-item-title${isActive ? ' side-bar-item-title--active' : ''}`}>{title}</div>
@@ -40,7 +59,9 @@ const SideBarItem = React.memo(
       </li>
     )
   }
-))
+}
+
+const SideBarItem = withRouter(SideBarItem_)
 
 export default React.memo(() => (
   <ul className="list-unstyled side-bar mb-0">
