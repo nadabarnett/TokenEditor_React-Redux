@@ -15,8 +15,8 @@ const NavBarIcon = React.memo(props => (
   </Link>
 ))
 
-const NavBarAvatar = React.memo(() => (
-  <span className='ml-30px'>
+const NavBarAvatar = React.memo(({wrapperClass = '', ...props}) => (
+  <span className={wrapperClass}>
     <Avatar
       color='#a39bf0'
       name='English'
@@ -24,8 +24,9 @@ const NavBarAvatar = React.memo(() => (
       size='50'
       textSizeRatio={2}
       round
-      className='top-navbar-avatar'
-      style={{ boxShadow: "0px 5px 10px rgba(108,92,231,0.27)", fontFamily: "SF Pro Text", fontWeight: 'bold' }}
+      {...props}
+      className={`top-navbar-avatar ${props.className}`}
+      style={{ fontFamily: "SF Pro Text", fontWeight: 'bold', ...props.style }}
     />
   </span>
 ))
@@ -40,36 +41,53 @@ const NavBarIconGroup = React.memo(() => (
 
 export default React.memo(() => (
   <nav className="navbar navbar-expand-lg sticky-top top-navbar py-0 rounded-0 mb-0 navbar-light bg-light">
-    <div>
-      <Link className="navbar-brand" to='/'>
-        <img src={headerLogo} alt='Token Editor' className='top-navbar-logo'/>
-      </Link>
-    </div>
-
-    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav mr-auto">
-        <li className="nav-item">
-          <span className='navbar-text top-navbar-ico-text'>
-            +NEW ICO
-          </span>
-        </li>
-      </ul>
-
-      <div className='mr-5 mb-3 mb-lg-0'>
-        <div className='my-3 d-lg-inline' style={{fontFamily: 'Roboto'}}>
-          <Link className='nav-item' to='#' style={{ verticalAlign: 'text-top', color: '#939899', marginRight: '27px' }}>
-            <img src={ellipse} className='top-navbar-ellipse'/>
-            Mainnet
-            </Link>
-          <Link className='nav-item' to='#' style={{ verticalAlign: 'text-top', color: '#939899', marginRight: '6px' }}>0x6A830...03B</Link>
+    <div className='container-fluid'>
+      <div class="navbar-header">
+        <Link className="navbar-brand" to='/'>
+          <img src={headerLogo} alt='Token Editor' className='top-navbar-logo'/>
+        </Link>
+      </div>
+  
+      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span className="navbar-toggler-icon"></span>
+      </button>
+  
+      <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <span className='navbar-text top-navbar-ico-text'>
+              +NEW ICO
+            </span>
+          </li>
+        </ul>
+  
+        <div className='mb-3 mb-lg-0'>
+          <div className='my-3 d-lg-inline' style={{fontFamily: 'Roboto'}}>
+            <Link className='nav-item' to='#' style={{ verticalAlign: 'text-top', color: '#939899', marginRight: '27px' }}>
+              <img src={ellipse} className='top-navbar-ellipse'/>
+              Mainnet
+              </Link>
+            <Link className='nav-item' to='#' style={{ verticalAlign: 'text-top', color: '#939899', marginRight: '6px' }}>0x6A830...03B</Link>
+          </div>
+  
+          <NavBarIconGroup />
         </div>
 
-        <NavBarIconGroup />
-        <NavBarAvatar />
+        <div className='mr-lg-5'>
+          <ul className='navbar-nav'>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle caret-off" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <NavBarAvatar wrapperClass='language-switch'/>
+              </a>
+              <div class="dropdown-menu dropdown-menu-custom text-center" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item language-switch-item" href="#"><NavBarAvatar color='#eaa0a2' initials={() => 'JP'} /></a>
+                <a class="dropdown-item language-switch-item" href="#"><NavBarAvatar color='#5fdbdb' initials={() => 'ES'} /></a>
+                <a class="dropdown-item language-switch-item" href="#"><NavBarAvatar color='#fbd87f' initials={() => 'CN'} /></a>
+              </div>
+            </li>
+          </ul>
+        </div>
+
       </div>
     </div>
   </nav>

@@ -174,7 +174,7 @@ h2 {
 	font-size: 24px;
 }
 
-.progress { 
+/* .progress { 
 	height: 20px;
     position: relative;
     background: white;
@@ -197,7 +197,7 @@ h2 {
     top: 0;
     left: 0;
     overflow: hidden;
-}
+} */
 
 a,
 a:hover,
@@ -275,12 +275,13 @@ a:focus {
     background: #45467B;
 }
 
-
+/* Disturbs Navbar langauage avatar */
+/* 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #fff;
     background: #6d7fcc;
-}
+} */
 
 
 a[data-toggle="collapse"] {
@@ -632,18 +633,18 @@ a[data-toggle="collapse"] {
 }
 
 .dropdown {
-  width: 100%;
+  /* width: 100%;
   display: inline-block;
   margin-right: 10px;
   position: relative;
   /*border-radius: 10px;*/
   border-color: red;
   /*background-color: rgb(69, 70, 123);*/
-  background-color: white;
+  background-color: white; */
 
 }
 .dropdown.toggle > input {
-  display: none;
+  /* display: none; */
 }
 
 .dropdown > a, .dropdown.toggle > label {
@@ -652,7 +653,7 @@ a[data-toggle="collapse"] {
 }
 
 .dropdown > a::after, .dropdown.toggle > label::after {
-  content: "";
+  /* content: "";
   float: right;
   margin: 15px 15px 0 0;
   width: 0;
@@ -664,36 +665,36 @@ a[data-toggle="collapse"] {
   border-width: 12px;
   border-top: solid rgb(69, 70, 123);
   border-radius: 6px;
-  border-top-width: 20px;
+  border-top-width: 20px; */
 
 }
 .dropdown ul {
-  list-style-type: none;
+  /* list-style-type: none;
   display: block;
   margin: 0;
   padding: 0;
   position: absolute;
   width: 93%;
   box-shadow: 0 6px 5px -5px rgba(0,0,0,0.3);
-  overflow: hidden;
+  overflow: hidden; */
 }
 .dropdown a, .dropdown.toggle > label {
-  display: block;
+  /* display: block;
   padding: 0 0 0 10px;
   text-decoration: none;
   line-height: 40px;
-  font-size: 15px;
+  font-size: 15px; */
   /*text-transform: uppercase;*/
   /*font-weight: bold;*/
-  color: grey;
+  /* color: grey;
   border-radius: 10px;
   border-style: solid;
   border-width: 2px;
   border-color: rgb(69, 70, 123);
   background-color: white;
-  border-bottom-width: 2px;
+  border-bottom-width: 2px; */
 }
-.dropdown li {
+/* .dropdown li {
   width: 100%;
   height: 0;
   overflow: hidden;
@@ -703,7 +704,7 @@ a[data-toggle="collapse"] {
 .dropdown.hover li {
   transition-delay: 300ms;
   background-color: rgb(69, 70, 123);
-}
+} */
 .dropdown li:first-child a {
   /*border-radius: 2px 2px 0 0;*/
 }
@@ -714,7 +715,7 @@ a[data-toggle="collapse"] {
 /*
 https://freefrontend.com/css-menu/#dropdown-menu
 */
-.dropdown a:hover, .dropdown.toggle > label:hover{
+/* .dropdown a:hover, .dropdown.toggle > label:hover{
   background-color: white;
   color: rgb(69, 70, 123);
   border-radius: 10px;
@@ -733,7 +734,7 @@ https://freefrontend.com/css-menu/#dropdown-menu
 .dropdown.hover:hover li, .dropdown.toggle > input:checked ~ ul li {          
   height: 44px;
   width: 100%;
-}
+} */
 
 .dropdown.hover:hover li:first-child, .dropdown.toggle > input:checked ~ ul li:first-child {
   /*padding-top: 2px;*/
@@ -1160,12 +1161,8 @@ hr {
 
 @media (min-width: 768px) {
   .top-navbar-logo {
-    margin-left: 100px;
+    margin-left: 85px;
   }
-}
-
-.ml-30px {
-  margin-left: 30px;
 }
 
 .top-navbar-ico-text {
@@ -1256,13 +1253,73 @@ hr {
 }
 
 .funding-achieved {
+  font-size: 18px;
   font-size: 2vmin;
   color: #666674;
   font-family: "SF Pro Text";
 }
 
-.example-campaign {
+.campaign-section {
   padding: 5vmin 3vw 0 3vw;
-
-  /* border: 1px solid red; */
 }
+
+.campaign-section-header {
+  color: #929799;
+}
+
+.campaign-description {
+  margin-top: 50px
+}
+
+.campaign-eth-text {
+  margin-top: 15px;
+  color: #666674;
+  font-size: 50px
+}
+
+@media (min-width: 992px) {
+  .campaign-eth-text {
+    margin-top: 25px;
+  }
+}
+
+
+.caret-off {
+  padding-bottom: 0px;
+}
+.caret-off::before {
+  display: none;
+}
+.caret-off::after {
+  display: none;
+}
+
+.dropdown-menu-custom {
+  min-width: unset;
+  padding: unset;
+  border: unset;
+  border-radius: 24px;
+  background-color: rgba(255,255,255,0.6);
+}
+
+@media (min-width: 992px) {
+  .dropdown-menu-custom {
+    margin-left: 37px;
+    box-shadow: 0px 5px 10px rgba(102,102,116,0.27);
+  }
+}
+
+.language-switch {
+  box-shadow: 0px 5px 10px rgba(108,92,231,0.27);
+}
+
+@media (min-width: 992px) {
+  .language-switch {
+    margin-left: 30px;
+  }
+}
+
+.language-switch-item {
+  padding: 1.1px 1.1px 1.1px 1.3px;
+}
+

@@ -39,25 +39,30 @@ const Content = () => (
 
     <div className='row justify-content-between campaign-wrapper'>
 
-      <div className='col-12 col-lg-6 example-campaign'>
-        <div style={{ color: '#929799' }} className='clearfix'>
+      <div className='col-12 col-lg-6 campaign-section'>
+        <div style={{  }} className='clearfix campaign-section-header'>
           <span className='float-left'>Example campaign</span>
           <span className='float-right'>
             <img src={campaign_eye}/>
           </span>
         </div>
 
-        <div className='clearfix ' style={{marginTop: '70px'}}>
+        <div className='clearfix campaign-description'>
           <span className='float-left'>Description of Campaign</span>
         </div>
   
-        <div className='clearfix' style={{ marginTop: '35px', color: '#666674', fontSize: '50px' }}>
-          <span className='float-left font-weight-bold' style={{fontSize: '5vmin'}}>ETH 237,650</span>
+        <div className='clearfix campaign-eth-text'>
+          <span className='float-left font-weight-bold' style={{fontSize: '7vmin'}}>ETH 237,650</span>
         </div>
 
         <div className='clearfix text-left'>
-          Raised
-          TODO: Add progress
+          <span style={{color: '#666674', fontFamily: 'SF Pro Text', fontSize: '18px'}}>Raised</span>
+
+          <div class="progress" style={{ height: '7px', borderRadius: '2px', marginBottom: '37px', marginTop: '20px' }}>
+            <div class="progress-bar" role="progressbar" style={{ width: '75%', backgroundImage: "linear-gradient(90deg, #ef4d5b 0%, #fe687b 100%)" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            </div>
+          </div>
+
         </div>
 
         <div className='row'>
