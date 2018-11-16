@@ -4,6 +4,9 @@ import SideBar   from '../../components/SideBar';
 import NavBar    from '../../components/NavBar';
 
 import campaign_eye from "./campaign_eye.svg"
+import pen from "./pen.svg"
+import development from "./development.svg"
+
 import campaignImg from "./campaign2.png"
 import questionMarkPurple from "./Layer 3 copy.svg"
 import dummy from "./dummy.svg"
@@ -52,7 +55,9 @@ const Content = () => (
         <div className='clearfix campaign-section-header'>
           <span className='float-left'>Example campaign</span>
           <span className='float-right'>
-            <img src={campaign_eye}/>
+            <img src={campaign_eye} className='ml-3'  style={{height: '22px', width: '16px' }}/>
+            <img src={pen} className='ml-3' style={{height: '22px', width: '16px' }}/>
+            <img src={development} className='ml-3'  style={{height: '22px', width: '16px' }}/>
           </span>
         </div>
 
@@ -67,7 +72,7 @@ const Content = () => (
         <div className='clearfix text-left'>
           <span style={{color: '#666674', fontFamily: 'SF Pro Text', fontSize: '18px'}}>Raised</span>
 
-          <div class="progress" style={{ height: '7px', borderRadius: '2px', marginBottom: '37px', marginTop: '15px', marginRight: '1px' }}>
+          <div class="progress" style={{ height: '7px', borderRadius: '2px', marginBottom: '37px', marginTop: '15px', marginRight: '2px' }}>
             <div class="progress-bar" role="progressbar" style={{ width: '75%', backgroundImage: "linear-gradient(90deg, #ef4d5b 0%, #fe687b 100%)" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
             </div>
           </div>
@@ -82,7 +87,7 @@ const Content = () => (
       </div>
 
       <div className='col-12 col-xl-6 px-0' >
-        <img src={campaignImg} className='img-fluid w-100  h-100'/>
+        <img src={campaignImg} className='img-fluid w-100  h-100' />
       </div>
     </div>
   </div>
