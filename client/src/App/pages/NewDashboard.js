@@ -1,7 +1,7 @@
 import React     from 'react';
 import { Link }  from 'react-router-dom';
-import SideBar   from './SideBar';
-import NavBar    from './NavBar';
+import SideBar   from '../components/SideBar';
+import NavBar    from '../components/NavBar';
 
 import campaign_eye from "./campaign_eye.svg"
 import campaignImg from "./campaign2.png"
@@ -40,7 +40,7 @@ const Content = () => (
     <div className='row justify-content-between campaign-wrapper'>
 
       <div className='col-12 col-lg-6 campaign-section'>
-        <div style={{  }} className='clearfix campaign-section-header'>
+        <div className='clearfix campaign-section-header'>
           <span className='float-left'>Example campaign</span>
           <span className='float-right'>
             <img src={campaign_eye}/>
