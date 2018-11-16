@@ -1260,7 +1260,7 @@ hr {
 }
 
 .campaign-section {
-  padding: 5vmin 3vw 0 3vw;
+  padding: 4.5vmin 3vw 0 3vw;
 }
 
 .campaign-section-header {
@@ -1268,18 +1268,32 @@ hr {
 }
 
 .campaign-description {
-  margin-top: 50px
+  margin-top: 10vh;
+}
+
+@media (min-width: 786px) {
+  .campaign-description {
+    margin-top: 4vh;
+  }
 }
 
 .campaign-eth-text {
-  margin-top: 15px;
+  font-size: 64px;
+  letter-spacing: -1px;
+  line-height: 85px;
   color: #666674;
-  font-size: 50px
+  font-family: "Roboto";
+  font-weight: bold;
+
+  margin-top: 15px;
+  /* color: #666674;
+  font-size: 50px */
 }
 
 @media (min-width: 992px) {
   .campaign-eth-text {
-    margin-top: 25px;
+    font-size: 3vmin;
+    margin-top: 20px;
   }
 }
 

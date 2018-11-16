@@ -1,28 +1,37 @@
 import React     from 'react';
 import { Link }  from 'react-router-dom';
-import SideBar   from '../components/SideBar';
-import NavBar    from '../components/NavBar';
+import SideBar   from '../../components/SideBar';
+import NavBar    from '../../components/NavBar';
 
 import campaign_eye from "./campaign_eye.svg"
 import campaignImg from "./campaign2.png"
+import questionMarkPurple from "./Layer 3 copy.svg"
+import dummy from "./dummy.svg"
+import people from "./people.svg"
+import users from "./users.svg"
 
-const DashboardCard = React.memo(({ variant, title, subTitle }) => (
+const DashboardCard = React.memo(({ variant, icon, title, subTitle }) => (
   <div className={`my-1 col dashboard-card dashboard-card-${variant}`}>
     <div className="card border-0">
       <div className="card-body pb-0">
-        <h5 className="card-title"> {title} </h5>
-        <p className="card-text" style={{wordWrap: 'break-word'}}>{subTitle}</p>
+        <div className='row'>
+          <h5 className="col-12 col-md-6 card-title float-right pl-0 my-auto"> {title} </h5>
+          <div className='col-12 col-md-6 float-left pr-0'>
+            <img className='' src={icon} style={{ width: '30px', height: '30px' }} />
+          </div>
+        </div>
+        <p className="card-text float-left" style={{ wordWrap: 'break-word' }}>{subTitle}</p>
       </div>
     </div>
   </div>
-))
+));
 
 const DashboardCards = () => (
   <div className="row justify-content-between" style={{marginTop: '50px'}}>
-    <DashboardCard variant='portag' title='2,000 ETH' subTitle='Amount Raised' />
-    <DashboardCard variant='sunglo' title='1.0%' subTitle='(3cv/ 300uu), Yesterday' />
-    <DashboardCard variant='viking' title='1.0%' subTitle='(30cv/ 3000uu), Total' />
-    <DashboardCard variant='sweet-corn' title='25 users' subTitle='Unverified AML/KYC' />
+    <DashboardCard variant='portag' title='2,000 ETH' subTitle='Amount Raised' icon={questionMarkPurple} />
+    <DashboardCard variant='sunglo' title='1.0%' subTitle='(3cv/ 300uu), Yesterday' icon={dummy} />
+    <DashboardCard variant='viking' title='1.0%' subTitle='(30cv/ 3000uu), Total'  icon={people} />
+    <DashboardCard variant='sweet-corn' title='25 users' subTitle='Unverified AML/KYC'  icon={users} />
   </div>
 )
 
@@ -39,7 +48,7 @@ const Content = () => (
 
     <div className='row justify-content-between campaign-wrapper'>
 
-      <div className='col-12 col-lg-6 campaign-section'>
+      <div className='col-12 col-xl-6 campaign-section'>
         <div className='clearfix campaign-section-header'>
           <span className='float-left'>Example campaign</span>
           <span className='float-right'>
@@ -58,7 +67,7 @@ const Content = () => (
         <div className='clearfix text-left'>
           <span style={{color: '#666674', fontFamily: 'SF Pro Text', fontSize: '18px'}}>Raised</span>
 
-          <div class="progress" style={{ height: '7px', borderRadius: '2px', marginBottom: '37px', marginTop: '20px' }}>
+          <div class="progress" style={{ height: '7px', borderRadius: '2px', marginBottom: '37px', marginTop: '15px' }}>
             <div class="progress-bar" role="progressbar" style={{ width: '75%', backgroundImage: "linear-gradient(90deg, #ef4d5b 0%, #fe687b 100%)" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
             </div>
           </div>
@@ -72,8 +81,8 @@ const Content = () => (
         </div>
       </div>
 
-      <div className='col-12 col-lg-6 campaign-2 px-0' >
-        <img src={campaignImg} className='img-fluid h-100'/>
+      <div className='col-12 col-xl-6 px-0' >
+        <img src={campaignImg} className='img-fluid w-100  h-100'/>
       </div>
     </div>
   </div>

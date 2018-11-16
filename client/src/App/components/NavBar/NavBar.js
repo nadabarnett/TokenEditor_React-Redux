@@ -42,7 +42,7 @@ const NavBarIconGroup = React.memo(() => (
 export default React.memo(() => (
   <nav className="navbar navbar-expand-lg sticky-top top-navbar py-0 rounded-0 mb-0 navbar-light bg-light">
     <div className='container-fluid'>
-      <div class="navbar-header">
+      <div className="navbar-header">
         <Link className="navbar-brand" to='/'>
           <img src={headerLogo} alt='Token Editor' className='top-navbar-logo'/>
         </Link>
