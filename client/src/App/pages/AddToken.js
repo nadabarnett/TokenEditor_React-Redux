@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Switch from 'react-toggle-switch';
 import { Link } from 'react-router-dom';
-import {bytecode,tokenAbi} from './../components/ContractStore';
+import { tokenBytecode, tokenAbi } from './../components/ContractStore';
 import Modal from 'react-modal';
 
 const customStyles = {
@@ -32,7 +32,7 @@ class AddToken extends Component {
           showHideSidenav: "",
           switched: false,
           modalIsOpen: false,
-          user: web3Context.eth.coinbase,
+          user: web3Context.eth.coinbase ? web3Context.eth.coinbase : 'Will be set automatically',
           transaction: {
             trxHash: '',
             trxURL: '',
@@ -51,6 +51,7 @@ class AddToken extends Component {
                 freezable: false,
                 mintable: false,
                 receivers: [{
+                    id: 0,
                     address: web3Context.eth.coinbase,
                     amount: '',
                     frozen: false,
@@ -78,6 +79,14 @@ class AddToken extends Component {
             };
         });
     };
+
+    toBigNumber = (amount) => {
+        const decimals = web3Context.toBigNumber(this.state.token.decimals);
+        const bigNumber = web3Context.toBigNumber(amount);
+        const value = bigNumber.times(web3Context.toBigNumber(10).pow(decimals));
+
+        return value;
+    }
 
     onChange = (e) => {
         let value = e.target.value != "on" ?  e.target.value : e.target.checked;
@@ -115,6 +124,7 @@ class AddToken extends Component {
 
     onAddReceiver = () => {
         const newAddress = {
+            id: this.state.token.receivers.length,
             address: '',
             amount: '',
             freezen: false,
@@ -126,6 +136,18 @@ class AddToken extends Component {
                 token : {
                     ...prevState.token,
                     receivers: prevState.token.receivers.concat(newAddress)
+                }
+            };
+        });
+    }
+
+    onDeleteReceiver = (id) => {
+        const sampleReceivers = this.state.token.receivers.filter(receiver => receiver.id !== id)
+        this.setState( prevState => {
+            return {
+                token : {
+                    ...prevState.token,
+                    receivers: sampleReceivers
                 }
             };
         });
@@ -153,7 +175,6 @@ class AddToken extends Component {
             symbol = this.state.token.symbol.replace(/\s/g, ''),
             decimals = this.state.token.decimals,
             erc223 = this.state.token.erc223,
-            owner = web3Context.toChecksumAddress(this.state.token.owner),
             pausable = this.state.token.pausable,
             freezable = this.state.token.freezable,
             mintable = this.state.token.mintable,
@@ -164,15 +185,13 @@ class AddToken extends Component {
                 return receiver.address;
             }),
             amounts = this.state.token.receivers.map((receiver, i) => {
-                receiver.amount = receiver.amount;
+                receiver.amount = this.toBigNumber(receiver.amount);
                 return receiver.amount;
             }),
             frozen = this.state.token.receivers.map((receiver, i) => {
-                receiver.frozen = receiver.frozen;
                 return receiver.frozen;
             }),
             untilDate = this.state.token.receivers.map((receiver, i) => {
-                receiver.untilDate = receiver.untilDate;
                 return receiver.untilDate;
             });
 
@@ -194,14 +213,13 @@ class AddToken extends Component {
             pausable,
             freezable,
             mintable,
-            owner,
             receivers,
             amounts,
             frozen,
             untilDate,
             {
                 from: this.state.user,
-                data: '0x' + bytecode,
+                data: '0x' + tokenBytecode,
                 value: 1000000000000000000
             }, (e, tokenContract) => {
                 if(typeof tokenContract !== 'undefined') {
@@ -367,7 +385,7 @@ class AddToken extends Component {
                                 <div className="col-lg-4 input-card px-3 py-4 my-3">
                                     <div className="col-md-12 form-group">
                                         <p>Token owner</p>
-                                        <input type="text" required={true} onChange={this.onChange} name="owner" defaultValue={this.state.token.owner} className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
+                                        <input type="text" required={true} value={this.state.token.owner} className="editor-input w-100" readOnly placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
                                     </div>
                                     <div className="w-100"></div>
 
@@ -394,6 +412,7 @@ class AddToken extends Component {
                                     { this.state.token.receivers.map((receiver, i) => (
                                         <div key={i}>
                                             <div className="col-md-12 form-group">
+                                                { i !== 0 ? <hr className="w-100 my-5" /> : null }
                                                 <p>Receiver address</p>
                                                 { i !== 0 ?
                                                     <input type="text" required={true} onChange={this.ondistributionAddresses(i)} name="address" className="editor-input w-100" placeholder="ex. 0xd5b93c49c4201db2a674a7d0fc5f3f733ebade80" />
@@ -421,7 +440,8 @@ class AddToken extends Component {
                                                         <div className="col-md-6 form-group">
                                                             <p>Until date</p>
                                                             <input type="date"  required={true} onChange={this.ondistributionAddresses(i)} name="untilDate" className="editor-input w-100 min-w-100" placeholder="01.10.2018" />
-                                                        </div> :
+                                                        </div>
+                                                        :
                                                         null
                                                     }
                                                 </div>
