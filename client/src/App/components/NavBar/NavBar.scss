@@ -1,0 +1,13 @@
+#navmenu-mobile{
+  ul{
+    list-style: none;
+    padding: 0;
+    li a{
+      font-size: 1.4em;
+      color: #939899;
+      &:hover{
+        color: #666674;
+      }
+    }
+  }
+}
