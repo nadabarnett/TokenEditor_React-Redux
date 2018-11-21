@@ -3,6 +3,7 @@ import { Route, Switch }          from 'react-router-dom';
 import                                 './App.css';
 import Auth                       from './pages/Auth';
 import Dashboard                  from './pages/Dashboard';
+import NewDashboard               from './pages/NewDashboard';
 import Register                   from './pages/Register';
 import Setting                    from './pages/Setting';
 import Billing                    from './pages/Billingupdate';
@@ -23,6 +24,7 @@ class App extends Component {
         <Switch>
           <Route exact path='/' component={Auth}/>
           <Route path='/dashboard' component={Dashboard}/>
+          <Route path='/newDashboard' component={NewDashboard}/>
           <Route path='/Transactions' component={Transactions}/>
           <Route path='/Affiliate' component={Affiliate}/>
           <Route path='/KycAml' component={KycAml}/>
