@@ -136,21 +136,9 @@ class CreateDialog extends Component{
               </ul>
             </div>
             <div className='tab-contents'>
-              {this.state.currentTab=='step1' &&
-                <CreateStep1Form onNextBtn={this.goNext.bind(this)}/>
-              }
-              {this.state.currentTab=='step2' &&
-                <CreateStep2Form onNextBtn={this.goNext.bind(this)} onBackBtn={this.goBack.bind(this)}/>
-              }
-              {this.state.currentTab=='step3' &&
-                <CreateStep3Form onNextBtn={this.goNext.bind(this)} onBackBtn={this.goBack.bind(this)}/>
-              }
-              {this.state.currentTab=='step4' &&
-                <CreateStep4Form onNextBtn={this.goNext.bind(this)} onBackBtn={this.goBack.bind(this)}/>
-              }
-              {this.state.currentTab=='step5' &&
-                <CreateStep5Form onNextBtn={this.goNext.bind(this)} onBackBtn={this.goBack.bind(this)}/>
-              }
+ 
+                <CreateStep1Form onNextBtn={this.goNext.bind(this)} onBackBtn={this.goBack.bind(this)}/>
+
             </div>
             <div className=''>
             </div>
