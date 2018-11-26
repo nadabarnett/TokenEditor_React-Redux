@@ -1384,22 +1384,22 @@ render() {
                             </div>
                             <div className='col-md-8'>
                               <div className='row'>
-                                <label className='col-md-4'>Stage name:</label>
+                                <label className='col-md-4'>Stages amount:</label>
                                 <h3 className='col-md-8'>{stages.rounds.length}</h3>
                                 { stages.rounds.map((stage, i) => (
                                 <div key={i} className='info-block up-border'>
                                   <label className='col-md-4'>Stage name:</label>
-                                  <span className='col-md-2'>1.0</span>
+                                  <span className='col-md-2'>{stage.name}</span>
                                   <label className='col-md-4'>Tokens for stage:</label>
-                                  <span className='col-md-2'>0.5 ETH</span>
+                                  <span className='col-md-2'>{stage.tokensForSale}</span>
                                   <label className='col-md-4'>Stage token price:</label>
-                                  <span className='col-md-2'>10 000 000</span>
+                                  <span className='col-md-2'>{stage.tokenPrice}</span>
                                   <label className='col-md-4'>Start date:</label>
-                                  <span className='col-md-2'>10 000</span>
+                                  <span className='col-md-2'>{stage.startDate ? stage.startDate : "Not setted"}</span>
                                   <label className='col-md-4'>Finish date:</label>
-                                  <span className='col-md-2'>8</span>
+                                  <span className='col-md-2'>{stage.finishDate ? stage.finishDate : "Not setted"}</span>
                                   <label className='col-md-4'>Min/Max investments amounts:</label>
-                                  <span className='col-md-2'>30</span>
+                                  <span className='col-md-2'>{Number(stage.minInvest) ? Number(stage.minInvest) : "Not setted"} / {Number(stage.maxInvest) ? Number(stage.maxInvest) : "Not setted"}</span>
                                   
                                 </div>
                                 ))}
