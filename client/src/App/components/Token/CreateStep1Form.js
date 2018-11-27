@@ -57,7 +57,7 @@ const initialState = {
         burnable: false
     },
     stages: {
-        multiStages: false,
+        multiStages: true,
         tokensForSale: '',
         tokenPrice: '',
         startDate: '',
