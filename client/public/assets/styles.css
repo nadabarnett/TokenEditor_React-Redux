@@ -1394,6 +1394,20 @@ hr {
   box-shadow: 1px 1px rgba(108, 92, 231, 0.27);
   cursor: pointer;
 }
+.create-btn-campaign {
+  background-color: #a39bf0;
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  color: white;
+  width: 300px;
+  height: 45px;
+  border: 0 none;
+  border-radius: 20px;
+  box-shadow: 1px 1px rgba(108, 92, 231, 0.27);
+  cursor: pointer;
+  margin-left: 20px;
+}
+
 @media (max-width: 768px) {
   .tokens-wrapper .section-header .create-btn {
     width: 160px
