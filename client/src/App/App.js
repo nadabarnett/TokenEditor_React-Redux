@@ -17,6 +17,8 @@ import Crowdsales                 from './pages/Crowdsales';
 import Tokens                     from './pages/Tokens';
 import AddCrowdsale               from './pages/AddCrowdsale';
 import NewCrowdsale               from './pages/NewCrowdsale';
+import NewCampaign               from './pages/NewCampaign';
+
 
 class App extends Component {
   render() {
@@ -39,6 +41,8 @@ class App extends Component {
           <Route path='/addToken' component={AddToken}/>
           <Route path='/newCrowdsale' component={NewCrowdsale}/>
           <Route path='/addCrowdsale' component={AddCrowdsale}/>
+          <Route path='/newCampaign' component={NewCampaign}/>
+
         </Switch>
       </div>
     )
