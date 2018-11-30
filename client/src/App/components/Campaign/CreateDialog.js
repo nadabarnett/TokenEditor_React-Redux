@@ -135,7 +135,7 @@ class CreateDialog extends Component{
   }
   render(){
     return (
-      <div className='modal-wrapper create-token'>
+      <div className='modal-wrapper create-campaign'>
         <div className='modal-content'>
           <div className='modal-header'>
             <h2>Create New Token</h2>
