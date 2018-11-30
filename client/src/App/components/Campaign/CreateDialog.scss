@@ -67,6 +67,12 @@
                 background-image: url(./icons/no5-purple.png);
               }
             }
+            &.step6 {
+              background-image: url(./icons/no6.png);
+              &.active {
+                background-image: url(./icons/no6-purple.png);
+              }
+            }
             &.passed {
               background-image: url(./icons/no-checked-purple.png);
             }
@@ -184,6 +190,19 @@
         }
       }
       .add-btn{
+        width: 150px;
+        height: 45px;
+        border: 0 none;
+        background: #fff;
+        border-radius: 10px;
+        color: #94999b;
+        cursor: pointer;
+        float: left;
+        position: absolute;
+        left: 10px;
+        box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+      }
+      .upload-btn {
         width: 150px;
         height: 45px;
         border: 0 none;

@@ -1394,6 +1394,14 @@ hr {
   box-shadow: 1px 1px rgba(108, 92, 231, 0.27);
   cursor: pointer;
 }
+textarea {
+  padding: 10px 15px;
+  font-family: 'SP Pro Text';
+  font-size: 18px;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #dce5ec;
+}
 .create-btn-campaign {
   background-color: #a39bf0;
   font-family: 'SF Pro Text';

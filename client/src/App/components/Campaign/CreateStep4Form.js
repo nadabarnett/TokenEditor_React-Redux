@@ -66,14 +66,30 @@ class CreateStep4Form extends Component{
             <div key={i}>
               <div className='row form-group'>
                 <label className='col-md-2'>
-                  Address
+                  Funding Goal
                   <a className='question'></a>
                 </label>
                 <div className='col-md-4'>
                   <input type='text' onChange={this.changeHandler(i, 'address').bind(this)}/>
                 </div>
                 <label className='col-md-2'>
-                  Until date
+                  Start date
+                  <a className='question'></a>
+                </label>
+                <div className='col-md-4'>
+                  <DatePicker />
+                </div>
+              </div>
+            <div className='row form-group'>
+                <label className='col-md-2 multilines-2line'>
+                  Minimum Account
+                  <a className='question'></a>
+                </label>
+                <div className='col-md-4'>
+                  <input type='text' onChange={this.changeHandler(i, 'amount').bind(this)}/>
+                </div>
+                 <label className='col-md-2'>
+                  End date
                   <a className='question'></a>
                 </label>
                 <div className='col-md-4'>
@@ -81,41 +97,28 @@ class CreateStep4Form extends Component{
                 </div>
               </div>
               <div className='row form-group'>
-                <label className='col-md-2'>
-                  Amount
+                <label className='col-md-2 multilines-2line'>
+                  Recommended Account
                   <a className='question'></a>
                 </label>
                 <div className='col-md-4'>
-                  <input type='number' onChange={this.changeHandler(i, 'amount').bind(this)}/>
+                  <input type='text' onChange={this.changeHandler(i, 'amount').bind(this)}/>
                 </div>
               </div>
-              <div className='row form-group'>
-                <label className='col-md-2'>
-                  Frozen
-                  <a className='question'></a>
-                </label>
-                <div className='col-md-4'>
-                  <div className='toggle-btn'>
-                    <a className={address.frozen=='yes'?'active':''} onClick={this.toggleHandler.bind(this,i, 'frozen','yes')}>
-                    Yes
-                    </a>
-                    <a className={address.frozen=='no'?'active':''} onClick={this.toggleHandler.bind(this,i, 'frozen','no')}>
-                    No
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
           <div className='row form-group'>
-            <label className='col-md-2 multilines-2line'>
-              Add new address
-              <a className='question'></a>
-            </label>
-            <div className='col-md-4'>
-              <button type='button' className='add-btn' onClick={this.addAddress.bind(this)}>+ Add</button>
+            <label className='col-md-2'>Contributor Table<a className='question'></a></label>
+            <div className='col-md-8'>
+              <p style={{'marginBottom':'0','marginTop':'10px'}}>
+                <input type="checkbox" className="check-block" checked={this.state.formData.pausable} />
+                <label className="multilines-2line">Show Contributor table on Campaign single page</label>
+              </p>
+              
             </div>
           </div>
+
+            </div>
+          ))}
+
           <div className='row form-actions'>
             <button className='back-btn' type='button' onClick={this.goBack.bind(this)}>
               Back

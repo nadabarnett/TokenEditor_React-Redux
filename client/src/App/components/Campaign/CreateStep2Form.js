@@ -64,130 +64,26 @@ class CreateStep2Form extends React.Component{
         <div className='container'>
           <div className='row form-group'>
             <label className='col-md-2'>
-              Owner address
+              Description
               <a className='question'></a>
             </label>
             <div className='col-md-4'>
-              <input type='text' onChange={this.changeHandler('owner_address').bind(this)}/>
+              <textarea type='text' onChange={this.changeHandler('owner_address').bind(this)}></textarea>
             </div>
-            <label className='col-md-2'>
-              Start time
-              <a className='question'></a>
-            </label>
-            <div className='col-md-4'>
-              <DatePicker selected={this.state.formData.start_time}  onChange={this.changeStartDateHandler.bind(this)}/>
-            </div>
+            
           </div>
           <div className='row form-group'>
             <label className='col-md-2 multilines-2line'>
-              Investiments storage address
+              Short Description
               <a className='question'></a>
             </label>
             <div className='col-md-4'>
-              <input type='text' onChange={this.changeHandler('investiments_address').bind(this)}/>
+              <textarea type='text' onChange={this.changeHandler('investiments_address').bind(this)}></textarea>
             </div>
-            <label className='col-md-2'>
-              End time
-              <a className='question'></a>
-            </label>
-            <div className='col-md-4'>
-              <DatePicker selected={this.state.formData.end_time}  onChange={this.changeEndDateHandler.bind(this)}/>
-            </div>
+           
           </div>
-          <div className='row form-group'>
-            <label className='col-md-2'>
-              Soft Cap
-              <a className='question'></a>
-            </label>
-            <div className='col-md-4'>
-              <input type='number' onChange={this.changeHandler('soft_cap').bind(this)}/>
-            </div>
-          </div>
-          <div className='row form-group'>
-            <label className='col-md-2'>
-              Hard Cap
-              <a className='question'></a>
-            </label>
-            <div className='col-md-4'>
-              <input type='number' onChange={this.changeHandler('hard_cap').bind(this)}/>
-            </div>
-          </div>
-          <div className='row form-group'>
-            <label className='col-md-2'>
-              Whitelisting
-              <a className='question'></a>
-            </label>
-            <div className='col-md-2'>
-              <div className='toggle-btn'>
-                <a className={this.state.formData.whitelisting=='yes'?'active':''} onClick={this.toggleHandler.bind(this,'whitelisting','yes')}>
-                Yes
-                </a>
-                <a className={this.state.formData.whitelisting=='no'?'active':''} onClick={this.toggleHandler.bind(this,'whitelisting','no')}>
-                No
-                </a>
-              </div>
-            </div>
-            <label className='col-md-2 multilines-2line'>
-              Min/Max investiments
-              <a className='question'></a>
-            </label>
-            <div className='col-md-2'>
-              <div className='toggle-btn'>
-                <a className={this.state.formData.minmax_investments=='yes'?'active':''} onClick={this.toggleHandler.bind(this,'minmax_investments','yes')}>
-                Yes
-                </a>
-                <a className={this.state.formData.minmax_investments=='no'?'active':''} onClick={this.toggleHandler.bind(this,'minmax_investments','no')}>
-                No
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className='row form-group'>
-            <label className='col-md-2 multilines-2line'>
-              Transferable dates
-              <a className='question'></a>
-            </label>
-            <div className='col-md-2'>
-              <div className='toggle-btn'>
-                <a className={this.state.formData.transferable_dates=='yes'?'active':''} onClick={this.toggleHandler.bind(this,'transferable_dates','yes')}>
-                Yes
-                </a>
-                <a className={this.state.formData.transferable_dates=='no'?'active':''} onClick={this.toggleHandler.bind(this,'transferable_dates','no')}>
-                No
-                </a>
-              </div>
-            </div>
-            <label className='col-md-2 '>
-              Changing dates
-              <a className='question'></a>
-            </label>
-            <div className='col-md-2'>
-              <div className='toggle-btn'>
-                <a className={this.state.formData.changing_date=='yes'?'active':''} onClick={this.toggleHandler.bind(this,'changing_date','yes')}>
-                Yes
-                </a>
-                <a className={this.state.formData.changing_date=='no'?'active':''} onClick={this.toggleHandler.bind(this,'changing_date','no')}>
-                No
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className='row form-group'>
-            <label className='col-md-2 multilines-2line'>
-              Burn unsold tokens
-              <a className='question'></a>
-            </label>
-            <div className='col-md-2'>
-              <div className='toggle-btn'>
-                <a className={this.state.formData.burn_unsold_tokens=='yes'?'active':''} onClick={this.toggleHandler.bind(this,'burn_unsold_tokens','yes')}>
-                Yes
-                </a>
-                <a className={this.state.formData.burn_unsold_tokens=='no'?'active':''} onClick={this.toggleHandler.bind(this,'burn_unsold_tokens','no')}>
-                No
-                </a>
-              </div>
-            </div>
-          </div>
+         
+        
           <div className='row form-actions'>
             <button className='back-btn' type='button' onClick={this.goBack.bind(this)}>
               Back

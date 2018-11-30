@@ -5,6 +5,7 @@ import CreateStep2Form from './CreateStep2Form'
 import CreateStep3Form from './CreateStep3Form'
 import CreateStep4Form from './CreateStep4Form'
 import CreateStep5Form from './CreateStep5Form'
+import CreateStep6Form from './CreateStep6Form'
 
 var classNames = require('classnames');
 class CreateDialog extends Component{
@@ -17,7 +18,8 @@ class CreateDialog extends Component{
         step2: 'step2 ',
         step3: 'step3 ',
         step4: 'step4 ',
-        step5: 'step5 '
+        step5: 'step5 ',
+        step6: 'step6 '
       }
     };
   }
@@ -60,6 +62,17 @@ class CreateDialog extends Component{
         { currentTab: 'step5', tabClasses:tabClasses });
     }
     if (this.state.currentTab=='step5'){
+      let tabClasses = this.state.tabClasses;
+      tabClasses.step1 = 'step1 passed';
+      tabClasses.step2 = 'step2 passed';
+      tabClasses.step3 = 'step3 passed';
+      tabClasses.step4 = 'step4 passed';
+      tabClasses.step5 = 'step5 passed';
+      tabClasses.step6 = 'step6 active';
+      this.setState(...this.state,
+        { currentTab: 'step6', tabClasses:tabClasses });
+    }
+    if (this.state.currentTab=='step6'){
       this.props.onClose();
     }
   }
@@ -71,6 +84,7 @@ class CreateDialog extends Component{
       tabClasses.step3 = 'step3';
       tabClasses.step4 = 'step4';
       tabClasses.step5 = 'step5';
+      tabClasses.step6 = 'step6';
       this.setState(...this.state,
         { currentTab: 'step1', tabClasses:tabClasses });
     }
@@ -81,6 +95,7 @@ class CreateDialog extends Component{
       tabClasses.step3 = 'step3';
       tabClasses.step4 = 'step4';
       tabClasses.step5 = 'step5';
+      tabClasses.step6 = 'step6';
       this.setState(...this.state,
         { currentTab: 'step2', tabClasses:tabClasses });
     }
@@ -91,6 +106,7 @@ class CreateDialog extends Component{
       tabClasses.step3 = 'step3 active';
       tabClasses.step4 = 'step4';
       tabClasses.step5 = 'step5';
+      tabClasses.step6 = 'step6';
       this.setState(...this.state,
         { currentTab: 'step3', tabClasses:tabClasses });
     }
@@ -101,8 +117,20 @@ class CreateDialog extends Component{
       tabClasses.step3 = 'step3 passed';
       tabClasses.step4 = 'step4 active';
       tabClasses.step5 = 'step5';
+      tabClasses.step6 = 'step6';
       this.setState(...this.state,
         { currentTab: 'step4', tabClasses:tabClasses });
+    }
+    if (this.state.currentTab=='step6'){
+      let tabClasses = this.state.tabClasses;
+      tabClasses.step1 = 'step1 passed';
+      tabClasses.step2 = 'step2 passed';
+      tabClasses.step3 = 'step3 passed';
+      tabClasses.step4 = 'step4 passed';
+      tabClasses.step5 = 'step5 active';
+      tabClasses.step6 = 'step6';
+      this.setState(...this.state,
+        { currentTab: 'step5', tabClasses:tabClasses });
     }
   }
   render(){
@@ -110,7 +138,7 @@ class CreateDialog extends Component{
       <div className='modal-wrapper create-token'>
         <div className='modal-content'>
           <div className='modal-header'>
-            <h2>Create New Campaign</h2>
+            <h2>Create New Token</h2>
             <button onClick={this.closeDialog.bind(this)} aria_label='close' className='btn-close'>
               <i className='fa fa-times'></i>
             </button>
@@ -118,27 +146,45 @@ class CreateDialog extends Component{
           <div class='modal-body'>
             <div className='tabs'>
               <ul>
-                <li className={this.state.tabClasses.step1}>
-                  Token name
+              <li className={this.state.tabClasses.step1}>
+                  CAMPAIGNSETUP
                 </li>
                 <li className={this.state.tabClasses.step2}>
-                  ICO Setup
+                  SUMMARY
                 </li>
                 <li className={this.state.tabClasses.step3}>
-                  Stages
+                  MEDIA
                 </li>
                 <li className={this.state.tabClasses.step4}>
-                  Token Distribution
+                  FUNDING
                 </li>
                 <li className={this.state.tabClasses.step5}>
-                  Review & Publish
+                  KYC/AML
+                </li>
+                <li className={this.state.tabClasses.step6}>
+                  SAVE
                 </li>
               </ul>
             </div>
             <div className='tab-contents'>
- 
-                <CreateStep1Form onNextBtn={this.goNext.bind(this)} onBackBtn={this.goBack.bind(this)}/>
-
+              {this.state.currentTab=='step1' &&
+                <CreateStep1Form onNextBtn={this.goNext.bind(this)}/>
+              }
+              {this.state.currentTab=='step2' &&
+                <CreateStep2Form onNextBtn={this.goNext.bind(this)} onBackBtn={this.goBack.bind(this)}/>
+              }
+              {this.state.currentTab=='step3' &&
+                <CreateStep3Form onNextBtn={this.goNext.bind(this)} onBackBtn={this.goBack.bind(this)}/>
+              }
+              {this.state.currentTab=='step4' &&
+                <CreateStep4Form onNextBtn={this.goNext.bind(this)} onBackBtn={this.goBack.bind(this)}/>
+              }
+              {this.state.currentTab=='step5' &&
+                <CreateStep5Form onNextBtn={this.goNext.bind(this)} onBackBtn={this.goBack.bind(this)}/>
+              }
+              {this.state.currentTab=='step6' &&
+                <CreateStep6Form onNextBtn={this.goNext.bind(this)} onBackBtn={this.goBack.bind(this)}/>
+              }
             </div>
             <div className=''>
             </div>

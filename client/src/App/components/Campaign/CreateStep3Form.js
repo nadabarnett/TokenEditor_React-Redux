@@ -76,78 +76,47 @@ class CreateStep3Form extends React.Component{
     return (
       <form className='step3-form step-form'>
         <div className='container'>
-          {stages.map((stage, i) => (
-            <div key={i}>
               <div className='row form-group'>
                 <label className='col-md-2'>
-                  Stage name
+                  Image
                   <a className='question'></a>
                 </label>
                 <div className='col-md-4'>
-                  <input type='text' onChange={this.changeHandler(i, 'token_name').bind(this)}/>
+                  <input type='text'/>
                 </div>
-                <label className='col-md-2'>
-                  Start date
-                  <a className='question'></a>
-                </label>
-                <div className='col-md-4'>
-                  <DatePicker />
+                <div className='col-md-2'>
+                <button className="upload-btn">Upload</button>
+
                 </div>
+              
               </div>
               <div className='row form-group'>
                 <label className='col-md-2'>
-                  Token price
+                  Whitepaper
                   <a className='question'></a>
                 </label>
                 <div className='col-md-4'>
-                  <input type='text' onChange={this.changeHandler(i, 'token_price').bind(this)}/>
+                  <input type='text'/>
                 </div>
+                <div className='col-md-2'>
+                  <button className="upload-btn">Upload</button>
+                </div>
+              </div>
+              <div className='row form-group'>
                 <label className='col-md-2'>
-                  Finish date
+                  Video
                   <a className='question'></a>
                 </label>
                 <div className='col-md-4'>
-                  <DatePicker  />
+                  <input type='text'/>
                 </div>
-              </div>
-              <div className='row form-group'>
-                <label className='col-md-2 multilines-2line'>
-                  Tokens for this page
-                  <a className='question'></a>
-                </label>
-                <div className='col-md-4'>
-                  <input type='number' onChange={this.changeHandler(i, 'token_count').bind(this)}/>
+                <div className='col-md-2'>
+                <button className="upload-btn">Upload</button>
                 </div>
+               
               </div>
-              <div className='row form-group'>
-                <label className='col-md-2 multilines-2line'>
-                  Min contribution amount(ETH)
-                  <a className='question'></a>
-                </label>
-                <div className='col-md-4'>
-                  <input type='number' onChange={this.changeHandler(i, 'min_contribution_amount').bind(this)}/>
-                </div>
-              </div>
-              <div className='row form-group'>
-                <label className='col-md-2 multilines-2line'>
-                  Max contribution amount(ETH)
-                  <a className='question'></a>
-                </label>
-                <div className='col-md-4'>
-                  <input type='number' onChange={this.changeHandler(i, 'min_contribution_amount').bind(this)}/>
-                </div>
-              </div>
-            </div>
-          ))}
-          <div className='row form-group'>
-            <label className='col-md-2 multilines-2line'>
-              Create new stages
-              <a className='question'></a>
-            </label>
-            <div className='col-md-4'>
-              <button type='button' className='add-btn' onClick={this.addStage.bind(this)}>+ Add</button>
-            </div>
-          </div>
+  
+         
           <div className='row form-actions'>
             <button className='back-btn' type='button' onClick={this.goBack.bind(this)}>
               Back
