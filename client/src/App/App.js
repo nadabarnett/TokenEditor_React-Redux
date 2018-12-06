@@ -18,7 +18,7 @@ import Tokens                     from './pages/Tokens';
 import AddCrowdsale               from './pages/AddCrowdsale';
 import NewCrowdsale               from './pages/NewCrowdsale';
 import NewCampaign               from './pages/NewCampaign';
-import NewKycAml               from './pages/NewKycAml';
+import NewKycAml               from './pages/Newkycaml';
 
 
 
