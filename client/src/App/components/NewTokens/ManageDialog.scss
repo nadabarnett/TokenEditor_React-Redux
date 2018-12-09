@@ -1,8 +1,8 @@
-.manage-token.modal-wrapper{
+.manage-newtoken.modal-wrapper{
   padding: 0;
   height: 100%;
   border-radius: 9px;
-  border-left: 9px solid #a39bf0;
+  border-left: 9px solid #e86f6e;
   border-top: 0 none;
   border-bottom: 0 none;
   .modal-content {
@@ -51,7 +51,7 @@
               text-align: left;
               padding-left: 40px;
               &.active{
-                color: #a39bf0;
+                color: #e86f6e;
               }
               &.token_info{
                 background-image: url(./icons/token_info.png);
@@ -158,7 +158,7 @@
               background: url(./icons/sent.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/sent_active.png);
-                color: #a39bf0;
+                color: #e86c6b;
               }
             }
             .burn-btn{
@@ -173,7 +173,7 @@
               background: url(./icons/burn.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/burn_active.png);
-                color: #a39bf0;
+                color: #e86c6b;
               }
             }
           }
@@ -196,7 +196,7 @@
               background: url(./icons/mint.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/mint_active.png);
-                color: #a39bf0;
+                color: #e86c6b;
               }
             }
             .transfer-btn{
@@ -211,7 +211,7 @@
               background: url(./icons/transfer.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/transfer_active.png);
-                color: #a39bf0;
+                color: #e86c6b;
               }
             }
             .freeze-btn{
@@ -227,7 +227,7 @@
               background: url(./icons/freeze.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/freeze_active.png);
-                color: #a39bf0;
+                color: #e86c6b;
               }
             }
             .unfreeze-btn{
@@ -242,7 +242,7 @@
               background: url(./icons/unfreeze.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/unfreeze_active.png);
-                color: #a39bf0;
+                color: #e86c6b;
               }
             }
             .form-actions{
@@ -258,7 +258,7 @@
               float: right;
               right: 330px;
               padding-left: 50px;
-              background: url(./icons/pause-white.png) #a39bf0 no-repeat 10px 50%;
+              background: url(./icons/pause-white.png) #e86c6b no-repeat 10px 50%;
               margin-right: 10px;
               text-align: left;
               line-height: 45px;
@@ -273,7 +273,7 @@
               float: right;
               right: 10px;
               padding-left: 50px;
-              background: url(./icons/restart-white.png) #a39bf0 no-repeat 10px 50%;
+              background: url(./icons/restart-white.png) #e86c6b no-repeat 10px 50%;
               text-align: left;
               line-height: 45px;
             }

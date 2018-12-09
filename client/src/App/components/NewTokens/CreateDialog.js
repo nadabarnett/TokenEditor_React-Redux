@@ -107,10 +107,10 @@ class CreateDialog extends Component{
   }
   render(){
     return (
-      <div className='modal-wrapper create-token'>
+      <div className='modal-wrapper create-newtoken'>
         <div className='modal-content'>
           <div className='modal-header'>
-            <h2>Create New Crowdsale</h2>
+            <h2>Create New Token</h2>
             <button onClick={this.closeDialog.bind(this)} aria_label='close' className='btn-close'>
               <i className='fa fa-times'></i>
             </button>

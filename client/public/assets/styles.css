@@ -1413,6 +1413,18 @@ hr {
   box-shadow: 1px 1px rgba(108, 92, 231, 0.27);
   cursor: pointer;
 }
+.create-new-token-btn {
+  background-color: #e86c6b;
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  color: white;
+  width: 300px;
+  height: 45px;
+  border: 0 none;
+  border-radius: 20px;
+  box-shadow: 1px 1px rgba(108, 92, 231, 0.27);
+  cursor: pointer;
+}
 .kyc-wrapper .section-header .create-btn {
   background-color: #a39bf0;
   font-family: 'SF Pro Text';

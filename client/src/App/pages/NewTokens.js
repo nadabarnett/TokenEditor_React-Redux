@@ -4,8 +4,8 @@ import Modal from 'react-modal';
 import SideBar   from '../components/SideBar';
 import NavBar    from '../components/NavBar';
 import TokenList from '../components/Token/List';
-import CreateDialog from  '../components/Token/CreateDialog';
-import ManageDialog from  '../components/Token/ManageDialog';
+import CreateDialog from  '../components/NewTokens/CreateDialog';
+import ManageDialog from  '../components/NewTokens/ManageDialog';
 
 class Content extends React.PureComponent {
   constructor(props) {
@@ -42,10 +42,10 @@ class Content extends React.PureComponent {
         <div className='justify-content-between tokens-wrapper'>
           <div className='section-header'>
             <div className='float-left'>
-              <h2>My Crowdsales</h2>
+              <h2>My Tokens</h2>
             </div>
             <div className='float-right'>
-              <button className='create-btn' onClick={this.openCreateDialog.bind(this)}>+ Create Crowdsale</button>
+              <button className='create-new-token-btn' onClick={this.openCreateDialog.bind(this)}>+ Create Token</button>
             </div>
           </div>
           <div className='section-content'>

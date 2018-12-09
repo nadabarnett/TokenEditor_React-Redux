@@ -45,7 +45,7 @@ export default React.memo(() => (
   <nav className="navbar navbar-expand-lg navbar-light sticky-top top-navbar py-0 rounded-0 mb-0">
     <div className='container-fluid'>
       <div className="navbar-header">
-        <Link className="navbar-brand" to='/'>
+        <Link className="navbar-brand" to='/newdashboard'>
           <img src={headerLogo} alt='Token Editor' className='top-navbar-logo'/>
         </Link>
       </div>

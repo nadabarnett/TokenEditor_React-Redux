@@ -14,7 +14,7 @@ import AddToken                   from './pages/AddToken';
 import ViewCampaign               from './pages/ViewCampaign';
 import Compaign                   from './pages/Compaign';
 import Crowdsales                 from './pages/Crowdsales';
-import Tokens                     from './pages/Tokens';
+import NewTokens                     from './pages/NewTokens';
 import AddCrowdsale               from './pages/AddCrowdsale';
 import NewCrowdsale               from './pages/NewCrowdsale';
 import NewCampaign               from './pages/NewCampaign';
@@ -36,7 +36,7 @@ class App extends Component {
           <Route path='/register' component={Register}/>
           <Route path='/setting' component={Setting}/>
           <Route path='/billing' component={Billing}/>
-          <Route path='/Tokens' component={Tokens}/>
+          <Route path='/newtokens' component={NewTokens}/>
           <Route path='/Crowdsales' component={Crowdsales}/>
           <Route path='/ViewCampaign' component={ViewCampaign}/>
           <Route path='/compaign' component={Compaign}/>
