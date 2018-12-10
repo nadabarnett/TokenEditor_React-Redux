@@ -496,6 +496,7 @@ showThree() {
             <li className='tr' key={i}>
               <ul>
                 <li>{contract.tokenSymbol}</li>
+                <li>{contract.tokenSymbol}</li>
                 <li>
                   <span >{"https://rinkeby.etherscan.io/address/" + contract.address}</span>
                   <button className='edit-btn' onClick={this.onClickItem.bind(this)}></button>

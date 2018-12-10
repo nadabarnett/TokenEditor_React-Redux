@@ -10,6 +10,7 @@ import notifications from './icons/12_1_notifications.png';
 
 import ellipse from './icons/Ellipse.svg';
 import MobileMenu from './MobileMenu';
+import CreateDialog from  '../../components/Campaign/CreateDialog';
 
 const NavBarIcon = React.memo(props => (
   <Link to='#'>
@@ -58,9 +59,13 @@ export default React.memo(() => (
       <div className="collapse navbar-collapse" id="navbarSupportedContent">		
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
+          <Link className="navbar-brand" to='/newcrowdsale'>
+
             <span className='navbar-text top-navbar-ico-text'>
               +NEW ICO
             </span>
+            </Link>
+
           </li>
         </ul>
   

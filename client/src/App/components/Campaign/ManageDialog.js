@@ -23,7 +23,7 @@ class ManageDialog extends Component {
   }
   render() {
     return (
-      <div className='modal-wrapper manage-token'>
+      <div className='modal-wrapper manage-campaign'>
         <div className='modal-content'>
           <div className='modal-header'>
             <h2>MANAGE TOKEN</h2>

@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 
 import SideBar   from '../components/SideBar';
 import NavBar    from '../components/NavBar';
-import TokenList from '../components/Token/List';
+import TokenList from '../components/NewTokens/List';
 import CreateDialog from  '../components/NewTokens/CreateDialog';
 import ManageDialog from  '../components/NewTokens/ManageDialog';
 
@@ -54,7 +54,7 @@ class Content extends React.PureComponent {
           <Modal isOpen={this.state.showCreateModal} style={{content:{border:'0 none', background:'none', top: '80px', left: '180px', bottom: '80px', right: '180px'}}}>
             <CreateDialog onClose={this.closeCreateDialog.bind(this)}/>
           </Modal>
-          <Modal isOpen={this.state.showManageModal} style={{content:{border:'0 none', background:'none', top: '80px', left: '180px', bottom: '80px', right: '180px'}}}>
+          <Modal isOpen={this.state.showManageModal} style={{content:{border:'0 none', background:'none', top: '10px', left: '180px', bottom: '10px', right: '180px'}}}>
             <ManageDialog onClose={this.closeManageDialog.bind(this)}/>
           </Modal>
         </div>
