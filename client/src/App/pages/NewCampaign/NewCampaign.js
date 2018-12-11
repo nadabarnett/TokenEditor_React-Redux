@@ -51,13 +51,15 @@ class Content extends React.PureComponent {
       showManageModal: false
     })
   }
+  
+
   render() {
     const { tokens } = this.props
     return (
       <div className='content-wrapper'>
         <div className="row justify-content-between" style={{marginTop: '50px'}}>
           <div className="float_myright">
-            <button className="create-btn-campaign" onClick={this.openCreateDialog.bind(this)}>Create Campaign</button>
+            <button className="create-btn-campaign" onClick={this.openCreateDialog.bind(this)}>+Create Campaign</button>
           </div>
         </div>
         <div className='row justify-content-between campaign-wrapper'>

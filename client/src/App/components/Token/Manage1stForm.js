@@ -24,7 +24,7 @@ class Manage1stForm extends React.Component{
 						<div className='display-block'>
               <div className='row'>
                 <label className="col-md-3">Creation date:</label>
-                <span className='col-md-3'>01 / 10 / 2018</span>
+                <span className='col-md-5'>01 / 10 / 2018</span>
               </div>
               <div className='row'>
                 <label className="col-md-3">Creation time:</label>
