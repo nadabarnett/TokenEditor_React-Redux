@@ -1371,10 +1371,7 @@ render() {
                                 <label>Owner address</label>
                                 <h3>{ico.owner}</h3>
                               </div>
-                              <div className='w-100 info-block'>
-                                <label>Funds address</label>
-                                <h3>{ico.fundsAddress}</h3>
-                              </div>
+                   
                               <div className='row info-block'>
                                 <label className='col-md-6'>Tokens for sale</label>
                                 <span className='col-md-6'>{stages.tokensForSale}</span>
@@ -1397,23 +1394,11 @@ render() {
                                 <label className='w-100'>Token standard</label>
                                 <h4 className='w-100'>{token.erc223 ? "ERC223" : "ERC20"}</h4>
                               </div>
-                              <div className='info-block'>
-                                <label className='w-100'>Pausable</label>
-                                <h4 className='w-100'>{String(token.pausable).toUpperCase()}</h4>
-                              </div>
-                              <div className='info-block'>
-                                <label className='w-100'>Freezable</label>
-                                <h4 className='w-100'>{String(token.freezable).toUpperCase()}</h4>
-                              </div>
-                              <div className='info-block'>
-                                <label className='w-100'>Future mintable</label>
-                                <h4 className='w-100'>{String(token.mintable).toUpperCase()}</h4>
-                              </div>
+
                             </div>
                             <div className='col-md-8'>
                               <div className='row'>
-                                <label className='col-md-4'>Stages amount:</label>
-                                <h3 className='col-md-8'>{stages.rounds.length}</h3>
+ 
                                 { stages.rounds.map((stage, i) => (
                                 <div key={i} className='info-block up-border'>
                                   <label className='col-md-4'>Stage name:</label>

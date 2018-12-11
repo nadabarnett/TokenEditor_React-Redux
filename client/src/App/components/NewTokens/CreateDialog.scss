@@ -195,6 +195,14 @@
         position: absolute;
         left: 10px;
         box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+        transition: background 0.7s ease-in-out;
+        &:hover {
+          background: #e86c6b;
+          color: white;
+          box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+
+        }
       }
       .next-btn{
         width: 300px;
@@ -207,6 +215,15 @@
         float: right;
         position: absolute;
         right: 10px;
+        transition: background 0.7s ease-in-out;
+
+        &:hover {
+          background: white;
+          color: #e86c6b;
+          box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+
+        }
       }
       .back-btn{
         width: 110px;
@@ -220,6 +237,14 @@
         position: absolute;
         left: 10px;
         box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+        transition: background 0.7s ease-in-out;
+        &:hover {
+          background: #e86c6b;
+          color: white;
+          box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+
+        }
       }
     }
   }

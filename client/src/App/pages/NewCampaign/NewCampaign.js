@@ -56,7 +56,7 @@ class Content extends React.PureComponent {
     return (
       <div className='content-wrapper'>
         <div className="row justify-content-between" style={{marginTop: '50px'}}>
-          <div className="float-right">
+          <div className="float_myright">
             <button className="create-btn-campaign" onClick={this.openCreateDialog.bind(this)}>Create Campaign</button>
           </div>
         </div>

@@ -50,23 +50,39 @@
               cursor: pointer;
               text-align: left;
               padding-left: 40px;
+              transition: color 0.7s ease-in-out;
+              
+
               &.active{
+                color: #e86f6e;
+              }
+              &:hover{
                 color: #e86f6e;
               }
               &.token_info{
                 background-image: url(./icons/token_info.png);
+                &:hover {
+                  background-image: url(./icons/token_info_active.png);
+                }
                 &.active{
                   background-image: url(./icons/token_info_active.png);
                 }
               }
               &.basic_features{
                 background-image: url(./icons/basic_features.png);
+                &:hover {
+                  background-image: url(./icons/basic_features_active.png);
+                }
                 &.active{
                   background-image: url(./icons/basic_features_active.png);
                 }
               }
               &.extra_features{
                 background-image: url(./icons/extra_features.png);
+                &:hover {
+                  background-image: url(./icons/extra_features_active.png);
+
+                }
                 &.active{
                   background-image: url(./icons/extra_features_active.png);
                 }
@@ -262,6 +278,15 @@
               margin-right: 10px;
               text-align: left;
               line-height: 45px;
+              transition: background 0.7s ease-in-out;
+
+              &:hover{
+                background: url(./icons/pause-white.png) #ffffff no-repeat 10px 50%;
+                box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+                color: #e86c6b;
+
+              }
             }
             .emergency-resume-btn{
               width: 250px;
@@ -276,6 +301,15 @@
               background: url(./icons/restart-white.png) #e86c6b no-repeat 10px 50%;
               text-align: left;
               line-height: 45px;
+              transition: background 0.7s ease-in-out;
+
+              &:hover{
+                background: url(./icons/pause-white.png) #ffffff no-repeat 10px 50%;
+                box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+                color: #e86c6b;
+
+              }
             }
           
           }

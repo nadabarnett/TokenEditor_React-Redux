@@ -53,20 +53,33 @@
               &.active{
                 color: #a39bf0;
               }
+              &:hover{
+                color: #a39bf0;
+              }
               &.token_info{
                 background-image: url(./icons/token_info.png);
+                &:hover {
+                  background-image: url(./icons/token_info_active.png);
+                }
                 &.active{
                   background-image: url(./icons/token_info_active.png);
                 }
               }
               &.basic_features{
                 background-image: url(./icons/basic_features.png);
+                &:hover {
+                  background-image: url(./icons/basic_features_active.png);
+                }
                 &.active{
                   background-image: url(./icons/basic_features_active.png);
                 }
               }
               &.extra_features{
                 background-image: url(./icons/extra_features.png);
+                &:hover {
+                  background-image: url(./icons/extra_features_active.png);
+
+                }
                 &.active{
                   background-image: url(./icons/extra_features_active.png);
                 }
@@ -262,6 +275,14 @@
               margin-right: 10px;
               text-align: left;
               line-height: 45px;
+              transition: background 0.7s ease-in-out;
+              &:hover{
+                background: url(./icons/pause-white.png) #ffffff no-repeat 10px 50%;
+                box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+                color: #a39bf0;
+
+              }
             }
             .emergency-resume-btn{
               width: 250px;
@@ -276,6 +297,15 @@
               background: url(./icons/restart-white.png) #a39bf0 no-repeat 10px 50%;
               text-align: left;
               line-height: 45px;
+              transition: background 0.7s ease-in-out;
+
+              &:hover{
+                background: url(./icons/pause-white.png) #ffffff no-repeat 10px 50%;
+                box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+                color: #a39bf0;
+
+              }
             }
           
           }

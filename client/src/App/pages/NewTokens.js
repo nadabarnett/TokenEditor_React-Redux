@@ -51,10 +51,10 @@ class Content extends React.PureComponent {
           <div className='section-content'>
             <TokenList tokens = {tokens} onClickItem={this.openManageDialog.bind(this)}/>
           </div>
-          <Modal isOpen={this.state.showCreateModal} style={{content:{border:'0 none', background:'none', top: '80px', left: '180px', bottom: '80px', right: '180px'}}}>
+          <Modal isOpen={this.state.showCreateModal} style={{content:{border:'0 none', background:'none', top: '10px', left: '180px', bottom: '10px', right: '180px'}}}>
             <CreateDialog onClose={this.closeCreateDialog.bind(this)}/>
           </Modal>
-          <Modal isOpen={this.state.showManageModal} style={{content:{border:'0 none', background:'none', top: '10px', left: '180px', bottom: '10px', right: '180px'}}}>
+          <Modal isOpen={this.state.showManageModal} style={{content:{border:'0 none', background:'none', top: '10px', left: '180px', bottom: '5px', right: '180px'}}}>
             <ManageDialog onClose={this.closeManageDialog.bind(this)}/>
           </Modal>
         </div>

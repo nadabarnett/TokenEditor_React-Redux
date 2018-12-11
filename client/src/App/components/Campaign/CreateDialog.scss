@@ -111,6 +111,14 @@
             border-radius: 10px;
             border: 1px solid #dce5ec;
           }
+          select{
+            padding: 10px 15px;
+            font-family: 'SP Pro Text';
+            font-size: 18px;
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid #dce5ec;
+          }
           .question{
             display: inline-block;
             vertical-align: middle;
@@ -226,6 +234,17 @@
         float: right;
         position: absolute;
         right: 10px;
+        box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+        transition: background 0.7s ease-in-out;
+
+        &:hover {
+          background: white;
+          color: #5bdadb;
+          box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+
+        }
       }
       .back-btn{
         width: 110px;
@@ -239,6 +258,15 @@
         position: absolute;
         left: 10px;
         box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+        transition: background 0.7s ease-in-out;
+
+        &:hover {
+          background: #5bdadb;
+          color: white;
+          box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+
+        }
       }
     }
   }
