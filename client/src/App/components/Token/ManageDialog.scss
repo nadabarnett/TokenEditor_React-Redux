@@ -2,7 +2,7 @@
   padding: 0;
   height: 100%;
   border-radius: 9px;
-  border-left: 9px solid #e86f6e;
+  border-left: 9px solid #a39bf0;
   border-top: 0 none;
   border-bottom: 0 none;
   .modal-content {
@@ -29,7 +29,7 @@
         ul{
           list-style: none;
           padding: 0;
-          margin: 20px 1em;
+          margin: 10px 1em;
           li{
             display: inline-block;
             margin-right: 5px;
@@ -51,22 +51,35 @@
               text-align: left;
               padding-left: 40px;
               &.active{
-                color: #e86f6e;
+                color: #a39bf0;
+              }
+              &:hover{
+                color: #a39bf0;
               }
               &.token_info{
                 background-image: url(./icons/token_info.png);
+                &:hover {
+                  background-image: url(./icons/token_info_active.png);
+                }
                 &.active{
                   background-image: url(./icons/token_info_active.png);
                 }
               }
               &.basic_features{
                 background-image: url(./icons/basic_features.png);
+                &:hover {
+                  background-image: url(./icons/basic_features_active.png);
+                }
                 &.active{
                   background-image: url(./icons/basic_features_active.png);
                 }
               }
               &.extra_features{
                 background-image: url(./icons/extra_features.png);
+                &:hover {
+                  background-image: url(./icons/extra_features_active.png);
+
+                }
                 &.active{
                   background-image: url(./icons/extra_features_active.png);
                 }
@@ -122,7 +135,7 @@
             border: 1px solid #dce5ec;
           }
           .display-block{
-            margin: 30px 0;
+            margin: 20px 0;
             &.up-border{
               border-top: 1px solid #e9ecef;
               padding-top: 30px;
@@ -158,7 +171,7 @@
               background: url(./icons/sent.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/sent_active.png);
-                color: #e86c6b;
+                color: #a39bf0;
               }
             }
             .burn-btn{
@@ -173,7 +186,7 @@
               background: url(./icons/burn.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/burn_active.png);
-                color: #e86c6b;
+                color: #a39bf0;
               }
             }
           }
@@ -196,7 +209,7 @@
               background: url(./icons/mint.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/mint_active.png);
-                color: #e86c6b;
+                color: #a39bf0;
               }
             }
             .transfer-btn{
@@ -211,7 +224,7 @@
               background: url(./icons/transfer.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/transfer_active.png);
-                color: #e86c6b;
+                color: #a39bf0;
               }
             }
             .freeze-btn{
@@ -227,7 +240,7 @@
               background: url(./icons/freeze.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/freeze_active.png);
-                color: #e86c6b;
+                color: #a39bf0;
               }
             }
             .unfreeze-btn{
@@ -242,7 +255,7 @@
               background: url(./icons/unfreeze.png) no-repeat 0 50%;
               &:hover{
                 background-image: url(./icons/unfreeze_active.png);
-                color: #e86c6b;
+                color: #a39bf0;
               }
             }
             .form-actions{
@@ -258,10 +271,18 @@
               float: right;
               right: 330px;
               padding-left: 50px;
-              background: url(./icons/pause-white.png) #e86c6b no-repeat 10px 50%;
+              background: url(./icons/pause-white.png) #a39bf0 no-repeat 10px 50%;
               margin-right: 10px;
               text-align: left;
               line-height: 45px;
+              transition: background 0.7s ease-in-out;
+              &:hover{
+                background: url(./icons/pause-white.png) #ffffff no-repeat 10px 50%;
+                box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+                color: #a39bf0;
+
+              }
             }
             .emergency-resume-btn{
               width: 250px;
@@ -273,9 +294,18 @@
               float: right;
               right: 10px;
               padding-left: 50px;
-              background: url(./icons/restart-white.png) #e86c6b no-repeat 10px 50%;
+              background: url(./icons/restart-white.png) #a39bf0 no-repeat 10px 50%;
               text-align: left;
               line-height: 45px;
+              transition: background 0.7s ease-in-out;
+
+              &:hover{
+                background: url(./icons/pause-white.png) #ffffff no-repeat 10px 50%;
+                box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+                color: #a39bf0;
+
+              }
             }
           
           }

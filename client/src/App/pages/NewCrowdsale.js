@@ -42,10 +42,10 @@ class Content extends React.PureComponent {
         <div className='justify-content-between tokens-wrapper'>
           <div className='section-header'>
             <div className='float-left'>
-              <h2>My Tokens</h2>
+              <h2>My Crowdsales</h2>
             </div>
             <div className='float-right'>
-              <button className='create-btn' onClick={this.openCreateDialog.bind(this)}>+ Create Token</button>
+              <button className='create-btn' onClick={this.openCreateDialog.bind(this)}>+ Create Crowdsale</button>
             </div>
           </div>
           <div className='section-content'>
@@ -54,7 +54,7 @@ class Content extends React.PureComponent {
           <Modal isOpen={this.state.showCreateModal} style={{content:{border:'0 none', background:'none', top: '80px', left: '180px', bottom: '80px', right: '180px'}}}>
             <CreateDialog onClose={this.closeCreateDialog.bind(this)}/>
           </Modal>
-          <Modal isOpen={this.state.showManageModal} style={{content:{border:'0 none', background:'none', top: '80px', left: '180px', bottom: '80px', right: '180px'}}}>
+          <Modal isOpen={this.state.showManageModal} style={{content:{border:'0 none', background:'none', top: '10px', left: '180px', bottom: '10px', right: '180px'}}}>
             <ManageDialog onClose={this.closeManageDialog.bind(this)}/>
           </Modal>
         </div>

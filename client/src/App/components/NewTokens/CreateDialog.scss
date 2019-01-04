@@ -1,0 +1,252 @@
+.create-newtoken.modal-wrapper {
+  padding: 0;
+  height: 100%;
+  border-radius: 9px;
+  border-left: 9px solid #e86c6b;
+  border-top: 0 none;
+  border-bottom: 0 none;
+  .modal-content {
+    border: 0 none;
+    height: 100%;
+    .modal-header {
+      h2 {
+        font-size: 18px;
+        font-family: 'SF Pro Text';
+        color: #929799;
+        text-transform: uppercase;
+      }
+      button {
+        border: 0 none;
+        background: transparent;
+        font-size: 22px;
+        cursor: pointer;
+      }
+    }
+    .modal-body {
+      overflow-y: auto;
+      .tabs {
+        ul {
+          list-style: none;
+          padding: 0;
+          li {
+            display: inline-block;
+            margin-right: 5px;
+            background-position: 0 100%;
+            background-repeat: no-repeat;
+            font-size: 18px;
+            line-height: 52px;
+            padding-left: 44px;
+            color: #a1a5a7;
+            &.active {
+              color: #e86c6b;
+            }
+            &.step1.active {
+              background-image: url(./icons/no1-purple.png);
+            }
+            &.step2 {
+              background-image: url(./icons/no2.png);
+              &.active {
+                background-image: url(./icons/no2-purple.png);
+              }
+            }
+            &.step3 {
+              background-image: url(./icons/no3.png);
+              &.active {
+                background-image: url(./icons/no3-purple.png);
+              }
+            }
+            &.step4 {
+              background-image: url(./icons/no4.png);
+              &.active {
+                background-image: url(./icons/no4-purple.png);
+              }
+            }
+            &.step5 {
+              background-image: url(./icons/no5.png);
+              &.active {
+                background-image: url(./icons/no5-purple.png);
+              }
+            }
+            &.passed {
+              background-image: url(./icons/no-checked-purple.png);
+            }
+          }
+        }
+      }
+      form{
+        &.step1-form{
+          width: 675px;
+        }
+        .form-group{
+          label{
+            text-align: right;
+            line-height: 44px;
+            margin-bottom: 0;
+            color: #929799;
+            position: relative;
+            padding-right: 30px;
+            &.multilines-2line{
+              line-height: 22px;
+            }
+            .question{
+              position: absolute;
+              right: 0;
+              top: 10px;
+              &:hover{
+                background: url(./icons/question-purple.png) no-repeat 50% 50%;
+              }
+            }
+          }
+          input{
+            padding: 10px 15px;
+            font-family: 'SP Pro Text';
+            font-size: 18px;
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid #dce5ec;
+          }
+          .question{
+            display: inline-block;
+            vertical-align: middle;
+            width: 32px;
+            height: 18px;
+            cursor: pointer;
+            background: url(./icons/question.png) no-repeat 50% 50%;
+          }
+          .toggle-btn{
+            display: inline-block;
+            padding-left: 2px;
+            padding-right: 2px;
+            height: 40px;
+            background: white;
+            border: 1px solid #dce5ec;
+            border-radius: 10px;
+            a{
+              display: inline-block;
+              height: 30px;
+              margin: 5px;
+              border-radius: 5px;
+              color: #c8ccce;
+              cursor: pointer;
+              font-size: 18px;
+              line-height: 30px;
+              text-align: center;
+              padding-left: 5px;
+              padding-right: 5px;
+              &.active{
+                color: #333338;
+                background-color: #fbbab9;
+              }
+            }
+          }
+          .token-type{
+            width: 180px;
+            text-align: left;
+          }
+          input[type=checkbox]{
+            vertical-align: middle;
+            display: inline-block;
+            width: 30px;
+          }
+          .react-datepicker__input-container input{
+            background: url(./icons/calendar.png) no-repeat 95% 50%;
+          }
+        }
+        &.step5-form{
+          .info-block{
+            margin-bottom: 30px;
+            &.up-border{
+              border-top: 1px solid #ccc;
+              padding-top: 30px;
+            }
+          }
+          label{
+            color: #929799;
+            font-size: 18px;
+            font-family: 'SF Pro Text';
+            letter-spacing: -1px;
+          }
+          h3{
+            color: #666674;
+            font-size: 30px;
+            font-family: 'Roboto';
+            font-weight: bold;
+          }
+          h4{
+            color: #666674;
+            font-size: 24px;
+            font-family: 'Roboto';
+            font-weight: bold;
+          }
+          span{
+            display: inline-block;
+          }
+        }
+      }
+      .add-btn{
+        width: 150px;
+        height: 45px;
+        border: 0 none;
+        background: #fff;
+        border-radius: 10px;
+        color: #94999b;
+        cursor: pointer;
+        float: left;
+        position: absolute;
+        left: 10px;
+        box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+        transition: background 0.7s ease-in-out;
+        &:hover {
+          background: #e86c6b;
+          color: white;
+          box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+
+        }
+      }
+      .next-btn{
+        width: 300px;
+        height: 45px;
+        border: 0 none;
+        background: #e86c6b;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        float: right;
+        position: absolute;
+        right: 10px;
+        transition: background 0.7s ease-in-out;
+
+        &:hover {
+          background: white;
+          color: #e86c6b;
+          box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+
+        }
+      }
+      .back-btn{
+        width: 110px;
+        height: 45px;
+        border: 0 none;
+        background: #fff;
+        border-radius: 10px;
+        color: #94999b;
+        cursor: pointer;
+        float: left;
+        position: absolute;
+        left: 10px;
+        box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+        transition: background 0.7s ease-in-out;
+        &:hover {
+          background: #e86c6b;
+          color: white;
+          box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+
+        }
+      }
+    }
+  }
+}
+

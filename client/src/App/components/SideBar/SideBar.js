@@ -66,10 +66,10 @@ const SideBarItem = withRouter(SideBarItem_)
 export default React.memo(() => (
   <ul className="list-unstyled side-bar mb-0">
     <SideBarItem title='Dashboard'    to='/newdashboard' icon={Dashboard} activeIcon={DashboardActive} />
-    <SideBarItem title='Tokens'       to='/tokens' icon={Tokens} activeIcon={TokensActive} />
-    <SideBarItem title='Crowdsales'   to='/crowdsales' icon={Crowdsale} activeIcon={CrowdsaleActive} />
-    <SideBarItem title='Campaigns'    to='/compaign' icon={Campaigns} activeIcon={CampaignsActive} />
-    <SideBarItem title='KYC/AML'      to='/KycAml' icon={KYC_AML}  activeIcon={KYC_AMLActive}/>
+    <SideBarItem title='Tokens'       to='/newtokens' icon={Tokens} activeIcon={TokensActive} />
+    <SideBarItem title='Crowdsales'   to='/newcrowdsale' icon={Crowdsale} activeIcon={CrowdsaleActive} />
+    <SideBarItem title='Campaigns'    to='/newCampaign' icon={Campaigns} activeIcon={CampaignsActive} />
+    <SideBarItem title='KYC/AML'      to='/newkycaml' icon={KYC_AML}  activeIcon={KYC_AMLActive}/>
     <SideBarItem title='Transactions' to='/Transactions' icon={Transactions} activeIcon={TransactionsActive} />
     <SideBarItem title='Affiliate'     to='/Affiliate' icon={Affiliate} activeIcon={AffiliateActive} />
     <SideBarItem title='Settings'     to='/setting' icon={Settings} activeIcon={SettingsActive} />

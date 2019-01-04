@@ -57,7 +57,7 @@ const initialState = {
         burnable: false
     },
     stages: {
-        multiStages: false,
+        multiStages: true,
         tokensForSale: '',
         tokenPrice: '',
         startDate: '',
@@ -1237,27 +1237,55 @@ render() {
                       { step === 4 ?
                           <div>
                               { token.receivers.map((receiver, i) => (
+                                
                                   i === 0 ?
-                                      <div key={0}>
-                                        <div className='row form-group'>
-                                            <label className='col-md-2'>
-                                              Address
-                                              <a className='question'></a>
-                                            </label>
-                                            <div className='col-md-4'>
-                                              <input type="text" disabled={true} readOnly value="Crowdsale smart contract address" className="editor-input w-100" />
-                                            </div>
-                                          </div>
-                                          <div className='row form-group'>
-                                          <label className='col-md-2'>
-                                            Amount
-                                            <a className='question'></a>
-                                          </label>
-                                          <div className='col-md-4'>
-                                            <input type="number" disabled={true} readOnly value={stages.tokensForSale} className="editor-input w-100" placeholder="This value will be generated automatically" />
-                                          </div>
+                                  <div key={0}>
+                                  <div className='row form-group'>
+                                      <label className='col-md-2'>
+                                        Address
+                                        <a className='question'></a>
+                                      </label>
+                                      <div className='col-md-4'>
+                                        <input type="text" name="address" required={true} placeholder="0x..." onBlur={this.isAddressValid} onChange={this.ondistributionAddressesChange(i)} value={receiver.address} className="editor-input w-100" />
+                                      </div>
+                                      <label className='col-md-2'>
+                                        Until date
+                                        <a className='uestion'></a>
+                                      </label>
+                                      <div className='col-md-4'>
+                                        <input type="date" name="untilDate" required={true} onChange={this.ondistributionAddressesChange(i)} value={receiver.untilDate} className="editor-input w-100 min-w-100" placeholder="01.10.2018" />
+                                      </div>
+                                    </div>
+                                    <div className='row form-group'>
+                                      <label className='col-md-2'>
+                                        Amount
+                                        <a className='question'></a>
+                                      </label>
+                                      <div className='col-md-4'>
+                                          <input type="number" name="amount" required={true} onChange={this.ondistributionAddressesChange(i)} value={receiver.amount} placeholder="ex: 10000" className="editor-input w-100" />
+                                      </div>
+                                      <div className='col-md-2'></div>
+                                      <div className="col-md-4">
+                                            <button onClick={() => this.onDeleteReceiver(receiver.id)} className="add-btn"><i className="fa fa-minus"></i> Remove</button>
+                                      </div>
+                                    </div>
+                                    <div className='row form-group'>
+                                      <label className='col-md-2'>
+                                        Frozen
+                                        <a className='question'></a>
+                                      </label>
+                                      <div className='col-md-4'>
+                                        <div className='toggle-btn'>
+                                          <a className='active' >
+                                          Yes
+                                          </a>
+                                          <a className='' >
+                                          No
+                                          </a>
                                         </div>
                                       </div>
+                                    </div>
+                                </div>
                                   :
                                       <div key={i}>
                                         <div className='row form-group'>
