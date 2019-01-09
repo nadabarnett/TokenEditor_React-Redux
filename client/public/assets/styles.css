@@ -1187,6 +1187,15 @@ hr {
   /* line-height: 85px; */
   color: #929799;
   font-family: "SF Pro Text";
+  transition: color 0.7s ease-in-out;
+
+}
+.top-navbar-ico-text:hover {
+  font-size: 15px;
+  letter-spacing: 0px;
+  /* line-height: 85px; */
+  color: #5fdbdb;
+  font-family: "SF Pro Text";
 }
 
 @media (min-width: 768px) {
@@ -1378,10 +1387,20 @@ hr {
   margin: 30px 0 0 0;
   padding: 40px 25px;
 }
+.transaction-wrapper {
+  border-radius: 15px;
+  box-shadow: 0px 19px 24px rgba(105,103,121,0.15);
+  background-color: rgba(255,255,255,0.6);
+  margin: 30px 0 0 0;
+  padding: 40px 25px;
+}
 .tokens-wrapper .section-header {
   overflow: hidden;
 }
 .kyc-wrapper .section-header {
+  overflow: hidden;
+}
+.transaction-wrapper .section-header {
   overflow: hidden;
 }
 .tokens-wrapper .section-header h2 {
@@ -1394,6 +1413,15 @@ hr {
   margin-left: 40px;
 }
 .kyc-wrapper .section-header h2 {
+  font-size: 18px;
+  line-height: 54px;
+  text-transform: uppercase;
+  color: #929799;
+  font-family: "SF Pro Text";
+  font-weight: bold;
+  margin-left: 40px;
+}
+.transaction-wrapper .section-header h2 {
   font-size: 18px;
   line-height: 54px;
   text-transform: uppercase;
@@ -1415,6 +1443,62 @@ hr {
   cursor: pointer;
   transition: background-color 0.7s ease-in-out;
 
+  
+}
+.approve-btn {
+  background-color: #a39bf0;
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  color: white;
+  width: 110px;
+  height: 45px;
+  border: 0 none;
+  border-radius: 20px;
+  box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+  cursor: pointer;
+  transition: background-color 0.7s ease-in-out;
+}
+.decline-btn {
+  background-color: #a39bf0;
+  margin-left: 10px;
+
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  color: white;
+  width: 110px;
+  height: 45px;
+  border: 0 none;
+  border-radius: 20px;
+  box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+  cursor: pointer;
+  transition: background-color 0.7s ease-in-out;
+}
+.approve-btn:hover {
+  background-color:white;
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  color: #a39bf0;
+  width: 110px;
+  height: 45px;
+  border: 0 none;
+  border-radius: 20px;
+  box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+  cursor: pointer;
+  
+}
+.decline-btn:hover {
+  background-color:white;
+  margin-left: 10px;
+
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  color: #a39bf0;
+  width: 110px;
+  height: 45px;
+  border: 0 none;
+  border-radius: 20px;
+  box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+  cursor: pointer;
   
 }
 .tokens-wrapper .section-header .create-btn:hover {
@@ -1554,6 +1638,27 @@ textarea {
 .kyc-wrapper .table ul li{
   display: inline-block;
 }
+
+.transaction-wrapper .table {
+  overflow: hidden;
+  padding: 0;
+}
+.transaction-wrapper .table .thead{
+  color: #312f41;
+  font-weight: bold;
+}
+.transaction-wrapper .table > li {
+  color: #939899;
+  cursor: pointer;
+  line-height: 32px;
+  list-style: none;
+}
+.transaction-wrapper .table ul {
+  padding: 10px;
+}
+.transaction-wrapper .table ul li{
+  display: inline-block;
+}
 .tokens-wrapper .table ul li:nth-child(1) {
   width: 20%;
 }
@@ -1563,6 +1668,7 @@ textarea {
 .tokens-wrapper .table ul li:nth-child(3) {
   width: 60%;
 }
+
 .kyc-wrapper .table ul li:nth-child(1) {
   width: 10%;
 }
@@ -1580,6 +1686,28 @@ textarea {
 }
 .kyc-wrapper .table ul li:nth-child(6) {
   width: 25%;
+}
+
+.transaction-wrapper .table ul li:nth-child(1) {
+  width: 10%;
+}
+.transaction-wrapper .table ul li:nth-child(2) {
+  width: 15%;
+}
+.transaction-wrapper .table ul li:nth-child(3) {
+  width: 15%;
+}
+.transaction-wrapper .table ul li:nth-child(4) {
+  width: 15%;
+}
+.transaction-wrapper .table ul li:nth-child(5) {
+  width: 15%;
+}
+.transaction-wrapper .table ul li:nth-child(6) {
+  width: 20%;
+}
+.transaction-wrapper .table ul li:nth-child(7) {
+  width: 10%;
 }
 .tokens-wrapper .table .tr{
   border: 1px solid transparent;
@@ -1613,6 +1741,27 @@ textarea {
   float: left;
 }
 .kyc-wrapper .table .tr button.edit-btn {
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: 0 none;
+  background-image: url("images/v2/tr-edit.png");
+  float: right;
+  cursor: pointer;
+}
+
+.transaction-wrapper .table .tr{
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+.transaction-wrapper .table .tr:hover {
+  border-color: #a39bf0;
+}
+.transaction-wrapper .table .tr span.address {
+  display: block;
+  float: left;
+}
+.transaction-wrapper .table .tr button.edit-btn {
   width: 32px;
   height: 32px;
   background-color: transparent;

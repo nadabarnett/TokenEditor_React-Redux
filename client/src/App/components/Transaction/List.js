@@ -14,22 +14,25 @@ class TokenList extends Component{
         <li className='thead'>
           <ul>
             <li>
-              Name
-            </li>
-            <li>
-              Email
+              Date
             </li>
             <li>
               Country
             </li>
             <li>
-              Wallet address
+              Token
             </li>
             <li>
-              Verified
+              Token amount
             </li>
             <li>
-              Action
+              Source amount
+            </li>
+            <li>
+              Username
+            </li>
+            <li>
+              Fee
             </li>
           </ul>
         </li>
@@ -37,16 +40,13 @@ class TokenList extends Component{
           return (
             <li className='tr' key={i}>
               <ul>
-                <li>{token.name}</li>
-                <li>{token.email}</li>
+                <li>{token.date}</li>
                 <li>{token.country}</li>
-                <li>{token.address}</li>
-                <li>{token.verified}</li>
-                <li>
-                  <button className='approve-btn' onClick><span>&#x2714;</span>Approve</button>
-                  <button className='decline-btn' onClick><span>&#10006; </span>Decline</button>
-
-                </li>
+                <li>{token.tokenname}</li>
+                <li>{token.tokenamount}</li>
+                <li>{token.sourceamount}</li>
+                <li>{token.username}</li>
+                <li>{token.fee}</li>
               </ul>
             </li>
           )

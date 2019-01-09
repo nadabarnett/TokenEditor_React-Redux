@@ -19,6 +19,8 @@ import AddCrowdsale               from './pages/AddCrowdsale';
 import NewCrowdsale               from './pages/NewCrowdsale';
 import NewCampaign               from './pages/NewCampaign';
 import NewKycAml               from './pages/Newkycaml';
+import NewTransaction              from './pages/NewTransaction';
+
 
 
 
@@ -45,6 +47,8 @@ class App extends Component {
           <Route path='/addCrowdsale' component={AddCrowdsale}/>
           <Route path='/newCampaign' component={NewCampaign}/>
           <Route path='/newkycaml' component={NewKycAml}/>
+          <Route path='/newTransaction' component={NewTransaction}/>
+
 
 
         </Switch>
