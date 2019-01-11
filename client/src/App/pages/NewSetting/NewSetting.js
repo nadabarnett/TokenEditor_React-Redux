@@ -14,32 +14,49 @@ import people from "./people.svg"
 import users from "./users.svg"
 
 const DashboardCard = React.memo(({ variant, icon, title, subTitle }) => (
-  <div className={`my-1 col dashboard-card dashboard-card-${variant}`} style={{padding:'0'}}>
-    <div className="card border-0" style={{height:'100%'}}>
-      <div className="card-body pb-0" style={{position:'relative'}}>
-        <h5  style={{fontSize: '2rem',letterSpacing:'-1px', fontFamily:'Roboto',fontWeight:'999', textAlign: 'left'}} className="card-title pl-0 my-auto"> {title} </h5>
-        <p className="card-text float-left" style={{ fontSize:'1rem', textAlign:'left', wordWrap: 'break-word' }}>{subTitle}</p>
+  <div className={`my-1 col dashboard-card`} style={{padding:'0'}}>
+    <div className="border-0" style={{height:'100%'}}>
+      <div className="pb-0" style={{position:'relative'}}>
+        <h5  style={{fontSize: '1.2rem',letterSpacing:'-1px', fontFamily:'Roboto',fontWeight:'500'}} className="card-title pl-0 my-auto"> {title} </h5>
+        <input className="setting-input" style={{marginTop:'11px'}}/>
       </div>
     </div>
   </div>
 ));
 
 const DashboardCards = () => (
-  <div className="row justify-content-between" style={{marginTop: '50px'}}>
-    <DashboardCard variant='portag' title='10' subTitle='Unpaid referrals' icon={questionMarkPurple} />
-    <DashboardCard variant='sunglo' title='3' subTitle='Paid referrals, Yesterday' icon={dummy} />
-    <DashboardCard variant='viking' title='743' subTitle='Visits'  icon={people} />
-    <DashboardCard variant='sweet-corn' title='30%' subTitle='Conversion rate'  icon={users} />
-
+  <div className="row justify-content-between" style={{marginTop: '8px'}}>
+    <DashboardCard variant='portag' title='Username' subTitle='Unpaid referrals' icon={questionMarkPurple} />
+    <DashboardCard variant='sunglo' title='Email' subTitle='Paid referrals, Yesterday' icon={dummy} />
   </div>
 )
 const DashboardCards1 = () => (
-  <div className="row justify-content-between" style={{marginTop: '50px'}}>
-    <DashboardCard variant='portag' title='$234' subTitle='Unpaid earnings' icon={questionMarkPurple} />
-    <DashboardCard variant='sunglo' title='$3642' subTitle='Paid earning' icon={dummy} />
-    <DashboardCard variant='viking' title='10%' subTitle='Commission rate'  icon={people} />
-   
+  <div className="row justify-content-between" style={{marginTop: '8px'}}>
+    <DashboardCard variant='portag' title='First name' subTitle='Unpaid earnings' icon={questionMarkPurple} />
+    <DashboardCard variant='sunglo' title='Last name' subTitle='Paid earning' icon={dummy} />   
   </div>
+)
+const DashboardCards2 = () => (
+  <div className="row justify-content-between" style={{marginTop: '8px'}}>
+    <DashboardCard variant='portag' title='Website' subTitle='Unpaid earnings' icon={questionMarkPurple} />
+    <DashboardCard variant='sunglo' title='Ethereum Wallet Address' subTitle='Paid earning' icon={dummy} />   
+  </div>
+)
+const DashboardCards3 = () => (
+  <div className="row justify-content-between" style={{marginTop: '8px'}}>
+    <DashboardCard variant='portag' title='Bio' subTitle='Unpaid earnings' icon={questionMarkPurple} />
+  </div>
+)
+const DashboardCards4 = () => (
+  <div className="row justify-content-between" style={{marginTop: '8px'}}>
+    <DashboardCard variant='portag' title='Old password' subTitle='Unpaid earnings' icon={questionMarkPurple} />
+  </div>
+)
+const DashboardCards5 = () => (
+  <div className="row justify-content-between" style={{marginTop: '8px'}}>
+    <DashboardCard variant='portag' title='New Password' subTitle='Unpaid earnings' icon={questionMarkPurple} />
+    <DashboardCard variant='sunglo' title='Confirm new Password' subTitle='Paid earning' icon={dummy} />     
+    </div>
 )
 const FundingItem = React.memo(({current, target}) => (
   <div className='col text-left'>
@@ -60,24 +77,29 @@ class Content extends React.PureComponent {
     const { tokens } = this.props
     return (
       <div className='content-wrapper'>
-        <div className='justify-content-between kyc-wrapper'>
-          <div className='section-header'>
-            
-              <h2 className="affilatelink">Your referral link</h2>
-                  <input className="affiliate-input" value="https://example.com /ref/4321" type='text'/>
-                <button className="affiliate-copy-btn">Copy</button>
-          </div>
-          <div className='section-content'>
-          </div>
-         
-        </div>
+        
         <div className='justify-content-between kyc-wrapper'>
           <div className='section-content'>
           <DashboardCards />
           <DashboardCards1 />
+          <DashboardCards2 />
+          <DashboardCards3 />
+
+
           </div>
          
         </div>
+        <div className='justify-content-between kyc-wrapper'>
+          <div className='section-content'>
+          <DashboardCards4 />
+          <DashboardCards5 />
+          </div>
+         
+        </div>
+        <button className="setting-save-btn">
+          <i className="fas fa-check"></i> Save
+        </button>
+        
       </div>
     )
   }
