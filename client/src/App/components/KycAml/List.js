@@ -43,8 +43,7 @@ class TokenList extends Component{
                 <li>{token.address}</li>
                 <li>{token.verified}</li>
                 <li>
-                  <button className='approve-btn' onClick><span>&#x2714;</span>Approve</button>
-                  <button className='decline-btn' onClick><span>&#10006; </span>Decline</button>
+                  <button className='approve-btn' onClick><span>&#x2714;</span>Manage</button>
 
                 </li>
               </ul>

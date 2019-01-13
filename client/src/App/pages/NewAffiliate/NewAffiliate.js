@@ -26,8 +26,7 @@ const DashboardCard = React.memo(({ variant, icon, title, subTitle }) => (
 
 const DashboardCards = () => (
   <div className="row justify-content-between" style={{marginTop: '50px'}}>
-    <DashboardCard variant='portag' title='10' subTitle='Unpaid referrals' icon={questionMarkPurple} />
-    <DashboardCard variant='sunglo' title='3' subTitle='Paid referrals, Yesterday' icon={dummy} />
+    <DashboardCard variant='portag' title='10' subTitle='Referrals' icon={questionMarkPurple} />
     <DashboardCard variant='viking' title='743' subTitle='Visits'  icon={people} />
     <DashboardCard variant='sweet-corn' title='30%' subTitle='Conversion rate'  icon={users} />
 
@@ -35,8 +34,7 @@ const DashboardCards = () => (
 )
 const DashboardCards1 = () => (
   <div className="row justify-content-between" style={{marginTop: '50px'}}>
-    <DashboardCard variant='portag' title='$234' subTitle='Unpaid earnings' icon={questionMarkPurple} />
-    <DashboardCard variant='sunglo' title='$3642' subTitle='Paid earning' icon={dummy} />
+    <DashboardCard variant='portag' title='$234' subTitle='Earnings' icon={questionMarkPurple} />
     <DashboardCard variant='viking' title='10%' subTitle='Commission rate'  icon={people} />
    
   </div>

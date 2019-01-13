@@ -54,7 +54,6 @@ class Content extends React.PureComponent {
     const { tokens } = this.props
     return (
       <div className='content-wrapper'>
-        <DashboardCards />
 
             <div className='justify-content-between transaction-wrapper'>
               <div className='section-content'>
