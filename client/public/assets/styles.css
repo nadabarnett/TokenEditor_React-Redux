@@ -1762,9 +1762,8 @@ float: left;
 .kyc-wrapper .table .tr button.edit-btn {
 width: 32px;
 height: 32px;
-background-color: transparent;
 border: 0 none;
-background-image: url("images/v2/tr-edit.png");
+background: url("images/v2/tr-edit.png")  #a39bf0 no-repeat 10px 50%;
 float: right;
 cursor: pointer;
 }
@@ -1794,32 +1793,75 @@ cursor: pointer;
 text-align: center;
 }
 .affiliate-copy-btn {
-width: 150px;
+width: 200px;
 height: 45px;
 border: 0 none;
-
-background: url(./icons/copy_icon.png) #ffffff no-repeat 30px 50%;
 border-radius: 20px;
 color: #94999b;
 cursor: pointer;
-margin-left: 40px;
+margin-left:40px; 
+
+padding-left: 50px;
+background: url(./icons/copy_icon.png) #ffffff no-repeat 10px 50%;
+margin-right: 10px;
+text-align: left;
+line-height: 45px;
 box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
 transition: background 0.7s ease-in-out;
 }
+.kycaml-manage-btn {
+  width: 150px;
+  height: 45px;
+  border: 0 none;
+  border-radius: 20px;
+  color: #94999b;
+  cursor: pointer;
+  
+  right: 330px;
+  padding-left: 50px;
+  background: url(images/v2/tr-edit.png) #ffffff no-repeat 10px 50%;
+  margin-right: 10px;
+  text-align: left;
+  line-height: 45px;
+  box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+
+  transition: background 0.7s ease-in-out;
+}
+.kycaml-manage-btn:hover {
+  width: 150px;
+  height: 45px;
+  border: 0 none;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  
+  right: 330px;
+  padding-left: 50px;
+  background: url(images/v2/tr-edit.png) #a39bf0 no-repeat 10px 50%;
+  margin-right: 10px;
+  text-align: left;
+  line-height: 45px;
+  box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+}
 .affiliate-copy-btn:hover {
-
-width: 150px;
-height: 45px;
-border: 0 none;
-border-radius: 20px;
-color: white;
-cursor: pointer;
-background: url(./icons/copy_icon.png) #a39bf0 no-repeat 30px 50%;
-
-margin-left: 40px;
-box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
+  width: 200px;
+  height: 45px;
+  border: 0 none;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  
+  margin-left:40px; 
+  padding-left: 50px;
+  background: url(./icons/copy_icon.png) #a39bf0 no-repeat 10px 50%;
+  margin-right: 10px;
+  text-align: left;
+  line-height: 45px;
+  box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
 
 }
+
 .affiliate-input{
 padding: 10px 15px;
 font-family: 'SP Pro Text';
@@ -1861,7 +1903,6 @@ color: white;
 cursor: pointer;
 margin-left: 10px;
 box-shadow: 0px 5px 10px rgba(105,103,121,0.15);
-
 }
 .kyc-wrapper input{
   padding: 10px 15px;

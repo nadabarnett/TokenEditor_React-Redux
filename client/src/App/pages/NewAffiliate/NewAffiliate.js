@@ -17,8 +17,8 @@ import dollar from "./dollar.svg"
 import book from "./book.svg"
 import pluspeople from "./pluspeople.svg"
 import tower from "./tower.svg"
-
 import DatePicker from 'react-datepicker'
+import $ from 'jquery'
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -83,9 +83,36 @@ class Content extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      startDate:new Date(),
+      endDate:new Date(),
       showCreateModal: false,
       showManageModal: false,
     }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleChange1 = this.handleChange1.bind(this);
+
+
+  }
+  handleChange(date) {
+    this.setState({
+      startDate: date
+    });
+  }
+  notification_text() {
+    $("#notification_bar").show();
+
+    setTimeout(
+      function(){
+        $("#notification_bar").hide();
+
+    },3000);
+
+
+  }
+  handleChange1(date) {
+    this.setState({
+      endDate: date
+    });
   }
   render() {
     const { tokens } = this.props
@@ -103,13 +130,13 @@ class Content extends React.PureComponent {
               <label >
                   Start date            
               </label>
-              <DatePicker/>
+              <DatePicker selected={this.state.startDate} onChange={this.handleChange}/>
             </div>
             <div className="col-md-4">
             <label >
                 End date            
             </label>
-            <DatePicker/>
+            <DatePicker selected={this.state.endDate} onChange={this.handleChange1}/>
           </div>
           </div>
          
@@ -123,8 +150,10 @@ class Content extends React.PureComponent {
 
               <label className="affilatelink col-md-3">Your referral link:</label>
                   <input className="col-md-6" value="https://example.com /ref/4321" style={{color:"#9a95ec"}} type='text'/>
-                <button className="affiliate-copy-btn col-md-2">Copy the link</button>
+                <button className="affiliate-copy-btn col-md-2" onClick={this.notification_text}>Copy the link</button>
                 </div>
+                <label id="notification_bar" style={{display:'none'}}>You have copied a link</label>
+
           </div>
          
       </div>
