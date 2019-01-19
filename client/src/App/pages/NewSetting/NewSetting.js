@@ -17,7 +17,7 @@ const DashboardCard = React.memo(({ variant, icon, title, subTitle }) => (
   <div className={`my-1 col dashboard-input-card`} style={{padding:'0'}}>
     <div className="border-0" style={{height:'100%'}}>
       <div className="pb-0" style={{position:'relative'}}>
-        <h5  style={{fontSize: '1.2rem',letterSpacing:'-1px', fontFamily:'Roboto',fontWeight:'500'}} className="card-title pl-0 my-auto"> {title} </h5>
+        <h5  style={{fontSize: '1.2rem',letterSpacing:'-1px', fontFamily:'Roboto',fontWeight:'500',color:"#939899"}} className="card-title pl-0 my-auto"> {title} </h5>
         <input className="setting-input" style={{marginTop:'11px'}}/>
       </div>
     </div>
